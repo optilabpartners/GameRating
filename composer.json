@@ -1,0 +1,64 @@
+{
+	"name": "optilab/games-rating",
+	"description": "Game rating plugin for Wordpress",
+	"type": "wordpress-plugin",
+	"autoload": {
+		"psr-4": {
+			"Optilab\\": "app/lib/Optilab/"
+		},
+		"files": [
+			"app/post_types/game-post-type.php",
+      		"app/taxonomies/taxonomy-game_org.php",
+      		"app/taxonomies/taxonomy-game_season.php"
+		]
+	},
+	"require": {
+		"php": ">=5.6.4",
+		"composer/installers": "~1.0",
+		"illuminate/view": "~5.4.0",
+		"illuminate/config": "~5.4.0",
+		"silverorange/mdb2": "~2.7.0",
+		"brandonwamboldt/wp-orm": "~1.0.0",
+		"webdevstudios/taxonomy-single-term": "0.2.2"
+	},
+	"repositories": [
+		{
+			"type":"package",
+			"package": {
+				"name": "webdevstudios/taxonomy-single-term",
+				"version":"0.2.2",
+				"dist": {
+					"url": "https://github.com/WebDevStudios/Taxonomy_Single_Term/archive/master.zip",
+					"type": "zip"
+				},
+				"source": {
+					"url": "https://github.com/WebDevStudios/Taxonomy_Single_Term.git",
+					"type": "git",
+					"reference":"master"
+				},
+				"autoload" : {
+					"files": [
+						"class.taxonomy-single-term.php",
+						"walker.taxonomy-single-term.php"
+					]
+				}
+			}
+		}
+	],
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^2.8.0"
+	},
+	"license": "proprietary",
+	"authors": [
+		{
+			"name": "Hitankar Ray",
+			"email": "hitankar@gmail.com"
+		}
+	],
+	"minimum-stability": "dev",
+	"scripts": {
+		"test": [
+		  "phpcs"
+		]
+	}
+}
