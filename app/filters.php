@@ -10,3 +10,22 @@ function optilab_rewrite_rules($rules) {
 
     return array_merge($newRules, $rules);
 }
+
+function the_team_image_taxonomy( $taxonomy ) {
+	// use for tags instead of categories
+	return 'team';
+}
+add_filter( 'taxonomy-term-image-taxonomy', 'the_team_image_taxonomy' );
+
+// function change_post_type_template($single_template) 
+// {
+//      global $post;
+
+//      if ($post->post_type == 'game') 
+//      {
+//           $single_template = PLUGIN_BASEPATH . 'resources/views/single-game.php';
+//      }
+
+//      return $single_template;
+// }
+// add_filter( 'single_template', 'change_post_type_template' );

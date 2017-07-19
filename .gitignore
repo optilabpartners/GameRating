@@ -6,3 +6,4 @@ yarn-error.log
 composer.phar
 vendor
 composer.lock
+.DS_Store

@@ -9,7 +9,8 @@
 		"files": [
 			"app/post_types/game-post-type.php",
       		"app/taxonomies/taxonomy-game_org.php",
-      		"app/taxonomies/taxonomy-game_season.php"
+      		"app/taxonomies/taxonomy-game_season.php",
+      		"app/taxonomies/taxonomy-team.php"
 		]
 	},
 	"require": {
@@ -19,7 +20,8 @@
 		"illuminate/config": "~5.4.0",
 		"silverorange/mdb2": "~2.7.0",
 		"brandonwamboldt/wp-orm": "~1.0.0",
-		"webdevstudios/taxonomy-single-term": "0.2.2"
+		"webdevstudios/taxonomy-single-term": "0.2.2",
+		"daggerhart/taxonomy-term-image": "2.0.3"
 	},
 	"repositories": [
 		{
@@ -40,6 +42,27 @@
 					"files": [
 						"class.taxonomy-single-term.php",
 						"walker.taxonomy-single-term.php"
+					]
+				}
+			}
+		},
+		{
+			"type":"package",
+			"package": {
+				"name": "daggerhart/taxonomy-term-image",
+				"version":"2.0.3",
+				"dist": {
+					"url": "https://github.com/daggerhart/taxonomy-term-image/archive/master.zip",
+					"type": "zip"
+				},
+				"source": {
+					"url": "https://github.com/daggerhart/taxonomy-term-image.git",
+					"type": "git",
+					"reference":"master"
+				},
+				"autoload" : {
+					"files": [
+						"taxonomy-term-image.php"
 					]
 				}
 			}
