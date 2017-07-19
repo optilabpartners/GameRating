@@ -79,7 +79,7 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
 });
 /** Save Custom Field Of Category Form */
 add_action( 'created_game_season', __NAMESPACE__ . '\\game_season_form_custom_field_save', 10, 2 ); 
-add_action( 'created_game_season', __NAMESPACE__ . '\\game_season_form_create_sub_term_save', 11, 2 ); 
+add_action( 'edited_game_season', __NAMESPACE__ . '\\game_season_form_create_sub_term_save', 11, 2 ); 
 add_action( 'edited_game_season', __NAMESPACE__ . '\\game_season_form_custom_field_save', 10, 2 );
  
 function game_season_form_custom_field_save( $term_id, $tt_id ) {
@@ -100,11 +100,11 @@ function game_season_form_create_sub_term_save( $term_id, $tt_id ) {
 		$interval = $date1->diff($date2);
 
 		$weeks = floor(($interval->days) / 7);
-
-		for($i = 1; $i <= $weeks; $i++){    
+		
+		for($i = 1; $i <= $weeks+1; $i++){    
 		    $week = $date1->format("W");
-		    $date1->add(new \DateInterval('P4D'));
-		    echo $week." = ".$start_date." - ".$date1->format('Y-m-d')."<br/>";
+		    // $date1->add(new \DateInterval('P6D'));
+		    $date1->modify('next saturday');;
 		    // create weeks
 		    $result = wp_insert_term( "Week {$i} ({$start_date} - {$date1->format('Y-m-d')})", "game_season", array( 'slug' => 'week-' . $i, 'parent' => $term_id ) );
 
@@ -112,7 +112,7 @@ function game_season_form_create_sub_term_save( $term_id, $tt_id ) {
 		    update_term_meta( $result['term_id'], 'end_date', $date1->format('Y-m-d') );
 		    update_term_meta( $result['term_id'], 'week_number', $i );
 
-		    $date1->add(new \DateInterval('P3D'));
+		    $date1->add(new \DateInterval('P1D'));
 		    $start_date = $date1->format('Y-m-d');
 		}
     }
