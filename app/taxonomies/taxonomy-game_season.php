@@ -45,12 +45,12 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
 \add_action( 'game_season_add_form_fields', function($taxonomy) {
 	?>
   <div class="form-field term-start_date-wrap">
-    <label for="start_date"><?php _e( 'Start Date', 'optilab' ); ?>
+	<label for="start_date"><?php _e( 'Start Date', 'optilab' ); ?>
 	<input type="date" name="start_date" id="start_date" value="">
 	<p class="description"><?php _e( 'Start date of the season','optilab' ); ?></p>
   </div>
   <div class="form-field term-end_date-wrap">
-    <label for="end_date"><?php _e( 'End Date', 'optilab' ); ?>
+	<label for="end_date"><?php _e( 'End Date', 'optilab' ); ?>
 	<input type="date" name="end_date" id="end_date" value="">
 	<p class="description"><?php _e( 'Ebd date of the season','optilab ' ); ?></p>
   </div>
@@ -62,18 +62,18 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
   $end_date = get_term_meta( $term->term_id, 'end_date', true );
 ?>
   <tr class="form-field term-start_date-wrap">
-    <th scope="row"><label for="start_date"><?php _e( 'Start Date', 'optilab' ); ?></th>
-    <td>
-      <input type="date" name="start_date" id="start_date" value="<?= $start_date; ?>">
-      <p class="description"><?php _e( 'Enter end date the season','optilab' ); ?></p>
-    </td>
+	<th scope="row"><label for="start_date"><?php _e( 'Start Date', 'optilab' ); ?></th>
+	<td>
+	  <input type="date" name="start_date" id="start_date" value="<?= $start_date; ?>">
+	  <p class="description"><?php _e( 'Enter end date the season','optilab' ); ?></p>
+	</td>
   </tr>
   <tr class="form-field term-end_date-wrap">
-    <th scope="row"><label for="end_date"><?php _e( 'End Date', 'optilab' ); ?></th>
-    <td>
-      <input type="date" name="end_date" id="end_date" value="<?= $end_date; ?>">
-      <p class="description"><?php _e( 'Enter end date the season','optilab' ); ?></p>
-    </td>
+	<th scope="row"><label for="end_date"><?php _e( 'End Date', 'optilab' ); ?></th>
+	<td>
+	  <input type="date" name="end_date" id="end_date" value="<?= $end_date; ?>">
+	  <p class="description"><?php _e( 'Enter end date the season','optilab' ); ?></p>
+	</td>
   </tr>
 <?php
 });
@@ -83,37 +83,39 @@ add_action( 'edited_game_season', __NAMESPACE__ . '\\game_season_form_create_sub
 add_action( 'edited_game_season', __NAMESPACE__ . '\\game_season_form_custom_field_save', 10, 2 );
  
 function game_season_form_custom_field_save( $term_id, $tt_id ) {
-    if ( isset( $_POST['start_date'] ) ) {           
-      update_term_meta( $term_id, 'start_date', $_POST['start_date'] );
-    }
-    if ( isset( $_POST['end_date'] ) ) {           
-      update_term_meta( $term_id, 'end_date', $_POST['end_date'] );
-    }
+	if ( isset( $_POST['start_date'] ) ) {           
+	  update_term_meta( $term_id, 'start_date', $_POST['start_date'] );
+	}
+	if ( isset( $_POST['end_date'] ) ) {           
+	  update_term_meta( $term_id, 'end_date', $_POST['end_date'] );
+	}
 }
 
 function game_season_form_create_sub_term_save( $term_id, $tt_id ) {
 	$term = get_term( $term_id );
-    if ( isset( $_POST['start_date'] ) && isset( $_POST['end_date'] ) && $term->parent == false  ) {        
-    	$start_date = $_POST['start_date'];
+	if ( isset( $_POST['start_date'] ) && isset( $_POST['end_date'] ) && $term->parent == false  ) {        
+		$start_date = $_POST['start_date'];
 		$date1 = new \DateTime($_POST['start_date']);
 		$date2 = new \DateTime($_POST['end_date']);
 		$interval = $date1->diff($date2);
 
-		$weeks = floor(($interval->days) / 7);
-		
-		for($i = 1; $i <= $weeks+1; $i++){    
-		    $week = $date1->format("W");
-		    // $date1->add(new \DateInterval('P6D'));
-		    $date1->modify('next saturday');;
-		    // create weeks
-		    $result = wp_insert_term( "Week {$i} ({$start_date} - {$date1->format('Y-m-d')})", "game_season", array( 'slug' => 'week-' . $i, 'parent' => $term_id ) );
+		// $weeks = floor(($interval->days) / 7);
+		$i= 1;
+		while ( $date1 < $date2) {
+			$week = $date1->format("W");
 
-		    update_term_meta( $result['term_id'], 'start_date', $start_date );
-		    update_term_meta( $result['term_id'], 'end_date', $date1->format('Y-m-d') );
-		    update_term_meta( $result['term_id'], 'week_number', $i );
+			$date1->modify('next saturday');
+			// create weeks
+			$result = wp_insert_term( "Week " . sprintf("%02d", $i) ." ({$start_date} - {$date1->format('Y-m-d')})", "game_season", array( 'slug' => 'week-' . $i, 'parent' => $term_id ) );
 
-		    $date1->add(new \DateInterval('P1D'));
-		    $start_date = $date1->format('Y-m-d');
+			update_term_meta( $result['term_id'], 'start_date', $start_date );
+			update_term_meta( $result['term_id'], 'end_date', $date1->format('Y-m-d') );
+			update_term_meta( $result['term_id'], 'week_number', $i );
+
+			$date1->add(new \DateInterval('P1D'));
+			$start_date = $date1->format('Y-m-d');
+			$i++;
 		}
-    }
+		//for($i = 1; $i <= $weeks+1; $i++){}
+	}
 }
