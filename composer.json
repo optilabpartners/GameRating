@@ -4,7 +4,8 @@
 	"type": "wordpress-plugin",
 	"autoload": {
 		"psr-4": {
-			"Optilab\\": "app/lib/Optilab/"
+			"Optilab\\": "app/lib/Optilab/",
+			"Optilab\\Ratings\\": "app/lib/Optilab/Ratings"
 		},
 		"files": [
 			"app/post_types/game-post-type.php",

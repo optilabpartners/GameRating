@@ -12,6 +12,7 @@ Text Domain: optilab
 Domain Path: /languages
 */
 
+use Optilab\Ratings\Controllers;
 /**
  * Do not edit anything in this file unless you know what you're doing
  */
@@ -74,5 +75,8 @@ array_map(function ($file) use ($_error) {
 register_activation_hook( __FILE__, __NAMESPACE__ . '\\activate' );
 
 function activate() {
+    global $wpdb;
     flush_rewrite_rules( true );
+    Controllers\RatingsController::bootstrap();
+    
 }

@@ -21,7 +21,7 @@ class WordPress_Radio_Taxonomy {
 	static $taxonomy_metabox_id = 'mytaxonomydiv';
 	static $post_type= 'post';
 
-	public function load( $taxonomy, $taxonomy_metabox_id, $post_type){
+	public static function load( $taxonomy, $taxonomy_metabox_id, $post_type){
 		static::$taxonomy = $taxonomy;
 		static::$taxonomy_metabox_id = $taxonomy_metabox_id;
 		static::$post_type = $post_type;

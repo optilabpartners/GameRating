@@ -1,5 +1,6 @@
 <?php
 namespace Optilab;
+use Optilab\Ratings;
 
 add_action( 'init', __NAMESPACE__ . '\\optilab_setup' );
 function optilab_setup() {
@@ -71,3 +72,6 @@ function game_rating_add_to_content( $content ) {
 }
 add_filter( 'the_content', __NAMESPACE__ . '\\game_rating_add_to_content' );
 add_filter( 'the_excerpt', __NAMESPACE__ . '\\game_rating_add_to_content' );
+
+\add_action( 'wp_ajax_rating', function() {Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
+\add_action( 'wp_ajax_aggregate_rating', function() {Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
