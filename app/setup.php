@@ -1,11 +1,42 @@
 <?php
 namespace Optilab;
 use Optilab\Ratings;
+use Illuminate\Contracts\Container\Container as ContainerContract;
+use Optilab\Assets\JsonManifest;
+use Optilab\Config;
 
-add_action( 'init', __NAMESPACE__ . '\\optilab_setup' );
-function optilab_setup() {
+add_action('wp_enqueue_scripts', function () {
+	// wp_enqueue_style('games-rating/bootstrap.css', asset_path('../node_modules/bootstrap/dist/css/bootstrap.min.css'), false, null);
+	wp_enqueue_script('games-rating/main.js', asset_path('scripts/rating.js'), ['jquery'], null, true);
+	wp_enqueue_script('games-rating/bootstrap.js', asset_path('scripts/bootstrap.js'), ['jquery'], null, true);
+}, 100);
 
-}
+add_action('init', function () {
+	/**
+	 * Sage config
+	 */
+	$paths = [
+		// 'dir.stylesheet' => get_stylesheet_directory(),
+		// 'dir.template'   => get_template_directory(),
+		'dir.upload'     	=> wp_upload_dir()['basedir'],
+		// 'uri.stylesheet' => get_stylesheet_directory_uri(),
+		// 'uri.template'   => get_template_directory_uri(),
+	];
+	config([
+		'assets.manifest' => PLUGIN_BASEPATH."/../dist/assets.json",
+		'assets.uri'      => PLUGIN_BASEURL."/dist",
+		'view.compiled'   => "{$paths['dir.upload']}/cache/compiled",
+		'view.namespaces' => ['Optilab' => WP_CONTENT_DIR],
+	] + $paths);
+
+	/**
+	 * Add JsonManifest to Sage container
+	 */
+	optilab()->singleton('optilab.assets', function () {
+		return new JsonManifest(config('assets.manifest'), config('assets.uri'));
+	});
+
+});
 
 
 function filter_game_link($permalink, $post) {
@@ -67,6 +98,18 @@ function game_rating_add_to_content( $content ) {
 		}
 		$content .= "<br><h4>{$teams[1]->name}</h4>";
 		$content .= '</div></div>';
+		$content .= <<<HTML
+		<!-- Template -->
+		<div class="arating-detail-{$post->ID}"></div>
+		<script type="text/template" id="arating-detail-template" data-post-id="{$post->ID}">
+			<strong>Rating: <meter value="<%= value %>" min="0" max="10"><%= value %> out of 10</meter> <%= value %>/10</strong>
+		</script>
+		<!-- End template -->
+		<div class="rating-container">
+		Rate:
+		<input id="ratingSlider{$post->ID}" class="input-add-rating" type="range" data-post-id="{$post->ID}" min="1" max="10" step="1" value="1" /><span class="rating-preview"> 0/10</span>
+		</div>
+HTML;
 	}
 	return $content;
 }
@@ -75,3 +118,5 @@ add_filter( 'the_excerpt', __NAMESPACE__ . '\\game_rating_add_to_content' );
 
 \add_action( 'wp_ajax_rating', function() {Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
 \add_action( 'wp_ajax_aggregate_rating', function() {Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
+
+optilab()->bindIf('config', Config::class, true);

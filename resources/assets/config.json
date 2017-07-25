@@ -1,0 +1,28 @@
+{
+  "entry": {
+    "radiotax": [
+      "./scripts/radiotax.js"
+    ],
+    "rating": [
+      "jquery",
+      "underscore",
+      "backbone",
+      "./scripts/rating.js"
+    ],
+    "bootstrap.css": [
+      "bootstrap"
+    ]
+  },
+  "publicPath": "/wp-content/plugins/games-rating",
+  "devUrl": "http://localhost",
+  "proxyUrl": "http://localhost:3000",
+  "cacheBusting": "[name]_[hash:8]",
+  "watch": [
+    "{app,resources/views}/**/*.php"
+  ],
+  "browsers": [
+    "last 2 versions",
+    "android 4",
+    "opera 12"
+  ]
+}
