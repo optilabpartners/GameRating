@@ -9,7 +9,7 @@
       "backbone",
       "./scripts/rating.js"
     ],
-    "bootstrap.css": [
+    "bootstrap": [
       "bootstrap"
     ]
   },
