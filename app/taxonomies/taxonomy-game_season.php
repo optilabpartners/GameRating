@@ -99,12 +99,11 @@ function game_season_form_create_sub_term_save( $term_id, $tt_id ) {
 		$date2 = new \DateTime($_POST['end_date']);
 		$interval = $date1->diff($date2);
 
-		// $weeks = floor(($interval->days) / 7);
 		$i= 1;
 		while ( $date1 < $date2) {
 			$week = $date1->format("W");
 
-			$date1->modify('next saturday');
+			$date1->modify('next sunday');
 			// create weeks
 			$result = wp_insert_term( "Week " . sprintf("%02d", $i) ." ({$start_date} - {$date1->format('Y-m-d')})", "game_season", array( 'slug' => 'week-' . $i, 'parent' => $term_id ) );
 
@@ -116,6 +115,6 @@ function game_season_form_create_sub_term_save( $term_id, $tt_id ) {
 			$start_date = $date1->format('Y-m-d');
 			$i++;
 		}
-		//for($i = 1; $i <= $weeks+1; $i++){}
+
 	}
 }
