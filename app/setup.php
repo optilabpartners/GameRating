@@ -116,9 +116,9 @@ HTML;
 add_filter( 'the_content', __NAMESPACE__ . '\\game_rating_add_to_content' );
 add_filter( 'the_excerpt', __NAMESPACE__ . '\\game_rating_add_to_content' );
 
-\add_action( 'wp_ajax_rating', function() {Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
-\add_action( 'wp_ajax_nopriv_rating', function() {Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
-\add_action( 'wp_ajax_aggregate_rating', function() {Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
-\add_action( 'wp_ajax_nopriv_aggregate_rating', function() {Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
+\add_action( 'wp_ajax_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
+\add_action( 'wp_ajax_nopriv_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
+\add_action( 'wp_ajax_aggregate_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
+\add_action( 'wp_ajax_nopriv_aggregate_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
 
 optilab()->bindIf('config', Config::class, true);

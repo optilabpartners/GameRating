@@ -3,7 +3,7 @@ import Backbone from 'backbone';
 (function($) {
 	var AggregateRating = Backbone.Model.extend({
 		idAttribute: "id",
-		url: ajaxurl+'?action=aggregate_rating',
+		url: ajaxurl+'?action=aggregate_optirating',
 		defaults: {
 			post_id: null,
 			value: null
@@ -12,7 +12,7 @@ import Backbone from 'backbone';
 
 	var Rating = Backbone.Model.extend({
 		idAttribute: "id",
-		url: ajaxurl+'?action=rating',
+		url: ajaxurl+'?action=optirating',
 		defaults: {
 			post_id: null,
 			value: null
