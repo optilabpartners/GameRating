@@ -43,8 +43,9 @@ class RatingsController
 	}
 
 	public static function fetchAverageRating($post_id ) {
+		global $wpdb;
 		$row = DB\DB_Manager::fetchMany("SELECT sum(val)/sum(cnt) as avg FROM (
-			SELECT COUNT(value) as cnt, value*COUNT(value) as val FROM wp_ratings WHERE post_id = {$post_id} GROUP BY VALUE
+			SELECT COUNT(value) as cnt, value*COUNT(value) as val FROM {$wpdb->prefix}ratings WHERE post_id = {$post_id} GROUP BY VALUE
 			) a");
 		return round($row[0]->avg, 1);
 	}
