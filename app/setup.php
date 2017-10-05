@@ -80,6 +80,7 @@ add_filter('post_type_link', __NAMESPACE__ . '\\filter_game_link', 10, 2);
 
 function game_rating_add_to_content( $content ) {    
 	global $post;
+	$game_date = date( 'F j, Y', strtotime(get_post_meta( $post->ID, 'game_date', true )));
 	$teams = get_the_terms($post, 'team');
 	if ($teams == false) {
 		return $content;
@@ -99,6 +100,9 @@ function game_rating_add_to_content( $content ) {
 		$content .= "<br><h4>{$teams[1]->name}</h4>";
 		$content .= '</div></div>';
 		$content .= <<<HTML
+		<hr>
+		<strong>Game Date: {$game_date}</strong>
+		<br><br>
 		<!-- Template -->
 		<div class="arating-detail-{$post->ID}"></div>
 		<script type="text/template" id="arating-detail-template" data-post-id="{$post->ID}">
@@ -113,7 +117,7 @@ HTML;
 	}
 	return $content;
 }
-add_filter( 'the_content', __NAMESPACE__ . '\\game_rating_add_to_content' );
+// add_filter( 'the_content', __NAMESPACE__ . '\\game_rating_add_to_content' );
 add_filter( 'the_excerpt', __NAMESPACE__ . '\\game_rating_add_to_content' );
 
 \add_action( 'wp_ajax_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
