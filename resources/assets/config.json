@@ -1,5 +1,8 @@
 {
   "entry": {
+    "games": [
+      "./styles/main.scss"
+    ],
     "radiotax": [
       "./scripts/radiotax.js"
     ],
@@ -8,9 +11,6 @@
       "underscore",
       "backbone",
       "./scripts/rating.js"
-    ],
-    "bootstrap": [
-      "bootstrap"
     ]
   },
   "publicPath": "/wp-content/plugins/games-rating",

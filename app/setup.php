@@ -6,10 +6,12 @@ use Optilab\Assets\JsonManifest;
 use Optilab\Config;
 
 add_action('wp_enqueue_scripts', function () {
-	// wp_enqueue_style('games-rating/bootstrap.css', asset_path('../node_modules/bootstrap/dist/css/bootstrap.min.css'), false, null);
+	wp_enqueue_style('games-rating/main.css', asset_path('styles/games.css'), false, null);
 	wp_enqueue_script('games-rating/main.js', asset_path('scripts/rating.js'), ['jquery'], null, true);
 	wp_enqueue_script('games-rating/bootstrap.js', asset_path('scripts/bootstrap.js'), ['jquery'], null, true);
 }, 100);
+
+
 
 add_action('init', function () {
 	/**
@@ -87,31 +89,39 @@ function game_rating_add_to_content( $content ) {
 	}
 	if( $post->post_type == 'game' ) {
 		$content .= '<div class="row">
-		<div class="col-sm-5">';
+		<div class="col-md-5 text-center">';
 		if ( $teams[0]->term_image ) {
-			$content .= wp_get_attachment_image( $teams[0]->term_image, 'full' );
+			$content .= wp_get_attachment_image( $teams[0]->term_image, 'full', false, array('class' => 'mx-auto') );
 		}
 		$content .= "<br><h4>{$teams[0]->name}</h4>";
-		$content .= '</div><div class="col-sm-2"><strong>VS</strong></div>';
-		$content .= '<div class="col-sm-5">';
+		$content .= '</div><div class="col-md-2 text-center"><strong>VS</strong></div>';
+		$content .= '<div class="col-md-5 text-center">';
 		if ( $teams[1]->term_image ) {
-			$content .= wp_get_attachment_image( $teams[1]->term_image, 'full' );
+			$content .= wp_get_attachment_image( $teams[1]->term_image, 'full', false, array('class' => 'mx-auto') );
 		}
 		$content .= "<br><h4>{$teams[1]->name}</h4>";
 		$content .= '</div></div>';
 		$content .= <<<HTML
+		<div class="text-center">
+			<a href="#" class="btn btn-primary mx-auto">Watch Now</a>
+		</div>
 		<hr>
-		<strong>Game Date: {$game_date}</strong>
-		<br><br>
-		<!-- Template -->
-		<div class="arating-detail-{$post->ID}"></div>
-		<script type="text/template" id="arating-detail-template" data-post-id="{$post->ID}">
-			<strong>Rating: <meter value="<%= value %>" min="0" max="10"><%= value %> out of 10</meter> <%= value %>/10</strong>
-		</script>
-		<!-- End template -->
-		<div class="rating-container">
-		Rate:
-		<input id="ratingSlider{$post->ID}" class="input-add-rating" type="range" data-post-id="{$post->ID}" min="1" max="10" step="1" value="1" /><span class="rating-preview"> 0/10</span>
+		<div class="row">
+			<div class="col-md-6">
+				<!-- Template -->
+				<div class="arating-detail-{$post->ID}"></div>
+				<script type="text/template" id="arating-detail-template" data-post-id="{$post->ID}">
+					<strong>Rating: <meter value="<%= value %>" min="0" max="10"><%= value %> out of 10</meter> <%= value %>/10</strong>
+				</script>
+				<!-- End template -->
+				<div class="rating-container">
+				Rate:
+				<input id="ratingSlider{$post->ID}" class="input-add-rating" type="range" data-post-id="{$post->ID}" min="1" max="10" step="1" value="1" /><span class="rating-preview"> 0/10</span>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<strong>Game Date:</strong> {$game_date}
+			</div> 
 		</div>
 HTML;
 	}
@@ -119,6 +129,12 @@ HTML;
 }
 // add_filter( 'the_content', __NAMESPACE__ . '\\game_rating_add_to_content' );
 add_filter( 'the_excerpt', __NAMESPACE__ . '\\game_rating_add_to_content' );
+
+function new_excerpt_more($more) {
+       global $post;
+	return '<a class="moretag" href="'. get_permalink($post->ID) . '"> Read the full article...</a>';
+}
+add_filter('excerpt_more', __NAMESPACE__ . '\\new_excerpt_more');
 
 \add_action( 'wp_ajax_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
 \add_action( 'wp_ajax_nopriv_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
