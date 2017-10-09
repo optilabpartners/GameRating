@@ -40,7 +40,11 @@ import Backbone from 'backbone';
 	    }
 	});
 
-	$('.input-add-rating').on('change', function() {
+	$('.games-rating-stars input:radio').on('change', function() {
+		var rated = $.cookie('alreadyRated' + $(this).data('postId'));
+		if (rated == 1) {
+			$(this).parent('form').parent('div').replaceWith("<div class=\"alert alert-success\">Your have already rated this game.</div>");
+		}
 		if ($(this).val() === '') {
 			return false;
 		}
@@ -51,14 +55,11 @@ import Backbone from 'backbone';
 		});
 		r.save();
 		setTimeout(function() {
-			that.parent('div').replaceWith("<small class=\"alert alert-success\">Your rating have been submitted</small>");
+			that.parent('form').parent('div').replaceWith("<div class=\"alert alert-success\">Your rating have been submitted</div>");
 			new AggregateRating.DetailView();
-		}, 1000);
-		
-	});
-	$('.input-add-rating').on('input', function() {
-		var $that = $(this);
-		$(this).next().html($that.val() + "/10");
+		}, 1500);
+		that.parent().next('.rating-preview').html(that.val() + "/10");
+		$.cookie('alreadyRated' + that.data('postId'), '1', { expires: 31 });
 	});
 
 	new AggregateRating.DetailView();

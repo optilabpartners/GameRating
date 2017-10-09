@@ -8,9 +8,13 @@
     ],
     "rating": [
       "jquery",
+      "jquery.cookie",
       "underscore",
       "backbone",
       "./scripts/rating.js"
+    ],
+    "bootstrap": [
+      "bootstrap"
     ]
   },
   "publicPath": "/wp-content/plugins/games-rating",

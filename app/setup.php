@@ -111,12 +111,24 @@ function game_rating_add_to_content( $content ) {
 				<!-- Template -->
 				<div class="arating-detail-{$post->ID}"></div>
 				<script type="text/template" id="arating-detail-template" data-post-id="{$post->ID}">
-					<strong>Rating: <meter value="<%= value %>" min="0" max="10"><%= value %> out of 10</meter> <%= value %>/10</strong>
+					<strong>Rating: <%= value %>/10</strong>
 				</script>
 				<!-- End template -->
 				<div class="rating-container">
 				Rate:
-				<input id="ratingSlider{$post->ID}" class="input-add-rating" type="range" data-post-id="{$post->ID}" min="1" max="10" step="1" value="1" /><span class="rating-preview"> 0/10</span>
+					<form class="games-rating-stars">
+						<input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-0" data-post-id="{$post->ID}" value="10" /><label for="ratingSlider{$post->ID}-0"></label><!--
+						--><input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-1" data-post-id="{$post->ID}" value="9" /><label for="ratingSlider{$post->ID}-1"></label><!--
+						--><input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-2" data-post-id="{$post->ID}" value="8" /><label for="ratingSlider{$post->ID}-2"></label><!--
+						--><input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-3" data-post-id="{$post->ID}" value="7" /><label for="ratingSlider{$post->ID}-3"></label><!--
+						--><input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-4" data-post-id="{$post->ID}"  value="6" /><label for="ratingSlider{$post->ID}-4"></label><!--
+						--><input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-5" data-post-id="{$post->ID}" value="5" /><label for="ratingSlider{$post->ID}-5"></label><!--
+						--><input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-6" data-post-id="{$post->ID}" value="4" /><label for="ratingSlider{$post->ID}-6"></label><!--
+						--><input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-7" data-post-id="{$post->ID}" value="3" /><label for="ratingSlider{$post->ID}-7"></label><!--
+						--><input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-8" data-post-id="{$post->ID}" value="2" /><label for="ratingSlider{$post->ID}-8"></label><!--
+						--><input type="radio" name="ratingSlider{$post->ID}" class="input-add-rating" id="ratingSlider{$post->ID}-9" data-post-id="{$post->ID}"  value="1" /><label for="ratingSlider{$post->ID}-9"></label>
+					</form>
+					<span class="rating-preview"> 0/10</span>
 				</div>
 			</div>
 			<div class="col-md-6">
