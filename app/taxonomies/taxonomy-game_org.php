@@ -43,3 +43,35 @@ function taxonomy_game_org() {
 	
 }
 add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_org', 0 );
+
+add_action( 'game_org_add_form_fields', function($taxonomy) {
+	?>
+  <div class="form-field term-watch_url-wrap">
+    <label for="watch_url"><?php _e( 'Watch_url Now URL', 'sage' ); ?>
+	<input type="text" name="watch_url" id="watchUrl" value="">
+	<p class="description"><?php _e( 'Watch_urlnow url for games under this organization','sage' ); ?></p>
+  </div>
+<?php
+});
+
+add_action( 'game_org_edit_form_fields', function($term) {
+  $watch_url = get_term_meta( $term->term_id, 'watch_url', true );
+?>
+  <tr class="form-field term-watch_url-wrap">
+    <th scope="row"><label for="watch_url"><?php _e( 'Redirect URL', 'sage' ); ?></th>
+    <td>
+      <input type="text" name="watch_url" id="watch_url" value="<?= $watch_url; ?>">
+      <p class="description"><?php _e( 'Enter a url that will describe the term','sage' ); ?></p>
+    </td>
+  </tr>
+<?php
+});
+
+/** Save Custom Field Of Category Form */
+add_action( 'created_game_org', __NAMESPACE__ . '\\game_org_form_custom_field_save', 10, 2 );
+add_action( 'edited_game_org', __NAMESPACE__ . '\\game_org_form_custom_field_save', 10, 2 );
+function game_org_form_custom_field_save( $term_id, $tt_id ) {
+    if ( isset( $_POST['watch_url'] ) ) {
+      update_term_meta( $term_id, 'watch_url', $_POST['watch_url'] );
+    }
+}

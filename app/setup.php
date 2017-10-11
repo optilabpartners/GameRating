@@ -83,6 +83,8 @@ add_filter('post_type_link', __NAMESPACE__ . '\\filter_game_link', 10, 2);
 function game_rating_add_to_content( $content ) {    
 	global $post;
 	$game_date = date( 'F j, Y', strtotime(get_post_meta( $post->ID, 'game_date', true )));
+	$org = get_the_terms( $post, 'game_org' )[0];
+	$watch_url = get_term_meta( $org->term_id, 'watch_url', true);
 	$teams = get_the_terms($post, 'team');
 	if ($teams == false) {
 		return $content;
@@ -103,7 +105,7 @@ function game_rating_add_to_content( $content ) {
 		$content .= '</div></div>';
 		$content .= <<<HTML
 		<div class="text-center">
-			<a href="#" class="btn btn-primary mx-auto">Watch Now</a>
+			<a href="{$watch_url}" class="btn btn-primary mx-auto">Watch Now</a>
 		</div>
 		<hr>
 		<div class="row">
