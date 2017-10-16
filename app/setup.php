@@ -105,7 +105,7 @@ function game_rating_add_to_content( $content ) {
 		$content .= '</div></div>';
 		$content .= <<<HTML
 		<div class="text-center">
-			<a href="{$watch_url}" class="btn btn-primary mx-auto">Watch Now</a>
+			<a href="{$watch_url}" target="_blank" class="btn btn-primary mx-auto">Watch Now</a>
 		</div>
 		<hr>
 		<div class="row">
