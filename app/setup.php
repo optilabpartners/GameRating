@@ -103,10 +103,14 @@ function game_rating_add_to_content( $content ) {
 		}
 		$content .= "<br><h4>{$teams[1]->name}</h4>";
 		$content .= '</div></div>';
+		if ( strtotime(get_post_meta( $post->ID, 'game_date', true )) <= strtotime('today') ) {
+			$content .= <<<HTML
+			<div class="text-center">
+				<a href="{$watch_url}" class="btn btn-primary btn-watch-now mx-auto">Watch Now</a>
+			</div>
+HTML;
+		}
 		$content .= <<<HTML
-		<div class="text-center">
-			<a href="{$watch_url}" class="btn btn-primary mx-auto">Watch Now</a>
-		</div>
 		<hr>
 		<div class="row">
 			<div class="col-md-6">

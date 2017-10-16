@@ -44,3 +44,11 @@
   -moz-pointer-events: none;
   pointer-events: none;
 }
+
+.btn-watch-now {
+  &:visited {
+    background-color: #fff;
+    border-color: darken(#fff, 25%);
+    color: lighten(#000, 25%) !important;
+  }
+}
