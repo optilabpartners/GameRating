@@ -184,20 +184,21 @@ add_shortcode( 'todays_game', function() {
 		),
 	);
 	$query = new \WP_Query( $args );
-
+	$content = null;
 	if ( $query->have_posts() ) {
-		echo '<div class="card">';
+		$content .= '<div class="card">';
 		while ( $query->have_posts() ) {
 			$query->the_post();
-			echo '<div class="card-header"><h2>' . get_the_title() . '</h2></div>';
-			echo '<div class="card-block">';
-			echo game_rating_add_to_content();
-			echo '<br></div>';
+			$content .= '<div class="card-header"><h2>' . get_the_title() . '</h2></div>';
+			$content .= '<div class="card-block">';
+			$content .= game_rating_add_to_content();
+			$content .= '<br></div>';
 		}
-		echo '</div><br>';
+		$content .= '</div><br>';
 		/* Restore original Post Data */
 		wp_reset_postdata();
 	} else {
-		echo '<div class="alert alert-info>No game match in the past 7 days</div>';
+		$content .= '<div class="alert alert-info>No game match in the past 7 days</div>';
 	}
+	return $content;
 } );
