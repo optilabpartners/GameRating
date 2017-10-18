@@ -43,7 +43,7 @@ import Backbone from 'backbone';
 	$('.games-rating-stars input:radio').on('change', function() {
 		var rated = $.cookie('alreadyRated' + $(this).data('postId'));
 		if (rated == 1) {
-			$(this).parent('form').parent('div').replaceWith("<div class=\"alert alert-success\">Your have already rated this game.</div>");
+			$(this).parent('form').parent('div').replaceWith("<div class=\"alert alert-warning\">Your have already rated this game.</div>");
 		}
 		if ($(this).val() === '') {
 			return false;
