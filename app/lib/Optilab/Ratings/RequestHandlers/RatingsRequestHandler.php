@@ -32,9 +32,9 @@ class RatingsRequestHandler extends RequestHandler
 		switch ($method) {
 			case 'GET':
 			$rating = Ratings\Controllers\RatingsController::fetchAverageRating($post_id);
-			if ($rating > 0) {
-				echo json_encode(array('id' => rand(), 'post_id' => $post_id, 'value' => $rating));
-			}
+			// if ($rating != null) {
+			echo json_encode(array('id' => rand(), 'post_id' => $post_id, 'value' => $rating));
+			// }
 			wp_die();
 			break;
 		}

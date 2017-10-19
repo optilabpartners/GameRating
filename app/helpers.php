@@ -134,8 +134,8 @@ HTML;
 		<div class="row">
 			<div class="col-md-6">
 				<!-- Template -->
-				<div class="arating-detail-{$post->ID}"></div>
-				<script type="text/template" id="arating-detail-template" data-post-id="{$post->ID}">
+				<div id="arating-detail-{$post->ID}" data-post-id="{$post->ID}"></div>
+				<script type="text/template" class="arating-detail-template" data-post-id="{$post->ID}">
 					<strong>Rating: <%= value %>/10</strong>
 				</script>
 				<!-- End template -->

@@ -40,6 +40,7 @@
       "functions": "ignore"
     }],
     "no-undef": "off",
-    "no-mixed-spaces-and-tabs": "off"
+    "no-mixed-spaces-and-tabs": "off",
+    "no-console": "warn"
   }
 }

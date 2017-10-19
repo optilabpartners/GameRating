@@ -47,6 +47,9 @@ class RatingsController
 		$row = DB\DB_Manager::fetchMany("SELECT sum(val)/sum(cnt) as avg FROM (
 			SELECT COUNT(value) as cnt, value*COUNT(value) as val FROM {$wpdb->prefix}ratings WHERE post_id = {$post_id} GROUP BY VALUE
 			) a");
+		if ($row[0]->avg == null) {
+			$row[0]->avg = 0;
+		}
 		return round($row[0]->avg, 1);
 	}
 }
