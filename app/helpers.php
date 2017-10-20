@@ -202,3 +202,26 @@ add_shortcode( 'todays_game', function() {
 	}
 	return $content;
 } );
+
+add_shortcode( 'game_weeks', __NAMESPACE__ . '\\weeks');
+function weeks($atts) {
+	$a = shortcode_atts( array(
+        'season' => date('Y')
+    ), $atts );
+    
+	$term = get_term_by('slug', (int)$a['season'], 'game_season');
+	
+	if (!$term) {
+		return false;
+	}
+	$terms = get_terms( 'game_season', array(
+		'parent' => $term->term_id,
+	) );
+	$content = '<h3>Game Weeks for ' . $term->name . '.</h3><div class="row">';
+	foreach ($terms as $term) {
+		$term = get_term($term);
+		$content .= '<div class="col-md-6 col-lg-4 text-center"><a class="mx-auto btn btn-link" href="' . get_term_link($term) . '">' . substr($term->name, 0, 7) . '</a></div>';
+	}
+	$content .= '</div>';
+	return $content;
+}
