@@ -206,13 +206,18 @@ add_shortcode( 'todays_game', function() {
 add_shortcode( 'season_weeks', __NAMESPACE__ . '\\weeks');
 function weeks($atts) {
 	$a = shortcode_atts( array(
-        'season' => null
+        'season' 	=> null,
+        'org'		=> null
     ), $atts );
     
     
 	$term = get_term_by('slug', $a['season'], 'game_season');
 
-	if (!$term) {
+	if ($a['org'] == null) {
+    	return '<div class="alert alert-warning">A valid organization slug is required to show the season weeks.</div>';
+    }
+
+    if (!$term) {
     	return '<div class="alert alert-warning">A valid top-level season term slug is required to show the season weeks.</div>';
     }
 
@@ -222,7 +227,8 @@ function weeks($atts) {
 	$content = '<h3>Game Weeks for ' . $term->name . '.</h3><div class="row">';
 	foreach ($terms as $term) {
 		$term = get_term($term);
-		$content .= '<div class="col-md-6 col-lg-4 text-center"><a class="mx-auto btn btn-link" href="' . get_term_link($term) . '">' . substr($term->name, 0, 7) . '</a></div>';
+		$term_link = str_replace('game_org', $a['org'], get_term_link($term));
+		$content .= '<div class="col-md-6 col-lg-4 text-center"><a class="mx-auto btn btn-link" href="' . $term_link . '">' . substr($term->name, 0, 7) . '</a></div>';
 	}
 	$content .= '</div>';
 	return $content;
