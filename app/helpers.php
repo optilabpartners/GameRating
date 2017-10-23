@@ -203,7 +203,7 @@ add_shortcode( 'todays_game', function() {
 	return $content;
 } );
 
-add_shortcode( 'game_weeks', __NAMESPACE__ . '\\weeks');
+add_shortcode( 'season_weeks', __NAMESPACE__ . '\\weeks');
 function weeks($atts) {
 	$a = shortcode_atts( array(
         'season' => date('Y')
