@@ -206,14 +206,16 @@ add_shortcode( 'todays_game', function() {
 add_shortcode( 'season_weeks', __NAMESPACE__ . '\\weeks');
 function weeks($atts) {
 	$a = shortcode_atts( array(
-        'season' => date('Y')
+        'season' => null
     ), $atts );
     
-	$term = get_term_by('slug', (int)$a['season'], 'game_season');
-	
+    
+	$term = get_term_by('slug', $a['season'], 'game_season');
+
 	if (!$term) {
-		return false;
-	}
+    	return '<div class="alert alert-warning">A valid top-level season term slug is required to show the season weeks.</div>';
+    }
+
 	$terms = get_terms( 'game_season', array(
 		'parent' => $term->term_id,
 	) );
