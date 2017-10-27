@@ -63,7 +63,7 @@ import Backbone from 'backbone';
 			});
 			r.save();
 			setTimeout(function() {
-				that.parent('form').parent('div').replaceWith("<div class=\"alert alert-success\">Your rating have been submitted</div>");
+				that.parent('form').parent('div').replaceWith("<div class=\"alert alert-success\">Your rating has been submitted</div>");
 				new AggregateRating.DetailView($template);
 			}, 1500);
 			that.parent().next('.rating-preview').html(that.val() + "/10");
