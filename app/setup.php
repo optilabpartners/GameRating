@@ -93,4 +93,10 @@ add_filter('excerpt_more', __NAMESPACE__ . '\\new_excerpt_more');
 \add_action( 'wp_ajax_aggregate_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
 \add_action( 'wp_ajax_nopriv_aggregate_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
 
+add_action( 'pre_get_posts', function ( $query ) {
+  if ( is_tax('game_season') || is_tax('game_org') ) {
+  	$query->set( 'nopaging', 1 );
+  }
+});
+
 optilab()->bindIf('config', Config::class, true);
