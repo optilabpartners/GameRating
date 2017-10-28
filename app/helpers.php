@@ -224,7 +224,7 @@ function weeks($atts) {
 	$terms = get_terms( 'game_season', array(
 		'parent' => $term->term_id,
 	) );
-	$content = '<h3>Game Weeks for ' . $term->name . '.</h3><div class="row">';
+	$content = '<h3>Game weeks for ' . $term->name . ' season.</h3><div class="row">';
 	foreach ($terms as $term) {
 		$term = get_term($term);
 		$term_link = str_replace('game_org', $a['org'], get_term_link($term));
