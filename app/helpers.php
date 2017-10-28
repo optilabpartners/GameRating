@@ -125,7 +125,7 @@ function game_rating_add_to_content( $content = null ) {
 		if ( strtotime(get_post_meta( $post->ID, 'game_date', true )) <= strtotime('today') ) {
 			$content .= <<<HTML
 			<div class="text-center">
-				<a href="{$watch_url}" class="btn btn-primary btn-watch-now mx-auto">Watch Now</a>
+				<a href="{$watch_url}" target="_blank" class="btn btn-primary btn-watch-now mx-auto">Watch Now</a>
 			</div>
 HTML;
 		}
