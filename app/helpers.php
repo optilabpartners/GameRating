@@ -170,20 +170,14 @@ add_shortcode( 'todays_game', function() {
 	$args = array(
 		'post_type'		=> 'game',
 		'orderby'		=> array(
-			'rating' => 'DESC',
-			'date'	=> 'ASC'
+			'date_range' => 'DESC'
 		),
 		'meta_query' => array(
-			'relation' => 'OR',
-			'date_rage' => array(
+			'date_range' => array(
 				'key'     => 'game_date',
 				'value'   => array( $start_date->format('Y-m-d'), $today->format('Y-m-d') ),
 				'compare' => 'BETWEEN',
-			),
-			'rating' => array(
-				'key' => 'aggregator_rating',
-				'type' => 'NUMERIC',
-			),
+			)
 		),
 	);
 	$query = new \WP_Query( $args );
