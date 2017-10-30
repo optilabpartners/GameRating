@@ -48,12 +48,13 @@ add_filter('term_link', __NAMESPACE__ . '\\term_link', 10, 3);
 
 add_filter('posts_orderby', __NAMESPACE__ . '\\edit_posts_orderby', 10, 2);
 add_filter('posts_join', __NAMESPACE__ . '\\edit_posts_join', 10, 2);
-add_filter('posts_where', __NAMESPACE__ . '\\edit_posts_where', 10, 2);
+add_filter('posts_limits', __NAMESPACE__ . '\\edit_posts_limits', 10, 2);
 
 function edit_posts_join($join_statement, $wp_query) {
 	if ($wp_query->get("post_type") === "game") {
 		global $wpdb;
-		$join_statement .= " INNER JOIN $wpdb->postmeta ar ON ar.post_id = $wpdb->posts.ID";
+		// $join_statement .= " INNER JOIN $wpdb->postmeta ar ON ar.post_id = $wpdb->posts.ID";
+		$join_statement .= " INNER JOIN {$wpdb->prefix}ratings ar ON ar.post_id = $wpdb->posts.ID";
 	}
 	return $join_statement;	
 }
@@ -68,8 +69,8 @@ function edit_posts_where($where_statement, $wp_query) {
 
 function edit_posts_orderby($orderby_statement, $wp_query) {
 	if ($wp_query->get("post_type") === "game") {
-		$orderby_statement = "CAST(ar.meta_value AS DECIMAL(1,1)) DESC";
+		global $wpdb;
+		$orderby_statement = "ar.value DESC";
 	}
 	return $orderby_statement;
 }
-

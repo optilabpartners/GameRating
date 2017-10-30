@@ -172,6 +172,7 @@ add_shortcode( 'todays_game', function() {
 		'orderby'		=> array(
 			'date_range' => 'DESC'
 		),
+		'meta_type'	=> 'DATE',
 		'meta_query' => array(
 			'date_range' => array(
 				'key'     => 'game_date',
@@ -179,6 +180,8 @@ add_shortcode( 'todays_game', function() {
 				'compare' => 'BETWEEN',
 			)
 		),
+		'posts_per_page' => -1,
+		'no_paging'		=> true
 	);
 	$query = new \WP_Query( $args );
 	$content = null;
