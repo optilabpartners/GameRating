@@ -180,8 +180,7 @@ add_shortcode( 'todays_game', function() {
 				'compare' => 'BETWEEN',
 			)
 		),
-		'posts_per_page' => -1,
-		'no_paging'		=> true
+		'posts_per_page' => 50
 	);
 	$query = new \WP_Query( $args );
 	$content = null;
