@@ -125,7 +125,7 @@ function game_rating_add_to_content( $content = null ) {
 		if ( strtotime(get_post_meta( $post->ID, 'game_date', true )) <= strtotime('today') ) {
 			$content .= <<<HTML
 			<div class="text-center">
-				<a href="{$watch_url}" target="_blank" class="btn btn-link btn-watch-now mx-auto">Watch Now</a><br>
+				<a href="{$watch_url}" target="_blank" class="btn btn-outline btn-watch-now mx-auto">Watch Now</a><br>
 				<strong>Game Date:</strong> {$game_date}
 			</div>
 HTML;
@@ -189,15 +189,17 @@ add_shortcode( 'todays_game', function() {
 	$query = new \WP_Query( $args );
 	$content = null;
 	if ( $query->have_posts() ) {
-		$content .= '<div class="card">';
+		
 		while ( $query->have_posts() ) {
+			$content .= '<div class="game-result-wrap card">';
 			$query->the_post();
 			$content .= '<div class="card-header"><h2>' . get_the_title() . '</h2></div>';
 			$content .= '<div class="card-block">';
 			$content .= game_rating_add_to_content();
 			$content .= '<br></div>';
+			$content .= '</div><br>';
 		}
-		$content .= '</div><br>';
+		
 		/* Restore original Post Data */
 		wp_reset_postdata();
 	} else {

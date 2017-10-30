@@ -1,5 +1,9 @@
 @import "~bootstrap/scss/bootstrap";
 
+.btn-outline {
+	border: solid 1px #ccc;
+}
+
 .games-rating-stars {
 	display: inline-block;
 	label {
@@ -56,9 +60,8 @@
 	}
 }
 
-article {
-	&.game {
-		border: solid 2px #ccc;
+article.game, .game-result-wrap {
+		border: solid 1px #ccc;
 		@extend .card;
 		.entry-header {
 			@extend .card-header;
@@ -66,7 +69,7 @@ article {
 				@extend .card-title;
 			}
 		}
-		.entry-summary {
+		.entry-summary, .card-block {
 				@extend .card-block;
 				.aggregate-rating {
 					margin-left: auto;
@@ -87,5 +90,4 @@ article {
 				}
 			}
 		margin-bottom: 20px;
-	}
 }
