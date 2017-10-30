@@ -70,7 +70,7 @@ function edit_posts_where($where_statement, $wp_query) {
 function edit_posts_orderby($orderby_statement, $wp_query) {
 	if ($wp_query->get("post_type") === "game") {
 		global $wpdb;
-		$orderby_statement = "ar.value DESC";
+		$orderby_statement = "CAST(ar.value AS DECIMAL(2,1)) DESC";
 	}
 	return $orderby_statement;
 }
