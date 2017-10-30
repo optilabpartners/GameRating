@@ -1,54 +1,71 @@
 @import "~bootstrap/scss/bootstrap";
 
 .games-rating-stars {
-  display: inline-block;
-  label {
-    &::before {
-      display: inline-block;
-    }
-    &:hover {
-      color: #189800;
-      ~ label {
-        color: #189800;
-      }
-    }
-  }
-  * {
-    margin: 0;
-    padding: 0;
-  }
-  input {
-    display: none !important;
-  }
-  unicode-bidi: bidi-override;
-  direction: rtl;
-  label {
-    color: #ccc;
-    &::before {
-      content: "\2605";
-      width: 18px;
-      line-height: 18px;
-      text-align: center;
-      font-size: 18px;
-      cursor: pointer;
-    }
-  }
-  input:checked ~ label {
-    color: #f5b301;
-  }
+	display: inline-block;
+	label {
+		&::before {
+			display: inline-block;
+		}
+		&:hover {
+			color: #189800;
+			~ label {
+				color: #189800;
+			}
+		}
+	}
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	input {
+		display: none !important;
+	}
+	unicode-bidi: bidi-override;
+	direction: rtl;
+	label {
+		color: #ccc;
+		&::before {
+			content: "\2605";
+			width: 18px;
+			line-height: 18px;
+			text-align: center;
+			font-size: 18px;
+			cursor: pointer;
+		}
+	}
+	input:checked ~ label {
+		color: #f5b301;
+	}
 }
 
 .games-rating-disabled {
-  opacity: .50;
-  -webkit-pointer-events: none;
-  -moz-pointer-events: none;
-  pointer-events: none;
+	opacity: .50;
+	-webkit-pointer-events: none;
+	-moz-pointer-events: none;
+	pointer-events: none;
 }
 
 .btn-watch-now {
-  &:visited {
-    background-color: #fff;
-    border-color: darken(#fff, 25%);
-    color: lighten(#000, 25%) !important;
-  }
+	&:visited {
+		background-color: #fff;
+		border-color: darken(#fff, 25%);
+		color: lighten(#000, 25%) !important;
+	}
+}
+
+article {
+	&.game {
+		border: solid 2px #ccc;
+		@extend .card;
+		.entry-header {
+			@extend .card-header;
+			.entry-title {
+				@extend .card-title;
+			} 
+			.entry-summary {
+				@extend .card-block;
+			}
+		}
+		margin-bottom: 20px;
+	}
 }
