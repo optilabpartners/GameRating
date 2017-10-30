@@ -126,12 +126,17 @@ function game_rating_add_to_content( $content = null ) {
 			$content .= <<<HTML
 			<div class="text-center">
 				<a href="{$watch_url}" target="_blank" class="btn btn-outline btn-watch-now mx-auto">Watch Now</a><br>
-				<strong>Game Date:</strong> {$game_date}
 			</div>
 HTML;
 		}
 		$content .= <<<HTML
+		<div class="text-center">
+			<strong>Game Date:</strong> {$game_date}		
+		</div>
 		<hr>
+HTML;
+		if ( strtotime(get_post_meta( $post->ID, 'game_date', true )) <= strtotime('today') ) {
+			$content .= <<<HTML
 		<div class="row">
 			<div class="col-md-12 text-center">
 				<!-- Template -->
@@ -158,6 +163,9 @@ HTML;
 				</div>
 			</div>
 		</div>
+HTML;
+		}
+		$content .= <<<HTML
 HTML;
 	}
 	return $content;
