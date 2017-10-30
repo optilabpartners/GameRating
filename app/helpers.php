@@ -125,18 +125,19 @@ function game_rating_add_to_content( $content = null ) {
 		if ( strtotime(get_post_meta( $post->ID, 'game_date', true )) <= strtotime('today') ) {
 			$content .= <<<HTML
 			<div class="text-center">
-				<a href="{$watch_url}" target="_blank" class="btn btn-primary btn-watch-now mx-auto">Watch Now</a>
+				<a href="{$watch_url}" target="_blank" class="btn btn-link btn-watch-now mx-auto">Watch Now</a><br>
+				<strong>Game Date:</strong> {$game_date}
 			</div>
 HTML;
 		}
 		$content .= <<<HTML
 		<hr>
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-12 text-center">
 				<!-- Template -->
-				<div id="arating-detail-{$post->ID}" data-post-id="{$post->ID}"></div>
+				<div id="arating-detail-{$post->ID}" data-post-id="{$post->ID}" class="aggregate-rating"></div>
 				<script type="text/template" class="arating-detail-template" data-post-id="{$post->ID}">
-					<strong>Rating: <%= value %>/10</strong>
+					<strong class="rating-color-<%= Math.round(value) %>"><%= value %></strong>/10
 				</script>
 				<!-- End template -->
 				<div class="rating-container">
@@ -156,9 +157,6 @@ HTML;
 					<span class="rating-preview"> 0/10</span>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<strong>Game Date:</strong> {$game_date}
-			</div> 
 		</div>
 HTML;
 	}
@@ -172,7 +170,8 @@ add_shortcode( 'todays_game', function() {
 	$args = array(
 		'post_type'		=> 'game',
 		'orderby'		=> array(
-			'rating' => 'DESC'
+			'rating' => 'DESC',
+			'date'	=> 'ASC'
 		),
 		'meta_query' => array(
 			'relation' => 'OR',

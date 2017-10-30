@@ -46,8 +46,11 @@
 }
 
 .btn-watch-now {
+	padding: 0.85rem 2.13rem 0.85rem 3rem !important;
+	background: #fff url(../images/watch_now.jpg) left center no-repeat;
+	background-size: contain;
 	&:visited {
-		background-color: #fff;
+		// background-color: #fff;
 		border-color: darken(#fff, 25%);
 		color: lighten(#000, 25%) !important;
 	}
@@ -61,11 +64,28 @@ article {
 			@extend .card-header;
 			.entry-title {
 				@extend .card-title;
-			} 
-			.entry-summary {
-				@extend .card-block;
 			}
 		}
+		.entry-summary {
+				@extend .card-block;
+				.aggregate-rating {
+					margin-left: auto;
+					margin-right: auto;
+					strong {
+						font-size: 48px;
+						vertical-align: -20px;
+						&.rating-color-1, &.rating-color-2, &.rating-color-3 {
+							color: #a12012;
+						}
+						&.rating-color-4, &.rating-color-5, &.rating-color-6, &.rating-color-7 {
+							color: #EFD448;
+						}
+						&.rating-color-8, &.rating-color-9, &.rating-color-10 {
+							color: green;
+						}
+					}
+				}
+			}
 		margin-bottom: 20px;
 	}
 }
