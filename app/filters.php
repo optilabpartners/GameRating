@@ -54,7 +54,7 @@ function edit_posts_join($join_statement, $wp_query) {
 	if ($wp_query->get("post_type") === "game") {
 		global $wpdb;
 		// $join_statement .= " INNER JOIN $wpdb->postmeta ar ON ar.post_id = $wpdb->posts.ID";
-		$join_statement .= " INNER JOIN {$wpdb->prefix}ratings ar ON ar.post_id = $wpdb->posts.ID";
+		$join_statement .= " LEFT JOIN {$wpdb->prefix}ratings ar ON ar.post_id = $wpdb->posts.ID";
 	}
 	return $join_statement;	
 }
