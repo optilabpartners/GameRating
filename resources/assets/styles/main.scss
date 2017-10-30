@@ -67,7 +67,11 @@ article.game, .game-result-wrap {
 			@extend .card-header;
 			.entry-title {
 				@extend .card-title;
+				font-size: 2rem !important;
 			}
+		}
+		.entry-meta {
+			display: none;
 		}
 		.entry-summary, .card-block {
 				@extend .card-block;
@@ -77,10 +81,7 @@ article.game, .game-result-wrap {
 					strong {
 						font-size: 48px;
 						vertical-align: -20px;
-						&.rating-color-1, &.rating-color-2, &.rating-color-3 {
-							color: #a12012;
-						}
-						&.rating-color-4, &.rating-color-5, &.rating-color-6, &.rating-color-7 {
+						&.rating-color-0, &.rating-color-1, &.rating-color-2, &.rating-color-3, &.rating-color-4, &.rating-color-5, &.rating-color-6, &.rating-color-7 {
 							color: #EFD448;
 						}
 						&.rating-color-8, &.rating-color-9, &.rating-color-10 {
