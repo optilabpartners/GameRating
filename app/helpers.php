@@ -112,15 +112,21 @@ function game_rating_add_to_content( $content = null ) {
 		$content .= '<div class="row">
 		<div class="col-md-5 text-center">';
 		if ( $teams[0]->term_image ) {
+			$content .= <<<HTML
+			<a href="/team/{$teams[0]->slug}">
+HTML;
 			$content .= wp_get_attachment_image( $teams[0]->term_image, 'full', false, array('class' => 'mx-auto') );
 		}
-		$content .= "<br><h4>{$teams[0]->name}</h4>";
+		$content .= "<br><h4>{$teams[0]->name}</h4></a>";
 		$content .= '</div><div class="col-md-2 text-center"><strong>VS</strong></div>';
 		$content .= '<div class="col-md-5 text-center">';
 		if ( $teams[1]->term_image ) {
+			$content .= <<<HTML
+			<a href="/team/{$teams[0]->slug}">
+HTML;
 			$content .= wp_get_attachment_image( $teams[1]->term_image, 'full', false, array('class' => 'mx-auto') );
 		}
-		$content .= "<br><h4>{$teams[1]->name}</h4>";
+		$content .= "<br><h4>{$teams[1]->name}</h4></a>";
 		$content .= '</div></div>';
 		if ( strtotime(get_post_meta( $post->ID, 'game_date', true )) <= strtotime('today') ) {
 			$content .= <<<HTML
