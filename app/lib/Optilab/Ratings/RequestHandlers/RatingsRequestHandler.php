@@ -26,12 +26,13 @@ class RatingsRequestHandler extends RequestHandler
 	}
 
 	public static function aggregate_rating() {
-		// $post_id = json_decode( file_get_contents( "php://input" ) );
+
 		$method = static::method_identifier();
 		$post_id = (int)$_SERVER['HTTP_POSTID'];
 		switch ($method) {
 			case 'GET':
 			$rating = Ratings\Controllers\RatingsController::fetchAverageRating($post_id);
+			update_post_meta( $post_id, 'aggregate_rating', $rating );
 			// if ($rating != null) {
 			echo json_encode(array('id' => rand(), 'post_id' => $post_id, 'value' => $rating));
 			// }

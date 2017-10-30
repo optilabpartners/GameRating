@@ -171,15 +171,19 @@ add_shortcode( 'todays_game', function() {
 	$start_date = $start_date->sub(new \DateInterval('P7D'));
 	$args = array(
 		'post_type'		=> 'game',
-		'meta_key'   	=> 'game_date',
-		'order_by'		=> 'meta_value',
-		'meta_type'		=> 'DATE',
-		'order'      => 'DESC',
+		'orderby'		=> array(
+			'rating' => 'DESC'
+		),
 		'meta_query' => array(
-			array(
+			'relation' => 'OR',
+			'date_rage' => array(
 				'key'     => 'game_date',
 				'value'   => array( $start_date->format('Y-m-d'), $today->format('Y-m-d') ),
 				'compare' => 'BETWEEN',
+			),
+			'rating' => array(
+				'key' => 'aggregator_rating',
+				'type' => 'NUMERIC',
 			),
 		),
 	);

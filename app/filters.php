@@ -32,16 +32,3 @@ function term_link($url, $term, $taxonomy) {
 	return $url;
 }
 add_filter('term_link', __NAMESPACE__ . '\\term_link', 10, 3);
-
-// function change_post_type_template($single_template) 
-// {
-//      global $post;
-
-//      if ($post->post_type == 'game') 
-//      {
-//           $single_template = PLUGIN_BASEPATH . 'resources/views/single-game.php';
-//      }
-
-//      return $single_template;
-// }
-// add_filter( 'single_template', 'change_post_type_template' );
