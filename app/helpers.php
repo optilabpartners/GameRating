@@ -163,10 +163,13 @@ HTML;
 	return $content;
 }
 
-add_shortcode( 'todays_game', function() {
+add_shortcode( 'todays_game', function($atts) {
+	$a = shortcode_atts( array(
+        'days' 	=> 3,
+    ), $atts );
 	$today = new \DateTime();
 	$start_date = new \DateTime();
-	$start_date = $start_date->sub(new \DateInterval('P7D'));
+	$start_date = $start_date->sub(new \DateInterval('P' . $a['days'] . 'D'));
 	$args = array(
 		'post_type'		=> 'game',
 		'orderby'		=> array(
@@ -180,7 +183,8 @@ add_shortcode( 'todays_game', function() {
 				'compare' => 'BETWEEN',
 			)
 		),
-		'posts_per_page' => 50
+		'posts_per_page' => -1,
+		'nopaging'		=> true
 	);
 	$query = new \WP_Query( $args );
 	$content = null;
