@@ -122,7 +122,7 @@ HTML;
 		$content .= '<div class="col-md-5 text-center">';
 		if ( $teams[1]->term_image ) {
 			$content .= <<<HTML
-			<a href="/team/{$teams[0]->slug}">
+			<a href="/team/{$teams[1]->slug}">
 HTML;
 			$content .= wp_get_attachment_image( $teams[1]->term_image, 'full', false, array('class' => 'mx-auto') );
 		}
@@ -145,6 +145,7 @@ HTML;
 			$content .= <<<HTML
 		<div class="row">
 			<div class="col-md-12 text-center">
+				<strong>User Rating</strong>
 				<!-- Template -->
 				<div id="arating-detail-{$post->ID}" data-post-id="{$post->ID}" class="aggregate-rating"></div>
 				<script type="text/template" class="arating-detail-template" data-post-id="{$post->ID}">
@@ -211,7 +212,7 @@ add_shortcode( 'todays_game', function($atts) {
 			$content .= '<div class="card-block">';
 			$content .= game_rating_add_to_content();
 			$content .= '<br></div>';
-			$content .= '</div><br>';
+			$content .= '</div>';
 		}
 		
 		/* Restore original Post Data */
