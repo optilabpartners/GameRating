@@ -68,17 +68,23 @@ article.game, .game-result-wrap {
 	border: solid 1px #ccc;
 	@extend .card;
 	.entry-header {
+		display: none;
 		@extend .card-header;
 		.entry-title {
 			@extend .card-title;
 			font-size: 2rem !important;
 			margin-bottom: 0;
 		}
+		
 	}
 	.entry-meta {
 		display: none;
 	}
 	.entry-summary, .card-block {
+		padding-top: 10px;
+		a, a:visited {
+			color: #000;
+		}
 		@extend .card-block;
 		.aggregate-rating {
 			margin-left: auto;

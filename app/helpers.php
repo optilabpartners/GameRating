@@ -207,7 +207,7 @@ add_shortcode( 'todays_game', function($atts) {
 		while ( $query->have_posts() ) {
 			$content .= '<div class="game-result-wrap card">';
 			$query->the_post();
-			$content .= '<div class="card-header"><h2>' . get_the_title() . '</h2></div>';
+			//$content .= '<div class="card-header"><h2>' . get_the_title() . '</h2></div>';
 			$content .= '<div class="card-block">';
 			$content .= game_rating_add_to_content();
 			$content .= '<br></div>';
