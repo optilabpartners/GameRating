@@ -101,6 +101,9 @@ add_action( 'pre_get_posts', function ( $query ) {
 	if ( !is_admin() && ( is_post_type_archive( 'game' ) || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) ) {
 		//Get original meta query
 		$meta_query = $query->get('meta_query');
+		if (!$meta_query) {
+			$meta_query = array();
+		}
 
 		//Add our meta query to the original meta queries
 		$meta_query[] = array(
