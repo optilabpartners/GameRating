@@ -112,28 +112,40 @@ function game_rating_add_to_content( $content = null ) {
 		$content .= '<div class="row">
 		<div class="col-md-5 text-center">';
 		if ( $teams[0]->term_image ) {
+			$content .= <<<HTML
+			<a href="/team/{$teams[0]->slug}">
+HTML;
 			$content .= wp_get_attachment_image( $teams[0]->term_image, 'full', false, array('class' => 'mx-auto') );
 		}
-		$content .= "<br><h4>{$teams[0]->name}</h4>";
+		$content .= "<br><h4>{$teams[0]->name}</h4></a>";
 		$content .= '</div><div class="col-md-2 text-center"><strong>VS</strong></div>';
 		$content .= '<div class="col-md-5 text-center">';
 		if ( $teams[1]->term_image ) {
+			$content .= <<<HTML
+			<a href="/team/{$teams[1]->slug}">
+HTML;
 			$content .= wp_get_attachment_image( $teams[1]->term_image, 'full', false, array('class' => 'mx-auto') );
 		}
-		$content .= "<br><h4>{$teams[1]->name}</h4>";
+		$content .= "<br><h4>{$teams[1]->name}</h4></a>";
 		$content .= '</div></div>';
 		if ( (strtotime(get_post_meta( $post->ID, 'game_date', true )) + 24*60*60) <= strtotime('today') ) {
 			$content .= <<<HTML
 			<div class="text-center">
 				<a href="{$watch_url}" target="_blank" class="btn btn-outline btn-watch-now mx-auto">Watch Now</a><br>
-				<strong>Game Date:</strong> {$game_date}
 			</div>
 HTML;
 		}
 		$content .= <<<HTML
+		<div class="text-center">
+			<strong>Game Date:</strong> {$game_date}		
+		</div>
 		<hr>
+HTML;
+		if ( strtotime(get_post_meta( $post->ID, 'game_date', true )) <= strtotime('today') ) {
+			$content .= <<<HTML
 		<div class="row">
 			<div class="col-md-12 text-center">
+				<strong>User Rating</strong>
 				<!-- Template -->
 				<div id="arating-detail-{$post->ID}" data-post-id="{$post->ID}" class="aggregate-rating"></div>
 				<script type="text/template" class="arating-detail-template" data-post-id="{$post->ID}">
@@ -158,6 +170,9 @@ HTML;
 				</div>
 			</div>
 		</div>
+HTML;
+		}
+		$content .= <<<HTML
 HTML;
 	}
 	return $content;
@@ -193,11 +208,11 @@ add_shortcode( 'todays_game', function($atts) {
 		while ( $query->have_posts() ) {
 			$content .= '<div class="game-result-wrap card">';
 			$query->the_post();
-			$content .= '<div class="card-header"><h2>' . get_the_title() . '</h2></div>';
+			//$content .= '<div class="card-header"><h2>' . get_the_title() . '</h2></div>';
 			$content .= '<div class="card-block">';
 			$content .= game_rating_add_to_content();
 			$content .= '<br></div>';
-			$content .= '</div><br>';
+			$content .= '</div>';
 		}
 		
 		/* Restore original Post Data */

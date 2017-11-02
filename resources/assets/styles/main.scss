@@ -60,35 +60,43 @@
 	}
 }
 
+h2 {
+	margin-bottom: 0 !important;
+}
+
 article.game, .game-result-wrap {
-		border: solid 1px #ccc;
-		@extend .card;
-		.entry-header {
-			@extend .card-header;
-			.entry-title {
-				@extend .card-title;
-				font-size: 2rem !important;
-			}
+	border: solid 1px #ccc;
+	@extend .card;
+	.entry-header {
+		display: none;
+		@extend .card-header;
+		.entry-title {
+			@extend .card-title;
+			font-size: 2rem !important;
+			margin-bottom: 0;
 		}
-		.entry-meta {
-			display: none;
+		
+	}
+	.entry-meta {
+		display: none;
+	}
+	.entry-summary, .card-block {
+		padding-top: 10px;
+		a, a:visited {
+			color: #000;
 		}
-		.entry-summary, .card-block {
-				@extend .card-block;
-				.aggregate-rating {
-					margin-left: auto;
-					margin-right: auto;
-					strong {
-						font-size: 48px;
-						vertical-align: -20px;
-						&.rating-color-0, &.rating-color-1, &.rating-color-2, &.rating-color-3, &.rating-color-4, &.rating-color-5, &.rating-color-6, &.rating-color-7 {
-							color: #EFD448;
-						}
-						&.rating-color-8, &.rating-color-9, &.rating-color-10 {
-							color: green;
-						}
-					}
+		@extend .card-block;
+		.aggregate-rating {
+			margin-left: auto;
+			margin-right: auto;
+			strong {
+				font-size: 48px;
+				vertical-align: -20px;
+				&.rating-color-0, &.rating-color-1, &.rating-color-2, &.rating-color-3, &.rating-color-4, &.rating-color-5, &.rating-color-6, &.rating-color-7, &.rating-color-8, &.rating-color-9, &.rating-color-10 {
+					color: #EFD448;
 				}
 			}
-		margin-bottom: 20px;
+		}
+	}
+	margin-bottom: 10px;
 }
