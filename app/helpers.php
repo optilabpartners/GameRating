@@ -196,6 +196,11 @@ add_shortcode( 'todays_game', function($atts) {
 				'key'     => 'game_date',
 				'value'   => array( $start_date->format('Y-m-d'), $today->format('Y-m-d') ),
 				'compare' => 'BETWEEN',
+		),
+		'game_date' => array(
+				'key'=>'game_date',
+				'value'=> ((new \DateTime('today'))->format('Y-m-d')),
+				'compare'=>'<',
 			)
 		),
 		'posts_per_page' => -1,

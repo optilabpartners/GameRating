@@ -94,9 +94,22 @@ add_filter('excerpt_more', __NAMESPACE__ . '\\new_excerpt_more');
 \add_action( 'wp_ajax_nopriv_aggregate_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
 
 add_action( 'pre_get_posts', function ( $query ) {
-  if ( is_tax('game_season') || is_tax('game_org') ) {
-  	$query->set( 'nopaging', 1 );
-  }
+	if ( is_tax('game_season') || is_tax('game_org') ) {
+		$query->set( 'nopaging', 1 );
+	}
+	// hiding posts that have game date same as current date
+	if ( !is_admin() && ( is_post_type_archive( 'game' ) || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) ) {
+		//Get original meta query
+		$meta_query = $query->get('meta_query');
+
+		//Add our meta query to the original meta queries
+		$meta_query[] = array(
+			'key'=>'game_date',
+			'value'=> ((new \DateTime('today'))->format('Y-m-d')),
+			'compare'=>'<',
+		);
+		$query->set('meta_query',$meta_query);
+  	}
 });
 
 optilab()->bindIf('config', Config::class, true);
