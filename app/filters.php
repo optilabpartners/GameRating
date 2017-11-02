@@ -51,7 +51,7 @@ add_filter('posts_join', __NAMESPACE__ . '\\edit_posts_join', 10, 2);
 add_filter('posts_limits', __NAMESPACE__ . '\\edit_posts_limits', 10, 2);
 
 function edit_posts_join($join_statement, $wp_query) {
-	if ($wp_query->get("post_type") === "game") {
+	if ($wp_query->get("post_type") === "game" && !is_admin()) {
 		global $wpdb;
 		// $join_statement .= " INNER JOIN $wpdb->postmeta ar ON ar.post_id = $wpdb->posts.ID";
 		$join_statement .= " LEFT JOIN {$wpdb->prefix}ratings ar ON ar.post_id = $wpdb->posts.ID";
@@ -60,7 +60,7 @@ function edit_posts_join($join_statement, $wp_query) {
 }
 
 function edit_posts_where($where_statement, $wp_query) {
-	if ($wp_query->get("post_type") === "game") {
+	if ($wp_query->get("post_type") === "game" && !is_admin()) {
 		global $wpdb;
 		$where_statement .= " OR ar.meta_key = 'aggregate_rating' ";
 	}
@@ -68,7 +68,7 @@ function edit_posts_where($where_statement, $wp_query) {
 }
 
 function edit_posts_orderby($orderby_statement, $wp_query) {
-	if ($wp_query->get("post_type") === "game") {
+	if ($wp_query->get("post_type") === "game" && !is_admin()) {
 		global $wpdb;
 		$orderby_statement = "(AVG(ar.value)) DESC";
 	}
