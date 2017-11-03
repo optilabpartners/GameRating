@@ -74,3 +74,21 @@ function edit_posts_orderby($orderby_statement, $wp_query) {
 	}
 	return $orderby_statement;
 }
+
+add_filter('terms_to_edit', function($terms, $taxonomy) {
+	global $post;
+	if ( $taxonomy != 'team' || ! $terms ) {
+        return $terms;
+    }
+  	if ( $ids = get_post_meta( $post->ID, '_tt_ids_order', true ) ) {
+  		$terms = null;
+        // Order by term_taxonomy_ids order meta data.
+        foreach ( explode( ',', $ids ) as $id ) {
+        	$term_object = get_term_by( 'id', $id, $taxonomy );
+            $terms .= $term_object->name . ',';
+
+        }
+        $terms = rtrim($terms, ',');
+    }
+    return $terms;
+}, 10, 2);
