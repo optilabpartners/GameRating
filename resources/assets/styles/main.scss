@@ -100,3 +100,13 @@ article.game, .game-result-wrap {
 	}
 	margin-bottom: 10px;
 }
+
+.nav-game-tag {
+	li {
+		border-right: solid 1px #000;
+		border-radius: 0;
+		&:last-child {
+			border-right: 0 none;
+		}
+	}
+}

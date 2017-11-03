@@ -104,7 +104,8 @@ function game_rating_add_to_content( $content = null ) {
 	$game_date = date( 'F j, Y', strtotime(get_post_meta( $post->ID, 'game_date', true )));
 	$org = get_the_terms( $post, 'game_org' )[0];
 	$watch_url = get_term_meta( $org->term_id, 'watch_url', true);
-	$teams = get_the_terms($post, 'team');
+
+	$teams = wp_get_post_terms( $post->ID, 'team', array( 'orderby' => 'term_taxonomy_id', 'order' => 'ASC') );
 	if ($teams == false) {
 		return $content;
 	}
@@ -170,14 +171,13 @@ HTML;
 				</div>
 			</div>
 		</div>
-		<hr>
 HTML;
 		}
 		$tags = get_the_terms( $post->ID, 'game_tag' );
 		if ($tags) {
-			$content .= "<ul class=\"nav nav-pills flex-column flex-sm-row justify-content-center\">";
+			$content .= "<ul class=\"nav flex-column flex-sm-row justify-content-center nav-game-tag\">";
 			foreach ($tags as $tag) {
-				$content .= "<li class=\"flex-sm-fill text-sm-center nav-link h6\" ><span class=\"badge badge-pill badge-default\">{$tag->name}</span></li>";
+				$content .= "<li class=\"flex-sm-fill text-center nav-link h6\" ><span class=\"badge badge-pill badge-default\">{$tag->name}</span></li>";
 			}
 			$content .= "</ul>";
 		}
