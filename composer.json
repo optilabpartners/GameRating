@@ -12,6 +12,7 @@
       		"app/taxonomies/taxonomy-game_org.php",
       		"app/taxonomies/taxonomy-game_season.php",
       		"app/taxonomies/taxonomy-team.php",
+      		"app/taxonomies/taxonomy-game_tag.php",
       		"app/metaboxes/GameMetaBox.php"
 		]
 	},

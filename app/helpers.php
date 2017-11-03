@@ -170,7 +170,16 @@ HTML;
 				</div>
 			</div>
 		</div>
+		<hr>
 HTML;
+		}
+		$tags = get_the_terms( $post->ID, 'game_tag' );
+		if ($tags) {
+			$content .= "<ul class=\"nav nav-pills flex-column flex-sm-row justify-content-center\">";
+			foreach ($tags as $tag) {
+				$content .= "<li class=\"flex-sm-fill text-sm-center nav-link h6\" ><span class=\"badge badge-pill badge-default\">{$tag->name}</span></li>";
+			}
+			$content .= "</ul>";
 		}
 		$content .= <<<HTML
 HTML;
