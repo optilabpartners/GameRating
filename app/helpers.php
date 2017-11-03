@@ -104,8 +104,7 @@ function game_rating_add_to_content( $content = null ) {
 	$game_date = date( 'F j, Y', strtotime(get_post_meta( $post->ID, 'game_date', true )));
 	$org = get_the_terms( $post, 'game_org' )[0];
 	$watch_url = get_term_meta( $org->term_id, 'watch_url', true);
-
-	$teams = wp_get_post_terms( $post->ID, 'team', array( 'orderby' => 'term_taxonomy_id', 'order' => 'ASC') );
+	$teams = get_the_terms($post, 'team');
 	if ($teams == false) {
 		return $content;
 	}

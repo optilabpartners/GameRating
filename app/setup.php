@@ -115,4 +115,63 @@ add_action( 'pre_get_posts', function ( $query ) {
   	}
 });
 
+
+// Called in admin on updating terms - update our order meta.
+add_action( 'set_object_terms', function ( $object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids ) {
+    if ( $taxonomy != 'team' ) {
+        return;
+    }
+
+    // Save in comma-separated string format - may be useful for MySQL sorting via FIND_IN_SET().
+    update_post_meta( $object_id, '_tt_ids_order', implode( ',', $tt_ids ) );
+}, 10, 6 );
+
+// Reorder terms using our order meta.
+function get_the_teams( $terms, $post_id, $taxonomy ) {
+    if ( $taxonomy != 'team' || ! $terms ) {
+        return $terms;
+    }
+    if ( $ids = get_post_meta( $post_id, '_tt_ids_order', true ) ) {
+        $ret = $term_idxs = array();
+        // Map term_ids to term_taxonomy_ids.
+        foreach ( $terms as $term_id => $term ) {
+            $term_idxs[$term->term_taxonomy_id] = $term_id;
+        }
+        // Order by term_taxonomy_ids order meta data.
+        foreach ( explode( ',', $ids ) as $id ) {
+            if ( isset( $term_idxs[$id] ) ) {
+                $ret[] = $terms[$term_idxs[$id]];
+                unset($term_idxs[$id]);
+            }
+        }
+        // In case our meta data is lacking.
+        foreach ( $term_idxs as $term_id ) {
+            $ret[] = $terms[$term_id];
+        }
+        return $ret;
+    }
+    return $terms;
+}
+
+// // Called in front-end via the_tags() or related variations of.
+add_filter( 'get_the_terms', __NAMESPACE__ .'\\get_the_teams', 10, 3 );
+
+// // Called on admin edit.
+add_filter( 'teams_to_edit', function ( $terms_to_edit, $taxonomy ) {
+    global $post;
+    if ( ! isset( $post->ID ) || $taxonomy != 'team' || ! $terms_to_edit ) {
+        return $terms_to_edit;
+    }
+    // Ignore passed in term names and use cache just added by terms_to_edit().
+    if ( $terms = get_object_term_cache( $post->ID, $taxonomy ) ) {
+        $terms = Optilab\get_the_teams( $terms, $post->ID, $taxonomy );
+        $term_names = array();
+        foreach ( $terms as $term ) {
+            $term_names[] = $term->name;
+        }
+        $terms_to_edit = esc_attr( join( ',', $term_names ) );
+    }
+    return $terms_to_edit;
+}, 10, 2 );
+
 optilab()->bindIf('config', Config::class, true);
