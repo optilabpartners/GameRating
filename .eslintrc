@@ -41,6 +41,8 @@
     }],
     "no-undef": "off",
     "no-mixed-spaces-and-tabs": "off",
-    "no-console": "warn"
+    "no-console": "warn",
+    "no-unreachable": "warn",
+    "no-unused-vars": "warn"
   }
 }
