@@ -105,6 +105,11 @@ article.game, .game-result-wrap {
 	li {
 		border-right: solid 1px #000;
 		border-radius: 0;
+		padding: 0;
+		margin-bottom: 0;
+		@media(max-width: 580px) {
+			border-right: 0 none;
+		}
 		&:last-child {
 			border-right: 0 none;
 		}
