@@ -38,9 +38,7 @@ import OnScreen from 'onscreen';
 		render: function(model) {
 			if (this.$el.data("postId") == model.get('post_id')) {
 				const that = this;
-				this.$el.fadeIn( 400, function() {
-					$(this).html(that.template(model.toJSON()));
-				});
+				this.$el.hide().html(that.template(model.toJSON())).fadeIn();
 			}
 			return this;
 		}
