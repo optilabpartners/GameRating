@@ -28,7 +28,7 @@ import OnScreen from 'onscreen';
 			this.template = _.template( $that.html() );
 			var post_id = $that.data("postId");
 			this.setElement($("#arating-detail-" + post_id)),
-			this.model.on('change', this.render, this);
+			this.model.on('sync', this.render, this);
 			this.model.fetch({
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader('postid', post_id);
@@ -38,8 +38,8 @@ import OnScreen from 'onscreen';
 		render: function(model) {
 			if (this.$el.data("postId") == model.get('post_id')) {
 				const that = this;
-				this.$el.fadeOut('400', function() {
-					$(this).html(that.template(model.toJSON())).fadeIn();
+				this.$el.fadeIn( 400, function() {
+					$(this).html(that.template(model.toJSON()));
 				});
 			}
 			return this;
@@ -62,7 +62,7 @@ import OnScreen from 'onscreen';
 		}
 		var $this = $(element).next('.arating-detail-template');
 		var $template = $this;
-		new AggregateRating.DetailView($this);
+		new AggregateRating.DetailView($template);
 		var $scope = $this.parent();
 		$('.games-rating-stars input:radio', $scope).on('change', function() {
 			var rated = $.cookie('alreadyRated' + $(this).data('postId'));
