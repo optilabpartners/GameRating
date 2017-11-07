@@ -188,6 +188,41 @@ HTML;
 	return $content;
 }
 
+add_shortcode( 'filter_game', function() {
+    $content = null;
+    
+    $content .= '<div class="filter-game-form">';
+        $content .= '<div class="container">';
+            $content .= '<div class="row">';
+                $content .= '<div class="col-md-3">';
+                    //Get all teams in alphabetical order
+                    $content .= '<select class="selectpicker">';
+                        $content .= '<option value="">Choose Team</option>';
+                        $content .= '<option value="Minnesota Timberwolves">Minnesota Timberwolves</option>';
+                    $content .= '</select>';
+                $content .= '</div>';
+                $content .= '<div class="col-md-4">';
+                    //Get all weeks
+                    $content .= '<select>';
+                        $content .= '<option value="">Choose Week</option>';
+                        $content .= '<option value="Week 01 (2017-10-17 - 2017-10-22)">Week 01 (2017-10-17 - 2017-10-22)</option>';
+                    $content .= '</select>';
+                $content .= '</div>';
+                $content .= '<div class="col-md-3">';
+                    //Get all game tags
+                    $content .= '<select>';
+                        $content .= '<option value="">Choose Tag</option>';
+                        $content .= '<option value="Buzzer Beater">Buzzer Beater</option>';
+                    $content .= '</select>';
+                $content .= '</div>';
+                $content .= '<div class="col-md-2 text-center"><input type="submit" value="FILTER" class="btn btn-large" /></div>';
+            $content .= '</div>';
+        $content .= '</div>';
+    $content .= '</div>';
+    
+    return $content;
+} );
+
 add_shortcode( 'todays_game', function($atts) {
 	$a = shortcode_atts( array(
         'days' 	=> 3,
@@ -223,7 +258,6 @@ add_shortcode( 'todays_game', function($atts) {
 		while ( $query->have_posts() ) {
 			$content .= '<div class="game-result-wrap card">';
 			$query->the_post();
-			//$content .= '<div class="card-header"><h2>' . get_the_title() . '</h2></div>';
 			$content .= '<div class="card-block">';
 			$content .= game_rating_add_to_content();
 			$content .= '</div>';
@@ -244,7 +278,6 @@ function weeks($atts) {
         'season' 	=> null,
         'org'		=> null
     ), $atts );
-    
     
 	$term = get_term_by('slug', $a['season'], 'game_season');
 
