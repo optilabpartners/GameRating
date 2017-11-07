@@ -194,28 +194,28 @@ add_shortcode( 'filter_game', function() {
     $content .= '<div class="filter-game-form">';
         $content .= '<div class="container">';
             $content .= '<div class="row">';
-                $content .= '<div class="col-md-3">';
+                $content .= '<div class="col-lg-3 col-md-12">';
                     //Get all teams in alphabetical order
                     $content .= '<select class="selectpicker">';
                         $content .= '<option value="">Choose Team</option>';
                         $content .= '<option value="Minnesota Timberwolves">Minnesota Timberwolves</option>';
                     $content .= '</select>';
                 $content .= '</div>';
-                $content .= '<div class="col-md-4">';
+                $content .= '<div class="col-lg-4 col-md-12">';
                     //Get all weeks
                     $content .= '<select>';
                         $content .= '<option value="">Choose Week</option>';
                         $content .= '<option value="Week 01 (2017-10-17 - 2017-10-22)">Week 01 (2017-10-17 - 2017-10-22)</option>';
                     $content .= '</select>';
                 $content .= '</div>';
-                $content .= '<div class="col-md-3">';
+                $content .= '<div class="col-lg-3 col-md-6">';
                     //Get all game tags
                     $content .= '<select>';
                         $content .= '<option value="">Choose Tag</option>';
                         $content .= '<option value="Buzzer Beater">Buzzer Beater</option>';
                     $content .= '</select>';
                 $content .= '</div>';
-                $content .= '<div class="col-md-2 text-center"><input type="submit" value="FILTER" class="btn btn-large" /></div>';
+                $content .= '<div class="col-lg-2 col-md-6 text-center"><input type="submit" value="FILTER" class="btn btn-large" /></div>';
             $content .= '</div>';
         $content .= '</div>';
     $content .= '</div>';
