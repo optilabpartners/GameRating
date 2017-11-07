@@ -178,7 +178,7 @@ HTML;
 		if ($tags) {
 			$content .= "<ul class=\"nav flex-column flex-sm-row justify-content-center nav-game-tag\">";
 			foreach ($tags as $tag) {
-				$content .= "<li class=\"flex-sm-fill text-center nav-link h6\" ><span class=\"badge badge-pill badge-default\">{$tag->name}</span></li>";
+				$content .= "<li class=\"flex-sm-fill text-center nav-link h6\" >{$tag->name}</li>";
 			}
 			$content .= "</ul>";
 		}
@@ -226,7 +226,7 @@ add_shortcode( 'todays_game', function($atts) {
 			//$content .= '<div class="card-header"><h2>' . get_the_title() . '</h2></div>';
 			$content .= '<div class="card-block">';
 			$content .= game_rating_add_to_content();
-			$content .= '<br></div>';
+			$content .= '</div>';
 			$content .= '</div>';
 		}
 		
