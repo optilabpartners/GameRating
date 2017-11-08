@@ -102,11 +102,15 @@ article.game, .game-result-wrap {
 }
 
 .nav-game-tag {
+	margin-top: 5px;
 	li {
 		border-right: solid 1px #000;
 		border-radius: 0;
 		padding: 0;
 		margin-bottom: 0;
+		padding: 0 5px;
+		font-size: 13px;
+		font-weight: bold;
 		@media(max-width: 580px) {
 			border-right: 0 none;
 		}
@@ -114,4 +118,8 @@ article.game, .game-result-wrap {
 			border-right: 0 none;
 		}
 	}
+}
+
+.filter-game-form {
+	margin: 10px 0;
 }
