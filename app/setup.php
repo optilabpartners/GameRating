@@ -94,11 +94,11 @@ add_filter('excerpt_more', __NAMESPACE__ . '\\new_excerpt_more');
 \add_action( 'wp_ajax_nopriv_aggregate_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
 
 add_action( 'pre_get_posts', function ( $query ) {
-	if ( is_tax('game_season') || is_tax('game_org') ) {
+	if ( is_tax('game_season') || is_tax('game_org')) {
 		$query->set( 'nopaging', 1 );
 	}
 	// hiding posts that have game date same as current date
-	if ( !is_admin() && ( is_post_type_archive( 'game' ) || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) ) {
+	if ( !is_admin() && $query->get('post_type') != 'nav_menu_item' && ( is_post_type_archive( 'game' )  || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) ) {
 		//Get original meta query
 		$meta_query = $query->get('meta_query');
 		if (!$meta_query) {
