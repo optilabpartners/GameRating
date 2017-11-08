@@ -51,7 +51,7 @@ add_filter('posts_join', __NAMESPACE__ . '\\edit_posts_join', 10, 2);
 add_filter('posts_limits', __NAMESPACE__ . '\\edit_posts_limits', 10, 2);
 
 function edit_posts_join($join_statement, $wp_query) {
-	if ( ( $wp_query->get("post_type") === "game" || is_post_type_archive( 'game' ) || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) && !is_admin() && $wp_query->get('post_type') != 'nav_menu_item') {
+    if ( ( $wp_query->get("post_type") === "game" || is_post_type_archive( 'game' ) || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) && !is_admin() && $wp_query->get('post_type') != 'nav_menu_item') {
 		global $wpdb;
 		// $join_statement .= " INNER JOIN $wpdb->postmeta ar ON ar.post_id = $wpdb->posts.ID";
 		$join_statement .= " LEFT JOIN {$wpdb->prefix}ratings ar ON ar.post_id = $wpdb->posts.ID";
