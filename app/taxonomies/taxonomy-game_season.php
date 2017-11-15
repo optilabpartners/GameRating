@@ -92,6 +92,10 @@ function game_season_form_custom_field_save( $term_id, $tt_id ) {
 }
 
 function game_season_form_create_sub_term_save( $term_id, $tt_id ) {
+	$children = get_term_children( $term_id, 'game_season' );
+	if (count($children) > 0 ) {
+		return false;
+	}
 	$term = get_term( $term_id );
 	if ( isset( $_POST['start_date'] ) && isset( $_POST['end_date'] ) && $term->parent == false  ) {        
 		$start_date = $_POST['start_date'];
@@ -107,6 +111,7 @@ function game_season_form_create_sub_term_save( $term_id, $tt_id ) {
 			// create weeks
 			$result = wp_insert_term( "Week " . sprintf("%02d", $i) ." ({$start_date} - {$date1->format('Y-m-d')})", "game_season", array( 'slug' => 'week-' . $i, 'parent' => $term_id ) );
 
+			
 			update_term_meta( $result['term_id'], 'start_date', $start_date );
 			update_term_meta( $result['term_id'], 'end_date', $date1->format('Y-m-d') );
 			update_term_meta( $result['term_id'], 'week_number', $i );

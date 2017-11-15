@@ -61,6 +61,7 @@ function edit_posts_join($join_statement, $wp_query) {
 }
 
 function edit_posts_where($where_statement, $wp_query) {
+
 	if ( ( $wp_query->get("post_type") === "game" || is_search() || is_post_type_archive( 'game' )  || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) && !is_admin() && $wp_query->get('post_type') != 'nav_menu_item' ) {
 		global $wpdb;
 		$where_statement .= " OR ar.meta_key = 'aggregate_rating' ";
