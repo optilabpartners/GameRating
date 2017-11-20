@@ -176,14 +176,14 @@ add_filter( 'teams_to_edit', function ( $terms_to_edit, $taxonomy ) {
 
 add_action( 'get_search_form', function($form) {
     $action = esc_url( home_url( '/' ) );
-    $search_string = __( 'Search', 'sage' );
+    $search_string = "Search for teams, games and game-tags";
     $form = <<<HTML
     <form method="get" id="searchform" action="{$action}" class="mr-0 ml-0">
     <div class="input-group">
       <input type="search" class="form-control" name="s" id="s" placeholder="{$search_string}" aria-label="{$search_string}">
       <input type="hidden" name="post_type" value="game">
       <span class="input-group-btn">
-        <button class="btn btn-secondary" type="submit" name="submit" id="searchsubmit" ><i class="fa fa-search" aria-hidden="true"></i></button>
+        <button class="btn btn-secondary" type="submit" id="searchsubmit" ><i class="fa fa-search" aria-hidden="true"></i></button>
       </span>
     </div>
   </form>
