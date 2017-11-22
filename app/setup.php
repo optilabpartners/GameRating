@@ -176,7 +176,7 @@ add_filter( 'teams_to_edit', function ( $terms_to_edit, $taxonomy ) {
 
 add_action( 'get_search_form', function($form) {
     $action = esc_url( home_url( '/' ) );
-    $search_string = "Search for teams, games and game-tags";
+    $search_string = "Search for Teams and Game-Tags";
     $form = <<<HTML
     <form method="get" id="searchform" action="{$action}" class="mr-0 ml-0">
     <div class="input-group">
