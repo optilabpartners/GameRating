@@ -38,6 +38,14 @@ add_action('init', function () {
 		return new JsonManifest(config('assets.manifest'), config('assets.uri'));
 	});
 
+	if (get_query_var('team') == 'any') {
+		remove_query_arg( 'team' );
+	} else if (get_query_var('game_tag') == 'any') {
+		remove_query_arg( 'team' );
+	} else if (get_query_var('game_season') == 'any') {
+		remove_query_arg( 'team' );
+	}
+
 });
 
 add_filter('post_type_link', __NAMESPACE__ . '\\filter_game_link', 10, 2);
@@ -97,6 +105,7 @@ add_action( 'pre_get_posts', function ( $query ) {
 	if ( is_tax('game_season') || is_tax('game_org')) {
 		$query->set( 'nopaging', 1 );
 	}
+
 	// hiding posts that have game date same as current date
 	if ( !is_admin() && $query->get('post_type') != 'nav_menu_item' && ( is_post_type_archive( 'game' )  || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) ) {
 		//Get original meta query
@@ -106,13 +115,16 @@ add_action( 'pre_get_posts', function ( $query ) {
 		}
 
 		//Add our meta query to the original meta queries
-		$meta_query[] = array(
-			'key'=>'game_date',
-			'value'=> ((new \DateTime('today'))->format('Y-m-d')),
-			'compare'=>'<',
+		$meta_query = array(
+			array (
+				'key'=>'game_date',
+				'value'=> ((new \DateTime('today'))->format('Y-m-d')),
+				'compare'=>'<',
+			)
 		);
 		$query->set('meta_query',$meta_query);
   	}
+  	return $query;
 });
 
 
@@ -192,3 +204,23 @@ HTML;
 }, 10, 1 );
 
 optilab()->bindIf('config', Config::class, true);
+
+
+add_action('pre_get_posts', function($query) {
+	if ( !is_admin() && $query->is_main_query() && !$query->is_singular ) {
+		if (is_archive() && is_post_type_archive('game')) {
+			if (get_query_var('team') == 'any') {
+				unset($query->query_vars['team']);
+			}
+			if (get_query_var('game_tag') == 'any') {
+				unset($query->query_vars['game_tag']);
+			}
+			if (get_query_var('game_season') == 'any') {
+				unset($query->query_vars['game_season']);
+			}
+			
+		}
+  	}
+
+  	return $query;
+}, 9, 1);

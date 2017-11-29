@@ -88,5 +88,16 @@ import OnScreen from 'onscreen';
 		$(element).toggleClass('rating-loaded');
 	});
 	
-
+	$('.filter-game-form').on('submit', function() {
+		// e.preventDefault();
+		var url = "";
+		const type = $("#postType", $(this)).val();
+		const team = $("#team", $(this)).val();
+		const season = $("#gameSeason", $(this)).val();
+		const tag = $("#gameTag", $(this)).val();
+		url = "/filter/" + type + "/" + team + "/" + season + "/" + tag + "/";
+		$(this).attr('action', url);
+		// window.location = url;
+		return true
+	});
 }(jQuery));

@@ -189,36 +189,95 @@ HTML;
 }
 
 add_shortcode( 'filter_game', function() {
+	$action = esc_url( home_url() );
     $content = null;
-    
-    $content .= '<div class="filter-game-form">';
-        $content .= '<div class="container">';
+    $content .= '<form class="filter-game-form" method="POST" action="' . $action . '">';
+    	$content .= '<input type="hidden" name="post_type" id="postType" value="game">';
+        $content .= '<div class="container mb-3">';
             $content .= '<div class="row">';
                 $content .= '<div class="col-lg-3 col-md-12">';
                     //Get all teams in alphabetical order
-                    $content .= '<select class="selectpicker">';
-                        $content .= '<option value="">Choose Team</option>';
-                        $content .= '<option value="Minnesota Timberwolves">Minnesota Timberwolves</option>';
-                    $content .= '</select>';
+	                $args = array(
+						'show_option_all'    => '',
+						'show_option_none'   => 'Choose Team',
+						'option_none_value'  => 'any',
+						'orderby'            => 'ID',
+						'order'              => 'ASC',
+						'show_count'         => 0,
+						'hide_empty'         => 1,
+						'child_of'           => 0,
+						'exclude'            => '',
+						'include'            => '',
+						'echo'               => 0,
+						'selected'           => get_query_var('team'),
+						'hierarchical'       => 0,
+						'name'               => 'team',
+						'id'                 => 'team',
+						'class'              => 'form-control',
+						'depth'              => 0,
+						'tab_index'          => 0,
+						'taxonomy'           => 'team',
+						'hide_if_empty'      => false,
+						'value_field'	     => 'slug',
+					);
+					$content .= wp_dropdown_categories( $args );
                 $content .= '</div>';
                 $content .= '<div class="col-lg-4 col-md-12">';
-                    //Get all weeks
-                    $content .= '<select>';
-                        $content .= '<option value="">Choose Week</option>';
-                        $content .= '<option value="Week 01 (2017-10-17 - 2017-10-22)">Week 01 (2017-10-17 - 2017-10-22)</option>';
-                    $content .= '</select>';
+                    $args = array(
+						'show_option_all'    => '',
+						'show_option_none'   => 'Choose Week',
+						'option_none_value'  => 'any',
+						'orderby'            => 'ID',
+						'order'              => 'ASC',
+						'show_count'         => 0,
+						'hide_empty'         => 1,
+						'child_of'           => 0,
+						'exclude'            => '',
+						'include'            => '',
+						'echo'               => 0,
+						'selected'           => get_query_var('game_season'),
+						'hierarchical'       => 1,
+						'name'               => 'game_season',
+						'id'                 => 'gameSeason',
+						'class'              => 'form-control',
+						'depth'              => 2,
+						'tab_index'          => 0,
+						'taxonomy'           => 'game_season',
+						'hide_if_empty'      => false,
+						'value_field'	     => 'slug',
+					);
+					$content .= wp_dropdown_categories( $args );
                 $content .= '</div>';
                 $content .= '<div class="col-lg-3 col-md-6">';
-                    //Get all game tags
-                    $content .= '<select>';
-                        $content .= '<option value="">Choose Tag</option>';
-                        $content .= '<option value="Buzzer Beater">Buzzer Beater</option>';
-                    $content .= '</select>';
+                	$args = array(
+						'show_option_all'    => '',
+						'show_option_none'   => 'Choose Tag',
+						'option_none_value'  => 'any',
+						'orderby'            => 'ID',
+						'order'              => 'ASC',
+						'show_count'         => 0,
+						'hide_empty'         => 1,
+						'child_of'           => 0,
+						'exclude'            => '',
+						'include'            => '',
+						'echo'               => 0,
+						'selected'           => get_query_var('game_tag'),
+						'hierarchical'       => 0,
+						'name'               => 'game_tag',
+						'id'                 => 'gameTag',
+						'class'              => 'form-control',
+						'depth'              => 0,
+						'tab_index'          => 0,
+						'taxonomy'           => 'game_tag',
+						'hide_if_empty'      => false,
+						'value_field'	     => 'slug',
+					);
+					$content .= wp_dropdown_categories( $args );
                 $content .= '</div>';
                 $content .= '<div class="col-lg-2 col-md-6 text-center"><input type="submit" value="FILTER" class="btn btn-large" /></div>';
             $content .= '</div>';
         $content .= '</div>';
-    $content .= '</div>';
+    $content .= '</form><hr>';
     
     return $content;
 } );

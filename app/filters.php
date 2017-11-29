@@ -3,10 +3,11 @@
 add_filter('rewrite_rules_array', 'optilab_rewrite_rules');
 function optilab_rewrite_rules($rules) {
     $newRules  = array();
-    $newRules['game/(.+)/(.+)/(.+)/(.+)/?$'] = 'index.php?game=$matches[4]'; // my custom structure will always have the post name as the 5th uri segment
-    $newRules['game/(.+)/(.+)/(.+)/?$']      = 'index.php?game_season=$matches[3]'; 
-    $newRules['game/(.+)/(.+)/?$']           = 'index.php?game_season=$matches[2]'; 
-    $newRules['game/(.+)/?$']                = 'index.php?game_org=$matches[1]'; 
+    $newRules['game/(.+)/(.+)/(.+)/(.+)/?$'] 	= 'index.php?game=$matches[4]'; // my custom structure will always have the post name as the 5th uri segment
+    $newRules['game/(.+)/(.+)/(.+)/?$']      	= 'index.php?game_season=$matches[3]'; 
+    $newRules['game/(.+)/(.+)/?$']           	= 'index.php?game_season=$matches[2]'; 
+    $newRules['game/(.+)/?$']                	= 'index.php?game_org=$matches[1]';
+    $newRules['filter/(.+)/(.+)/(.+)/(.+)/?$']	= 'index.php?post_type=$matches[1]&team=$matches[2]&game_season=$matches[3]&game_tag=$matches[4]';
 
     return array_merge($newRules, $rules);
 }
@@ -48,7 +49,8 @@ add_filter('term_link', __NAMESPACE__ . '\\term_link', 10, 3);
 
 add_filter('posts_orderby', __NAMESPACE__ . '\\edit_posts_orderby', 10, 2);
 add_filter('posts_join', __NAMESPACE__ . '\\edit_posts_join', 10, 2);
-add_filter('posts_limits', __NAMESPACE__ . '\\edit_posts_limits', 10, 2);
+// add_filter('posts_limits', __NAMESPACE__ . '\\edit_posts_limits', 10, 2);
+add_filter( 'posts_groupby', __NAMESPACE__ . '\\edit_posts_groupby', 10, 2 );
 
 function edit_posts_join($join_statement, $wp_query) {
 
@@ -62,7 +64,7 @@ function edit_posts_join($join_statement, $wp_query) {
 
 function edit_posts_where($where_statement, $wp_query) {
 
-	if ( ( $wp_query->get("post_type") === "game" || is_search() || is_post_type_archive( 'game' )  || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) && !is_admin() && $wp_query->get('post_type') != 'nav_menu_item' ) {
+	if ( ( $wp_query->get("post_type") === "game" || is_post_type_archive( 'game' )  || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) && !is_search() && !is_admin() && $wp_query->get('post_type') != 'nav_menu_item' ) {
 		global $wpdb;
 		$where_statement .= " OR ar.meta_key = 'aggregate_rating' ";
 	}
@@ -70,11 +72,20 @@ function edit_posts_where($where_statement, $wp_query) {
 }
 
 function edit_posts_orderby($orderby_statement, $wp_query) {
-	if ( ( $wp_query->get("post_type") === "game" || is_search() || is_post_type_archive( 'game' )  || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) && !is_admin() && $wp_query->get('post_type') != 'nav_menu_item') {
+	if ( ( $wp_query->get("post_type") === "game" || is_post_type_archive( 'game' )  || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) && !is_search() && !is_admin() && $wp_query->get('post_type') != 'nav_menu_item') {
 		global $wpdb;
 		$orderby_statement = "(AVG(ar.value)) DESC";
 	}
 	return $orderby_statement;
+}
+
+function edit_posts_groupby($groupby, $wp_query) {
+	if ( ( $wp_query->get("post_type") === "game" || is_post_type_archive( 'game' )  || is_tax('game_season') || is_tax('game_org') || is_tax('team') ) && !is_search() && !is_admin() && $wp_query->get('post_type') != 'nav_menu_item') {
+		global $wpdb;
+   		$groupby = "{$wpdb->posts}.ID";
+	}
+    
+    return $groupby;
 }
 
 add_filter('terms_to_edit', function($terms, $taxonomy) {
@@ -94,3 +105,25 @@ add_filter('terms_to_edit', function($terms, $taxonomy) {
     }
     return $terms;
 }, 10, 2);
+
+// hook add_query_vars function into query_vars
+add_filter('query_vars', function($aVars) {
+	$aVars[] = "post_type"; 
+	$aVars[] = "team"; 
+	$aVars[] = "game_season";
+	$aVars[] = "game_tag";
+	return $aVars;
+});
+
+// function add_rewrite_rules($aRules) {
+
+// }
+ 
+// // hook add_rewrite_rules function into rewrite_rules_array
+// add_filter('rewrite_rules_array', function($aRules) {
+// 	$aNewRules = array('game-filter/([^/]+)/([^/]+)/([^/]+)/?$' => 'index.php?post_type=game&team=$matches[1]&week=$matches[2]&game_tag=$matches[3]');
+// 	$aRules = $aNewRules + $aRules;
+// 	return $aRules;
+// });
+
+
