@@ -248,7 +248,7 @@ add_shortcode( 'filter_game', function() {
 					);
 					$content .= wp_dropdown_categories( $args );
                 $content .= '</div>';
-                $content .= '<div class="col-lg-3 col-md-6">';
+                $content .= '<div class="col col-lg-3 col-md-6">';
                 	$args = array(
 						'show_option_all'    => '',
 						'show_option_none'   => 'Choose Tag',
@@ -274,7 +274,7 @@ add_shortcode( 'filter_game', function() {
 					);
 					$content .= wp_dropdown_categories( $args );
                 $content .= '</div>';
-                $content .= '<div class="col-lg-2 col-md-6 text-center"><input type="submit" value="FILTER" class="btn btn-large" /></div>';
+                $content .= '<div class="col col-lg-2 col-md-6 text-center"><input type="submit" value="FILTER" class="form-control btn btn-large" /></div>';
             $content .= '</div>';
         $content .= '</div>';
     $content .= '</form><hr>';
@@ -355,7 +355,7 @@ function weeks($atts) {
 	foreach ($terms as $term) {
 		$term = get_term($term);
 		$term_link = str_replace('game_org', $a['org'], get_term_link($term));
-		$content .= '<div class="col-md-6 col-lg-4 text-center"><a class="mx-auto btn btn-link" href="' . $term_link . '">' . substr($term->name, 0, 7) . '</a></div>';
+		$content .= '<div class="col col-md-6 col-lg-4 text-center"><a class="mx-auto btn btn-link" href="' . $term_link . '">' . substr($term->name, 0, 7) . '</a></div>';
 	}
 	$content .= '</div>';
 	return $content;

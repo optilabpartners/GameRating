@@ -122,4 +122,13 @@ article.game, .game-result-wrap {
 
 .filter-game-form {
 	margin: 10px 0;
+	
+	select {
+		margin: 5px 0;
+	}
+	
+	input[type=submit] {
+		height: 38px;
+		margin: 5px 0;
+	}
 }
