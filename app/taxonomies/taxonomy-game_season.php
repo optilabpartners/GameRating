@@ -54,6 +54,19 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
 	<input type="date" name="end_date" id="end_date" value="">
 	<p class="description"><?php _e( 'Ebd date of the season','optilab ' ); ?></p>
   </div>
+  <!-- <div class="form-field week-start_date-wrap">
+	<label for="week-start"><?php _e( 'End Date', 'optilab' ); ?>
+	<select type="date" name="week-start" id="weekStart" >
+		<option value="sunday">Sunday</option>
+		<option value="monday">Monday</option>
+		<option value="tuesday">Tuesday</option>
+		<option value="wednesday">Wednesday</option>
+		<option value="thursday">Thursday</option>
+		<option value="friday">Friday</option>
+		<option value="saturday">Saturday</option>
+	</select>
+	<p class="description"><?php _e( 'Day to start of the week','optilab ' ); ?></p>
+  </div> -->
 <?php
 });
 
@@ -106,8 +119,8 @@ function game_season_form_create_sub_term_save( $term_id, $tt_id ) {
 		$i= 1;
 		while ( $date1 < $date2) {
 			$week = $date1->format("W");
-
-			$date1->modify('next sunday');
+			// $date1->modify('next sunday');
+			$date1->add(new \DateInterval('P6D'));
 			// create weeks
 			$result = wp_insert_term( "Week " . sprintf("%02d", $i) ." ({$start_date} - {$date1->format('Y-m-d')})", "game_season", array( 'slug' => 'week-' . $i, 'parent' => $term_id ) );
 
