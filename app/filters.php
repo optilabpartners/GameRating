@@ -34,20 +34,6 @@ function term_link($url, $term, $taxonomy) {
 	return $url;
 }
 add_filter('term_link', __NAMESPACE__ . '\\term_link', 10, 3);
-
-// function change_post_type_template($single_template) 
-// {
-//      global $post;
-
-//      if ($post->post_type == 'game') 
-//      {
-//           $single_template = PLUGIN_BASEPATH . 'resources/views/single-game.php';
-//      }
-
-//      return $single_template;
-// }
-// add_filter( 'single_template', 'change_post_type_template' );
-
 add_filter('posts_orderby', __NAMESPACE__ . '\\edit_posts_orderby', 10, 2);
 add_filter('posts_join', __NAMESPACE__ . '\\edit_posts_join', 10, 2);
 // add_filter('posts_limits', __NAMESPACE__ . '\\edit_posts_limits', 10, 2);
@@ -115,16 +101,4 @@ add_filter('query_vars', function($aVars) {
 	$aVars[] = "game_tag";
 	return $aVars;
 });
-
-// function add_rewrite_rules($aRules) {
-
-// }
- 
-// // hook add_rewrite_rules function into rewrite_rules_array
-// add_filter('rewrite_rules_array', function($aRules) {
-// 	$aNewRules = array('game-filter/([^/]+)/([^/]+)/([^/]+)/?$' => 'index.php?post_type=game&team=$matches[1]&week=$matches[2]&game_tag=$matches[3]');
-// 	$aRules = $aNewRules + $aRules;
-// 	return $aRules;
-// });
-
 

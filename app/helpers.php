@@ -104,6 +104,16 @@ function game_rating_add_to_content( $content = null ) {
 	$game_date = date( 'F j, Y', strtotime(get_post_meta( $post->ID, 'game_date', true )));
 	$org = get_the_terms( $post, 'game_org' )[0];
 	$watch_url = get_term_meta( $org->term_id, 'watch_url', true);
+	
+	$url_game_date = date_format(date_create(get_post_meta( $post->ID, 'game_date', true )),"Ymd");
+    $teamA = get_the_terms( $post, 'team' )[0]->term_id;
+    $teamB = get_the_terms( $post, 'team' )[1]->term_id;
+
+    $teamAName = get_term_meta( $teamA, 'short_name', true );
+    $teamBName = get_term_meta( $teamB, 'short_name', true );
+
+    $watch_url .= "$url_game_date/$teamAName$teamBName/";
+
 	$teams = get_the_terms($post, 'team');
 	if ($teams == false) {
 		return $content;
