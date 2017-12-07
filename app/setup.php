@@ -234,14 +234,14 @@ add_action( 'wp_insert_post', function($post_id, $post, $update) {
 	
 	$post_type = get_post_type($post_id);
 
-    // If this isn't a 'book' post, don't update it.
+    // If this isn't a 'game' post, don't update it.
     if ( "game" != $post_type ) return;
 
     $val = Ratings\Controllers\RatingsController::fetchAverageRating($post_id);
     
     if ($val != null) return false;
 
-    $set = array(3, 5, 7);
+    $set = array(5, 6);
     
     Ratings\Controllers\RatingsController::create( new Ratings\Models\RatingModel ( array(
     	"post_id" 	=> $post_id,
