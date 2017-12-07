@@ -103,6 +103,7 @@ function game_rating_add_to_content( $content = null ) {
 	global $post;
 	$game_date = date( 'F j, Y', strtotime(get_post_meta( $post->ID, 'game_date', true )));
 	$org = get_the_terms( $post, 'game_org' )[0];
+	
 	$watch_url = get_term_meta( $org->term_id, 'watch_url', true);
 	
 	$url_game_date = date_format(date_create(get_post_meta( $post->ID, 'game_date', true )),"Ymd");
