@@ -5,6 +5,7 @@ use Illuminate\Contracts\Container\Container as ContainerContract;
 use Optilab\Assets\JsonManifest;
 use Optilab\Config;
 
+
 add_action('wp_enqueue_scripts', function () {
 	wp_enqueue_style('games-rating/main.css', asset_path('styles/games.css'), false, null);
 	wp_enqueue_script('games-rating/main.js', asset_path('scripts/rating.js'), ['jquery'], null, true);
@@ -224,3 +225,27 @@ add_action('pre_get_posts', function($query) {
 
   	return $query;
 }, 9, 1);
+
+
+add_action( 'wp_insert_post', function($post_id, $post, $update) {
+	// If this is just a revision, don't send the email.
+	if ( wp_is_post_revision( $post_id ) && $update == true )
+		return;
+	
+	$post_type = get_post_type($post_id);
+
+    // If this isn't a 'book' post, don't update it.
+    if ( "game" != $post_type ) return;
+
+    $val = Ratings\Controllers\RatingsController::fetchAverageRating($post_id);
+    
+    if ($val != null) return false;
+
+    $set = array(3, 5, 7);
+    
+    Ratings\Controllers\RatingsController::create( new Ratings\Models\RatingModel ( array(
+    	"post_id" 	=> $post_id,
+    	"value"		=> $set[array_rand($set, 1)]
+    )));
+
+}, 10, 3);
