@@ -95,7 +95,7 @@ add_filter('terms_to_edit', function($terms, $taxonomy) {
 
 // hook add_query_vars function into query_vars
 add_filter('query_vars', function($aVars) {
-	$aVars[] = "post_type"; 
+	$aVars[] = "post_type";
 	$aVars[] = "team"; 
 	$aVars[] = "game_season";
 	$aVars[] = "game_tag";

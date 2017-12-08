@@ -103,7 +103,7 @@ add_filter('excerpt_more', __NAMESPACE__ . '\\new_excerpt_more');
 \add_action( 'wp_ajax_nopriv_aggregate_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
 
 add_action( 'pre_get_posts', function ( $query ) {
-	if ( is_tax('game_season') || is_tax('game_org')) {
+	if ( ( is_tax('game_season') || is_tax('game_org') ) && !is_post_type_archive('game') ) {
 		$query->set( 'nopaging', 1 );
 	}
 
@@ -210,6 +210,9 @@ optilab()->bindIf('config', Config::class, true);
 add_action('pre_get_posts', function($query) {
 	if ( !is_admin() && $query->is_main_query() && !$query->is_singular ) {
 		if (is_archive() && is_post_type_archive('game')) {
+			 $query->set('posts_per_page', 10);
+			 $query->set( 'nopaging', 0 );
+
 			if (get_query_var('team') == 'any') {
 				unset($query->query_vars['team']);
 			}

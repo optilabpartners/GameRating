@@ -98,7 +98,6 @@ import OnScreen from 'onscreen';
 		const tag = $("#gameTag", $(this)).val();
 		url = "/filter/" + type + "/" + gameOrg + "/" + team + "/" + season + "/" + tag + "/";
 		$(this).attr('action', url);
-		// window.location = url;
 		return true
 	});
 }(jQuery));
