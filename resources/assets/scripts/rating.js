@@ -92,10 +92,11 @@ import OnScreen from 'onscreen';
 		// e.preventDefault();
 		var url = "";
 		const type = $("#postType", $(this)).val();
+		const gameOrg = $("#gameOrg", $(this)).val();
 		const team = $("#team", $(this)).val();
 		const season = $("#gameSeason", $(this)).val();
 		const tag = $("#gameTag", $(this)).val();
-		url = "/filter/" + type + "/" + team + "/" + season + "/" + tag + "/";
+		url = "/filter/" + type + "/" + gameOrg + "/" + team + "/" + season + "/" + tag + "/";
 		$(this).attr('action', url);
 		// window.location = url;
 		return true

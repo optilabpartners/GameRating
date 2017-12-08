@@ -202,91 +202,98 @@ HTML;
 	return $content;
 }
 
-add_shortcode( 'filter_game', function() {
+add_shortcode( 'filter_game', function($atts) {
+	$a = shortcode_atts( array(
+        'game_org' => '',
+    ), $atts );
+    $game_org = $a['game_org'];
+	if (get_query_var( 'game_org', false )) {
+		$game_org = get_term_by( 'slug', get_query_var( 'game_org' ), 'game_org')->term_id;
+	}
+	$game_org_slug = get_term( $game_org, 'game_org' )->slug;
 	$action = esc_url( home_url() );
     $content = null;
     $content .= '<form class="filter-game-form" method="POST" action="' . $action . '">';
     	$content .= '<input type="hidden" name="post_type" id="postType" value="game">';
+    	$content .= '<input type="hidden" name="game_org" id="gameOrg" value="' . $game_org_slug. '">';
         $content .= '<div class="container mb-3">';
             $content .= '<div class="row">';
                 $content .= '<div class="col-lg-3 col-md-12">';
                     //Get all teams in alphabetical order
-	                $args = array(
-						'show_option_all'    => '',
-						'show_option_none'   => 'Choose Team',
-						'option_none_value'  => 'any',
-						'orderby'            => 'ID',
-						'order'              => 'ASC',
-						'show_count'         => 0,
-						'hide_empty'         => 1,
-						'child_of'           => 0,
-						'exclude'            => '',
-						'include'            => '',
-						'echo'               => 0,
-						'selected'           => get_query_var('team'),
-						'hierarchical'       => 0,
-						'name'               => 'team',
-						'id'                 => 'team',
-						'class'              => 'form-control',
-						'depth'              => 0,
-						'tab_index'          => 0,
-						'taxonomy'           => 'team',
-						'hide_if_empty'      => false,
-						'value_field'	     => 'slug',
-					);
-					$content .= wp_dropdown_categories( $args );
+                $args = array(
+					'hide_empty' => false, // also retrieve terms which are not used yet
+					'meta_query' => array(
+					    array(
+					       'key'       => 'game_org',
+					       'value'     => (int)$game_org,
+					       'compare'   => '='
+					    )
+					)
+				);
+				$teams = get_terms( 'team', $args );
+				$content .= "<select name=\"team\" id=\"team\" class=\"form-control\">";
+				$content .= "<option value=\"any\">Choose Team</option>";
+				foreach ($teams as $team) {
+					$selected = '';
+					if ($team->slug == get_query_var('team')) {
+						$selected = "selected=\"true\"";
+					}
+					$content .= "<option {$selected} value=\"{$team->slug}\">{$team->name}</option>";
+				}
+				$content .= "</select>";
                 $content .= '</div>';
                 $content .= '<div class="col-lg-4 col-md-12">';
-                    $args = array(
-						'show_option_all'    => '',
-						'show_option_none'   => 'Choose Week',
-						'option_none_value'  => 'any',
-						'orderby'            => 'ID',
-						'order'              => 'ASC',
-						'show_count'         => 0,
-						'hide_empty'         => 1,
-						'child_of'           => 0,
-						'exclude'            => '',
-						'include'            => '',
-						'echo'               => 0,
-						'selected'           => get_query_var('game_season'),
-						'hierarchical'       => 1,
-						'name'               => 'game_season',
-						'id'                 => 'gameSeason',
-						'class'              => 'form-control',
-						'depth'              => 2,
-						'tab_index'          => 0,
-						'taxonomy'           => 'game_season',
-						'hide_if_empty'      => false,
-						'value_field'	     => 'slug',
-					);
-					$content .= wp_dropdown_categories( $args );
+                $args = array(
+					'hide_empty' => false, // also retrieve terms which are not used yet
+					'meta_query' => array(
+					    array(
+					       'key'       => 'game_org',
+					       'value'     => (int)$game_org,
+					       'compare'   => '='
+					    )
+					)
+				);
+				$game_seasons = get_terms( 'game_season', $args );
+				$content .= "<select name=\"game_season\" id=\"gameSeason\" class=\"form-control\">";
+				$content .= "<option value=\"any\">Choose Week</option>";
+				foreach ($game_seasons as $game_season) {
+					if ($game_season->parent !== 0) {
+						$selected = '';
+						$parent = get_term( $game_season->parent, 'game_season' );
+						if ($game_season->slug == get_query_var('game_season')) {
+							$selected = "selected=\"true\"";
+						}
+						$content .= "<option {$selected} value=\"{$game_season->slug}\">[{$parent->name}] {$game_season->name}</option>";
+					}
+				}
+				$content .= "</select>";
+
                 $content .= '</div>';
                 $content .= '<div class="col col-lg-3 col-md-6">';
-                	$args = array(
-						'show_option_all'    => '',
-						'show_option_none'   => 'Choose Tag',
-						'option_none_value'  => 'any',
-						'orderby'            => 'ID',
-						'order'              => 'ASC',
-						'show_count'         => 0,
-						'hide_empty'         => 1,
-						'child_of'           => 0,
-						'exclude'            => '',
-						'include'            => '',
-						'echo'               => 0,
-						'selected'           => get_query_var('game_tag'),
-						'hierarchical'       => 0,
-						'name'               => 'game_tag',
-						'id'                 => 'gameTag',
-						'class'              => 'form-control',
-						'depth'              => 0,
-						'tab_index'          => 0,
-						'taxonomy'           => 'game_tag',
-						'hide_if_empty'      => false,
-						'value_field'	     => 'slug',
-					);
-					$content .= wp_dropdown_categories( $args );
+
+                $args = array(
+					'hide_empty' => false, // also retrieve terms which are not used yet
+					'meta_query' => array(
+					    array(
+					       'key'       => 'game_org',
+					       'value'     => (int)$game_org,
+					       'compare'   => '='
+					    )
+					)
+				);
+				$game_tags = get_terms( 'game_tag', $args );
+
+				$content .= "<select name=\"game_tag\" id=\"gameTag\" class=\"form-control\">";
+				$content .= "<option value=\"any\">Choose Tag</option>";
+				foreach ($game_tags as $game_tag) {
+					$selected = '';
+					if ($game_tag->slug == get_query_var('game_tag')) {
+						$selected = "selected=\"true\"";
+					}
+					$content .= "<option {$selected} value=\"{$game_tag->slug}\">{$game_tag->name}</option>";
+				}
+				$content .= "</select>";
+
                 $content .= '</div>';
                 $content .= '<div class="col col-lg-2 col-md-6 text-center"><input type="submit" value="FILTER" class="form-control btn btn-large" /></div>';
             $content .= '</div>';

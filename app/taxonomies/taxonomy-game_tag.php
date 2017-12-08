@@ -40,3 +40,87 @@ function taxonomy_game_tag() {
 	
 }
 add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_tag', 0 );
+
+add_action( 'game_tag_add_form_fields', function($taxonomy) {
+	?>
+  <div class="form-field term-game_org-wrap">
+	<label for="game_org"><?php _e( 'Game Org', 'optilab' ); ?>
+	<?php
+	$args = array(
+			'show_option_all'    => '',
+			'show_option_none'   => 'Choose Org',
+			'option_none_value'  => '-1',
+			'orderby'            => 'ID',
+			'order'              => 'ASC',
+			'show_count'         => 0,
+			'hide_empty'         => 1,
+			'child_of'           => 0,
+			'exclude'            => '',
+			'include'            => '',
+			'echo'               => 0,
+			'selected'           => '',
+			'hierarchical'       => 0,
+			'name'               => 'game_org',
+			'id'                 => 'gameOrg',
+			'class'              => 'form-control',
+			'depth'              => 0,
+			'tab_index'          => 0,
+			'taxonomy'           => 'game_org',
+			'hide_if_empty'      => false,
+			'value_field'	     => 'term_id',
+	);
+	echo wp_dropdown_categories( $args );
+	?>
+	<p class="description"><?php _e( 'Game Org','optilab ' ); ?></p>
+  </div>
+<?php
+});
+
+add_action( 'game_tag_edit_form_fields', function($term) {
+  $game_org = get_term_meta( $term->term_id, 'game_org', true );
+?>
+  <tr class="form-field term-game_org-wrap">
+	<th scope="row"><label for="game_org"><?php _e( 'Game Org', 'optilab' ); ?></label></th>
+	<td>
+		<?php
+		$args = array(
+				'show_option_all'    => '',
+				'show_option_none'   => 'Choose Org',
+				'option_none_value'  => '-1',
+				'orderby'            => 'ID',
+				'order'              => 'ASC',
+				'show_count'         => 0,
+				'hide_empty'         => 1,
+				'child_of'           => 0,
+				'exclude'            => '',
+				'include'            => '',
+				'echo'               => 0,
+				'selected'           => $game_org,
+				'hierarchical'       => 0,
+				'name'               => 'game_org',
+				'id'                 => 'gameOrg',
+				'class'              => 'form-control',
+				'depth'              => 0,
+				'tab_index'          => 0,
+				'taxonomy'           => 'game_org',
+				'hide_if_empty'      => false,
+				'value_field'	     => 'term_id',
+		);
+		echo wp_dropdown_categories( $args );
+		?>
+		<p class="description"><?php _e( 'Game Org','optilab ' ); ?></p>
+	</td>
+  </tr>
+<?php
+});
+
+add_action( 'created_game_tag', __NAMESPACE__ . '\\game_tag_form_custom_field_save', 10, 2 );
+add_action( 'edited_game_tag', __NAMESPACE__ . '\\game_tag_form_custom_field_save', 10, 2 );
+function game_tag_form_custom_field_save( $term_id, $tt_id ) {
+    if ( isset( $_POST['short_name'] ) ) {
+      update_term_meta( $term_id, 'short_name', $_POST['short_name'] );
+    }
+    if ( isset( $_POST['game_org'] ) ) {
+      update_term_meta( $term_id, 'game_org', $_POST['game_org'] );
+    }
+}

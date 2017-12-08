@@ -52,27 +52,45 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
   <div class="form-field term-end_date-wrap">
 	<label for="end_date"><?php _e( 'End Date', 'optilab' ); ?>
 	<input type="date" name="end_date" id="end_date" value="">
-	<p class="description"><?php _e( 'Ebd date of the season','optilab ' ); ?></p>
+	<p class="description"><?php _e( 'End date of the season','optilab ' ); ?></p>
   </div>
-  <!-- <div class="form-field week-start_date-wrap">
-	<label for="week-start"><?php _e( 'End Date', 'optilab' ); ?>
-	<select type="date" name="week-start" id="weekStart" >
-		<option value="sunday">Sunday</option>
-		<option value="monday">Monday</option>
-		<option value="tuesday">Tuesday</option>
-		<option value="wednesday">Wednesday</option>
-		<option value="thursday">Thursday</option>
-		<option value="friday">Friday</option>
-		<option value="saturday">Saturday</option>
-	</select>
-	<p class="description"><?php _e( 'Day to start of the week','optilab ' ); ?></p>
-  </div> -->
+  <div class="form-field term-game_org-wrap">
+	<label for="game_org"><?php _e( 'Game Org', 'optilab' ); ?>
+	<?php
+	$args = array(
+			'show_option_all'    => '',
+			'show_option_none'   => 'Choose Org',
+			'option_none_value'  => '-1',
+			'orderby'            => 'ID',
+			'order'              => 'ASC',
+			'show_count'         => 0,
+			'hide_empty'         => 1,
+			'child_of'           => 0,
+			'exclude'            => '',
+			'include'            => '',
+			'echo'               => 0,
+			'selected'           => '',
+			'hierarchical'       => 0,
+			'name'               => 'game_org',
+			'id'                 => 'gameOrg',
+			'class'              => 'form-control',
+			'depth'              => 0,
+			'tab_index'          => 0,
+			'taxonomy'           => 'game_org',
+			'hide_if_empty'      => false,
+			'value_field'	     => 'term_id',
+	);
+	echo wp_dropdown_categories( $args );
+	?>
+	<p class="description"><?php _e( 'Game Org','optilab ' ); ?></p>
+  </div>
 <?php
 });
 
 \add_action( 'game_season_edit_form_fields', function($term) {
   $start_date = get_term_meta( $term->term_id, 'start_date', true );
   $end_date = get_term_meta( $term->term_id, 'end_date', true );
+  $game_org = get_term_meta( $term->term_id, 'game_org', true );
 ?>
   <tr class="form-field term-start_date-wrap">
 	<th scope="row"><label for="start_date"><?php _e( 'Start Date', 'optilab' ); ?></th>
@@ -86,6 +104,38 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
 	<td>
 	  <input type="date" name="end_date" id="end_date" value="<?= $end_date; ?>">
 	  <p class="description"><?php _e( 'Enter end date the season','optilab' ); ?></p>
+	</td>
+  </tr>
+  <tr class="form-field term-game_org-wrap">
+	<th scope="row"><label for="game_org"><?php _e( 'Game Org', 'optilab' ); ?></label></th>
+	<td>
+		<?php
+		$args = array(
+				'show_option_all'    => '',
+				'show_option_none'   => 'Choose Org',
+				'option_none_value'  => '-1',
+				'orderby'            => 'ID',
+				'order'              => 'ASC',
+				'show_count'         => 0,
+				'hide_empty'         => 1,
+				'child_of'           => 0,
+				'exclude'            => '',
+				'include'            => '',
+				'echo'               => 0,
+				'selected'           => $game_org,
+				'hierarchical'       => 0,
+				'name'               => 'game_org',
+				'id'                 => 'gameOrg',
+				'class'              => 'form-control',
+				'depth'              => 0,
+				'tab_index'          => 0,
+				'taxonomy'           => 'game_org',
+				'hide_if_empty'      => false,
+				'value_field'	     => 'term_id',
+		);
+		echo wp_dropdown_categories( $args );
+		?>
+		<p class="description"><?php _e( 'Game Org','optilab ' ); ?></p>
 	</td>
   </tr>
 <?php
@@ -102,11 +152,19 @@ function game_season_form_custom_field_save( $term_id, $tt_id ) {
 	if ( isset( $_POST['end_date'] ) ) {           
 	  update_term_meta( $term_id, 'end_date', $_POST['end_date'] );
 	}
+	if ( isset( $_POST['game_org'] ) ) {
+      update_term_meta( $term_id, 'game_org', $_POST['game_org'] );
+    }
 }
 
 function game_season_form_create_sub_term_save( $term_id, $tt_id ) {
+
+	$game_org = get_term_meta( $term_id, 'game_org', true );
 	$children = get_term_children( $term_id, 'game_season' );
 	if (count($children) > 0 ) {
+		foreach ($children as $child) {
+			update_term_meta( $child, 'game_org', $game_org );
+		}
 		return false;
 	}
 	$term = get_term( $term_id );

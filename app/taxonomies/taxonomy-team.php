@@ -48,11 +48,42 @@ add_action( 'team_add_form_fields', function($taxonomy) {
 	<input type="text" name="short_name" id="shortName" value="">
 	<p class="description"><?php _e( 'Short name for team','sage' ); ?></p>
   </div>
+  <div class="form-field term-game_org-wrap">
+	<label for="game_org"><?php _e( 'Game Org', 'optilab' ); ?>
+	<?php
+	$args = array(
+			'show_option_all'    => '',
+			'show_option_none'   => 'Choose Org',
+			'option_none_value'  => '-1',
+			'orderby'            => 'ID',
+			'order'              => 'ASC',
+			'show_count'         => 0,
+			'hide_empty'         => 1,
+			'child_of'           => 0,
+			'exclude'            => '',
+			'include'            => '',
+			'echo'               => 0,
+			'selected'           => '',
+			'hierarchical'       => 0,
+			'name'               => 'game_org',
+			'id'                 => 'gameOrg',
+			'class'              => 'form-control',
+			'depth'              => 0,
+			'tab_index'          => 0,
+			'taxonomy'           => 'game_org',
+			'hide_if_empty'      => false,
+			'value_field'	     => 'term_id',
+	);
+	echo wp_dropdown_categories( $args );
+	?>
+	<p class="description"><?php _e( 'Game Org','optilab ' ); ?></p>
+  </div>
 <?php
 });
 
 add_action( 'team_edit_form_fields', function($term) {
   $short_name = get_term_meta( $term->term_id, 'short_name', true );
+  $game_org = get_term_meta( $term->term_id, 'game_org', true );
 ?>
   <tr class="form-field term-short_name-wrap">
     <th scope="row"><label for="short_name"><?php _e( 'Team Short Name', 'sage' ); ?></th>
@@ -60,6 +91,38 @@ add_action( 'team_edit_form_fields', function($term) {
       <input type="text" name="short_name" id="short_name" value="<?= $short_name; ?>">
       <p class="description"><?php _e( 'Short name for team','sage' ); ?></p>
     </td>
+  </tr>
+  <tr class="form-field term-game_org-wrap">
+	<th scope="row"><label for="game_org"><?php _e( 'Game Org', 'optilab' ); ?></label></th>
+	<td>
+		<?php
+		$args = array(
+				'show_option_all'    => '',
+				'show_option_none'   => 'Choose Org',
+				'option_none_value'  => '-1',
+				'orderby'            => 'ID',
+				'order'              => 'ASC',
+				'show_count'         => 0,
+				'hide_empty'         => 1,
+				'child_of'           => 0,
+				'exclude'            => '',
+				'include'            => '',
+				'echo'               => 0,
+				'selected'           => $game_org,
+				'hierarchical'       => 0,
+				'name'               => 'game_org',
+				'id'                 => 'gameOrg',
+				'class'              => 'form-control',
+				'depth'              => 0,
+				'tab_index'          => 0,
+				'taxonomy'           => 'game_org',
+				'hide_if_empty'      => false,
+				'value_field'	     => 'term_id',
+		);
+		echo wp_dropdown_categories( $args );
+		?>
+		<p class="description"><?php _e( 'Game Org','optilab ' ); ?></p>
+	</td>
   </tr>
 <?php
 });
@@ -70,5 +133,8 @@ add_action( 'edited_team', __NAMESPACE__ . '\\team_form_custom_field_save', 10, 
 function team_form_custom_field_save( $term_id, $tt_id ) {
     if ( isset( $_POST['short_name'] ) ) {
       update_term_meta( $term_id, 'short_name', $_POST['short_name'] );
+    }
+    if ( isset( $_POST['game_org'] ) ) {
+      update_term_meta( $term_id, 'game_org', $_POST['game_org'] );
     }
 }
