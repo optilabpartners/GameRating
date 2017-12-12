@@ -144,7 +144,7 @@ HTML;
 		if ( (strtotime(get_post_meta( $post->ID, 'game_date', true )) + 24*60*60) <= strtotime('today') ) {
 			$content .= <<<HTML
 			<div class="text-center">
-				<a itemprof="url" href="{$watch_url}" target="_blank" class="btn btn-outline btn-watch-now mx-auto">Watch Now</a><br>
+				<a itemprof="url" href="{$watch_url}" onclick="javascript: ga('send', 'event', 'outclick', 'click', 'Game - {$post->ID}');" target="_blank" class="btn btn-outline btn-watch-now mx-auto">Watch Now</a><br>
 			</div>
 HTML;
 		}
