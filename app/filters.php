@@ -102,3 +102,9 @@ add_filter('query_vars', function($aVars) {
 	return $aVars;
 });
 
+add_filter('wp_trim_excerpt', function($content) {
+	global $post;
+	if ($post->post_type == 'game') {
+		$content = null;
+	}
+}, 10, 1);

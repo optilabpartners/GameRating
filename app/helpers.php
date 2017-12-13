@@ -101,8 +101,8 @@ function get_taxonomy_parents($id, $taxonomy, $link = false, $separator = '/', $
 
 function game_rating_add_to_content( $content = null ) { 
 	global $post;
-	if (!$post->post_type == "game") {
-		return $content;
+	if ($post->post_type != "game") {
+		return false;
 	}
 	$game_date = date( 'F j, Y', strtotime(get_post_meta( $post->ID, 'game_date', true )));
 	$org = get_the_terms( $post, 'game_org' )[0];
