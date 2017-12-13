@@ -109,6 +109,8 @@ function game_rating_add_to_content( $content = null ) {
 	
 	$watch_url = get_term_meta( $org->term_id, 'watch_url', true);
 	
+	//$game_url = get_post_permalink( $post->ID );
+	
 	$url_game_date = date_format(date_create(get_post_meta( $post->ID, 'game_date', true )),"Ymd");
     $teamA = get_the_terms( $post, 'team' )[0]->term_id;
     $teamB = get_the_terms( $post, 'team' )[1]->term_id;
@@ -147,7 +149,9 @@ HTML;
 		if ( (strtotime(get_post_meta( $post->ID, 'game_date', true )) + 24*60*60) <= strtotime('today') ) {
 			$content .= <<<HTML
 			<div class="text-center">
-				<a itemprof="url" href="{$watch_url}" onclick="javascript: ga('send', 'event', 'outclick', 'click', 'Game - {$post->ID}');" target="_blank" class="btn btn-outline btn-watch-now mx-auto">Watch Now</a><br>
+				<a itemprof="url" href="{$watch_url}" onclick="javascript: ga('send', 'event', 'outclick', 'click', 'Game - {$post->ID}');" target="_blank" class="btn btn-outline btn-watch-now mx-auto">Watch Now</a>
+                <!--<a href="{$game_url}"><img src="/wp-content/plugins/gamerating/dist/images/comment.png" width="49" alt="Comment" /></a>-->
+                <br>
 			</div>
 HTML;
 		}
