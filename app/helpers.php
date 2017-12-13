@@ -222,7 +222,7 @@ add_shortcode( 'filter_game', function($atts) {
                 $content .= '<div class="col-lg-3 col-md-12">';
                     //Get all teams in alphabetical order
                 $args = array(
-					'hide_empty' => false, // also retrieve terms which are not used yet
+					'hide_empty' => true, // also retrieve terms which are not used yet
 					'meta_query' => array(
 					    array(
 					       'key'       => 'game_org',
@@ -245,7 +245,7 @@ add_shortcode( 'filter_game', function($atts) {
                 $content .= '</div>';
                 $content .= '<div class="col-lg-4 col-md-12">';
                 $args = array(
-					'hide_empty' => false, // also retrieve terms which are not used yet
+					'hide_empty' => true, // also retrieve terms which are not used yet
 					'meta_query' => array(
 					    array(
 					       'key'       => 'game_org',
@@ -273,7 +273,7 @@ add_shortcode( 'filter_game', function($atts) {
                 $content .= '<div class="col col-lg-3 col-md-6">';
 
                 $args = array(
-					'hide_empty' => false, // also retrieve terms which are not used yet
+					'hide_empty' => true, // also retrieve terms which are not used yet
 					'meta_query' => array(
 					    array(
 					       'key'       => 'game_org',
