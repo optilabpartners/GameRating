@@ -90,6 +90,7 @@ function filter_game_link($permalink, $post) {
 }
 
 add_filter( 'the_excerpt', __NAMESPACE__ . '\\game_rating_add_to_content' );
+add_filter( 'the_content', __NAMESPACE__ . '\\game_rating_add_to_content' );
 
 function new_excerpt_more($more) {
        global $post;
