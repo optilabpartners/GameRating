@@ -24,7 +24,7 @@ class PostCreateProject
                 'devUrl'      => $io->ask('<info>Local development URL of WP site [<comment>'.$browsersync_settings_default['devUrl'].'</comment>]:</info> ', $browsersync_settings_default['devUrl'])
             ];
 
-            file_put_contents('resources/assets/config.json', str_replace('/app/plugins/games-rating', $browsersync_settings['publicPath'], file_get_contents('resources/assets/config.json')));
+            file_put_contents('resources/assets/config.json', str_replace('/wp-content/plugins/games-rating', $browsersync_settings['publicPath'], file_get_contents('resources/assets/config.json')));
             file_put_contents('resources/assets/config.json', str_replace($browsersync_settings_default['devUrl'], $browsersync_settings['devUrl'], file_get_contents('resources/assets/config.json')));
         }
     }
