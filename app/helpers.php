@@ -152,7 +152,7 @@ HTML;
 				<a itemprof="url" href="{$watch_url}" onclick="javascript: ga('send', 'event', 'outclick', 'click', 'Game - {$post->ID}');" target="_blank" class="btn btn-outline btn-watch-now mx-auto">Watch Now</a>
 HTML;
 		if (!is_singular('game')) {
-			$content .= '<a href="' . $game_url .'"><img src="' . PLUGIN_BASEURL . 'dist/images/comment.png" width="49" alt="Comment" /></a>';
+			$content .= '<a href="' . $game_url .'" class="game_url"><img src="' . PLUGIN_BASEURL . 'dist/images/comment.png" width="49" alt="Comment" /></a>';
 		}
         $content .= <<<HTML
                 <br>
