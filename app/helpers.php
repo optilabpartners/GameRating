@@ -153,9 +153,10 @@ HTML;
 HTML;
 		if (!is_singular('game')) {
 			$content .= '<a href="' . $game_url .'" class="game_url"><img src="' . PLUGIN_BASEURL . 'dist/images/comment.png" width="49" alt="Comment" /></a>';
+			//$content .= '<br />Comments: <span class="fb-comments-count" data-href="' . $game_url . '"></span>';
+			//$content .='<br />Comments: <fb:comments-count href="' . $game_url . '"></fb:comments-count>';
 		}
         $content .= <<<HTML
-                <br>
 			</div>
 HTML;
 		}
@@ -163,7 +164,7 @@ HTML;
 		<div class="text-center">
 			<strong>Game Date:</strong> {$game_date}		
 		</div>
-		<hr>
+		<hr />
 HTML;
 		if ( strtotime(get_post_meta( $post->ID, 'game_date', true )) <= strtotime('today') ) {
 			$ratingCount = rand(50, 500);
