@@ -101,8 +101,8 @@ function get_taxonomy_parents($id, $taxonomy, $link = false, $separator = '/', $
 
 function game_rating_add_to_content( $content = null ) { 
 	global $post;
-	if ($post->post_type != "game") {
-		return false;
+	if ($post->post_type != "game" && $post->post_type != 'page') {
+		return $content;
 	}
 	$game_date = date( 'F j, Y', strtotime(get_post_meta( $post->ID, 'game_date', true )));
 	$org = get_the_terms( $post, 'game_org' )[0];
@@ -230,7 +230,7 @@ add_shortcode( 'filter_game', function($atts) {
     	$content .= '<input type="hidden" name="game_org" id="gameOrg" value="' . $game_org_slug. '">';
         $content .= '<div class="container mb-3">';
             $content .= '<div class="row">';
-                $content .= '<div class="col-lg-3 col-md-12">';
+                $content .= '<div class="col-lg-6 col-md-12">';
                     //Get all teams in alphabetical order
                 $args = array(
 					'hide_empty' => true, // also retrieve terms which are not used yet
@@ -254,34 +254,8 @@ add_shortcode( 'filter_game', function($atts) {
 				}
 				$content .= "</select>";
                 $content .= '</div>';
-                $content .= '<div class="col-lg-4 col-md-12">';
-                $args = array(
-					'hide_empty' => true, // also retrieve terms which are not used yet
-					'meta_query' => array(
-					    array(
-					       'key'       => 'game_org',
-					       'value'     => (int)$game_org,
-					       'compare'   => '='
-					    )
-					)
-				);
-				$game_seasons = get_terms( 'game_season', $args );
-				$content .= "<select name=\"game_season\" id=\"gameSeason\" class=\"form-control\">";
-				$content .= "<option value=\"any\">Choose Week</option>";
-				foreach ($game_seasons as $game_season) {
-					if ($game_season->parent !== 0) {
-						$selected = '';
-						$parent = get_term( $game_season->parent, 'game_season' );
-						if ($game_season->slug == get_query_var('game_season')) {
-							$selected = "selected=\"true\"";
-						}
-						$content .= "<option {$selected} value=\"{$game_season->slug}\">[{$parent->name}] {$game_season->name}</option>";
-					}
-				}
-				$content .= "</select>";
-
-                $content .= '</div>';
-                $content .= '<div class="col col-lg-3 col-md-6">';
+               
+                $content .= '<div class="col-lg-6 col-md-12">';
 
                 $args = array(
 					'hide_empty' => true, // also retrieve terms which are not used yet
@@ -307,7 +281,43 @@ add_shortcode( 'filter_game', function($atts) {
 				$content .= "</select>";
 
                 $content .= '</div>';
-                $content .= '<div class="col col-lg-2 col-md-6 text-center"><input type="submit" value="FILTER" class="form-control btn btn-large" /></div>';
+
+                $content .= '<div class="col-lg-4 col-md-12">';
+                $args = array(
+					'hide_empty' => true, // also retrieve terms which are not used yet
+					'meta_query' => array(
+					    array(
+					       'key'       => 'game_org',
+					       'value'     => (int)$game_org,
+					       'compare'   => '='
+					    )
+					)
+				);
+				$game_seasons = get_terms( 'game_season', $args );
+				$content .= "<select name=\"game_season\" id=\"gameSeason\" class=\"form-control\">";
+				$content .= "<option value=\"any\">Choose Week</option>";
+				foreach ($game_seasons as $game_season) {
+					if ($game_season->parent !== 0) {
+						$start_date = get_term_meta( $game_season->term_id, 'start_date', true );
+						$end_date = get_term_meta( $game_season->term_id, 'end_date', true );
+						$selected = '';
+						$parent = get_term( $game_season->parent, 'game_season' );
+						if ($game_season->slug == get_query_var('game_season')) {
+							$selected = "selected=\"true\"";
+						}
+						$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">[{$parent->name}] {$game_season->name}</option>";
+					}
+				}
+				$content .= "</select>";
+
+                $content .= '</div>';
+                $content .= '<div class="col-lg-4 col-sm-6">';
+                $gd = get_query_var('game_date');
+				$content .= "<input type=\"date\" name=\"game_date\" id=\"gameDate\" value=\"{$gd}\" class=\"form-control mt-1\">";
+
+
+                $content .= '</div>';
+                $content .= '<div class="col-lg-4 col-sm-6 text-center"><input type="submit" value="FILTER" class="form-control btn btn-large" /></div>';
             $content .= '</div>';
         $content .= '</div>';
     $content .= '</form><hr>';

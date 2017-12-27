@@ -88,6 +88,14 @@ import OnScreen from 'onscreen';
 		$(element).toggleClass('rating-loaded');
 	});
 	
+	$('select#gameSeason').change(function(){
+       const selected = $(this).find('option:selected');
+       const startDate = selected.data('startDate'); 
+       const endDate = selected.data('endDate');
+       $('#gameDate').attr('min', startDate);
+       $('#gameDate').attr('max', endDate);
+    });
+
 	$('.filter-game-form').on('submit', function() {
 		// e.preventDefault();
 		var url = "";
@@ -95,8 +103,9 @@ import OnScreen from 'onscreen';
 		const gameOrg = $("#gameOrg", $(this)).val();
 		const team = $("#team", $(this)).val();
 		const season = $("#gameSeason", $(this)).val();
+		const date = $("#gameDate", $(this)).val();
 		const tag = $("#gameTag", $(this)).val();
-		url = "/filter/" + type + "/" + gameOrg + "/" + team + "/" + season + "/" + tag + "/";
+		url = "/filter/" + type + "/" + gameOrg + "/" + team + "/" + season + "/" + date + "/" + tag + "/";
 		$(this).attr('action', url);
 		return true
 	});

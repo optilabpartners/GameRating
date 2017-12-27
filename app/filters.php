@@ -7,8 +7,8 @@ function optilab_rewrite_rules($rules) {
     $newRules['game/(.+)/(.+)/(.+)/?$']      	= 'index.php?game_season=$matches[3]'; 
     $newRules['game/(.+)/(.+)/?$']           	= 'index.php?game_season=$matches[2]'; 
     $newRules['game/(.+)/?$']                	= 'index.php?game_org=$matches[1]';
-    $newRules['filter/(.+)/(.+)/(.+)/(.+)/(.+)/page/?([0-9]{1,})/?$']	= 'index.php?post_type=$matches[1]&game_org=$matches[2]&team=$matches[3]&game_season=$matches[4]&game_tag=$matches[5]&paged=$matches[6]';
-    $newRules['filter/(.+)/(.+)/(.+)/(.+)/(.+)/?$']	= 'index.php?post_type=$matches[1]&game_org=$matches[2]&team=$matches[3]&game_season=$matches[4]&game_tag=$matches[5]';
+    $newRules['filter/(.+)/(.+)/(.+)/(.+)/(.+)/(.+)/page/?([0-9]{1,})/?$']	= 'index.php?post_type=$matches[1]&game_org=$matches[2]&team=$matches[3]&game_season=$matches[4]&game_date=$matches[5]&game_tag=$matches[6]&paged=$matches[7]';
+    $newRules['filter/(.+)/(.+)/(.+)/(.+)/(.+)/(.+)/?$']	= 'index.php?post_type=$matches[1]&game_org=$matches[2]&team=$matches[3]&game_season=$matches[4]&game_date=$matches[5]&game_tag=$matches[6]';
 
     return array_merge($newRules, $rules);
 }
@@ -98,6 +98,7 @@ add_filter('query_vars', function($aVars) {
 	$aVars[] = "post_type";
 	$aVars[] = "team"; 
 	$aVars[] = "game_season";
+	$aVars[] = "game_date";
 	$aVars[] = "game_tag";
 	return $aVars;
 });

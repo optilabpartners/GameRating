@@ -117,6 +117,7 @@ add_action( 'pre_get_posts', function ( $query ) {
 		}
 
 		//Add our meta query to the original meta queries
+
 		$meta_query = array(
 			array (
 				'key'=>'game_date',
@@ -124,6 +125,12 @@ add_action( 'pre_get_posts', function ( $query ) {
 				'compare'=>'<',
 			)
 		);
+		if ( get_query_var('game_date') !== 'any' && get_query_var('game_date') )  {
+			$meta_query[] = array(
+				'key'=>'game_date',
+				'value'=> get_query_var('game_date')
+			);
+		}
 		$query->set('meta_query',$meta_query);
   	}
   	return $query;
@@ -222,6 +229,10 @@ add_action('pre_get_posts', function($query) {
 			}
 			if (get_query_var('game_season') == 'any') {
 				unset($query->query_vars['game_season']);
+			}
+
+			if (get_query_var('game_date') == 'any') {
+				unset($query->query_vars['game_date']);
 			}
 			
 		}
