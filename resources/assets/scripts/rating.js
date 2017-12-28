@@ -88,13 +88,16 @@ import OnScreen from 'onscreen';
 		$(element).toggleClass('rating-loaded');
 	});
 	
-	$('select#gameSeason').change(function(){
+	$('select#gameSeason').on("select change", function(){
        const selected = $(this).find('option:selected');
        const startDate = selected.data('startDate'); 
        const endDate = selected.data('endDate');
        $('#gameDate').attr('min', startDate);
        $('#gameDate').attr('max', endDate);
     });
+
+    $('select#gameSeason').select();
+
 
 	$('.filter-game-form').on('submit', function() {
 		// e.preventDefault();
