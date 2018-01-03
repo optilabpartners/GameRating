@@ -256,7 +256,7 @@ add_shortcode( 'filter_game', function($atts) {
 				$content .= "</select>";
                 $content .= '</div>';
                
-                $content .= '<div class="col-lg-6 col-md-12">';
+                $content .= '<div class="col-sm-6">';
 
                 $args = array(
 					'hide_empty' => true, // also retrieve terms which are not used yet
@@ -268,32 +268,7 @@ add_shortcode( 'filter_game', function($atts) {
 					    )
 					)
 				);
-				$game_tags = get_terms( 'game_tag', $args );
 
-				$content .= "<select name=\"game_tag\" id=\"gameTag\" class=\"form-control\">";
-				$content .= "<option value=\"any\">Choose Tag</option>";
-				foreach ($game_tags as $game_tag) {
-					$selected = '';
-					if ($game_tag->slug == get_query_var('game_tag')) {
-						$selected = "selected=\"true\"";
-					}
-					$content .= "<option {$selected} value=\"{$game_tag->slug}\">{$game_tag->name}</option>";
-				}
-				$content .= "</select>";
-
-                $content .= '</div>';
-
-                $content .= '<div class="col-lg-4 col-md-12">';
-                $args = array(
-					'hide_empty' => true, // also retrieve terms which are not used yet
-					'meta_query' => array(
-					    array(
-					       'key'       => 'game_org',
-					       'value'     => (int)$game_org,
-					       'compare'   => '='
-					    )
-					)
-				);
 				$game_seasons = get_terms( 'game_season', $args );
 				$content .= "<select name=\"game_season\" id=\"gameSeason\" class=\"form-control\">";
 				$content .= "<option value=\"any\">Choose Week</option>";
@@ -312,12 +287,28 @@ add_shortcode( 'filter_game', function($atts) {
 				$content .= "</select>";
 
                 $content .= '</div>';
+
                 $content .= '<div class="col-lg-4 col-sm-6">';
                 $gd = get_query_var('game_date');
-				$content .= "<input type=\"date\" name=\"game_date\" id=\"gameDate\" value=\"{$gd}\" class=\"form-control mt-1\">";
-
+				$content .= "<input type=\"date\" name=\"game_date\" id=\"gameDate\" placeholder=\"Choose Date\" value=\"{$gd}\" class=\"form-control w-100 mt-1\">";
 
                 $content .= '</div>';
+                $content .= '<div class="col-lg-4 col-sm-6">';
+				$game_tags = get_terms( 'game_tag', $args );
+
+				$content .= "<select name=\"game_tag\" id=\"gameTag\" class=\"form-control\">";
+				$content .= "<option value=\"any\">Choose Tag</option>";
+				foreach ($game_tags as $game_tag) {
+					$selected = '';
+					if ($game_tag->slug == get_query_var('game_tag')) {
+						$selected = "selected=\"true\"";
+					}
+					$content .= "<option {$selected} value=\"{$game_tag->slug}\">{$game_tag->name}</option>";
+				}
+				$content .= "</select>";
+
+                $content .= '</div>';
+				
                 $content .= '<div class="col-lg-4 col-sm-6 text-center"><input type="submit" value="FILTER" class="form-control btn btn-large" /></div>';
             $content .= '</div>';
         $content .= '</div>';
