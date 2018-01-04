@@ -46,6 +46,9 @@ add_action('init', function () {
 	} else if (get_query_var('game_season') == 'any') {
 		remove_query_arg( 'team' );
 	}
+	else if (get_query_var('game_date') == 'any') {
+		remove_query_arg( 'game_date' );
+	}
 
 });
 

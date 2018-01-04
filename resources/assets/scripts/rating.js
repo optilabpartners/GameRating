@@ -106,7 +106,10 @@ import OnScreen from 'onscreen';
 		const gameOrg = $("#gameOrg", $(this)).val();
 		const team = $("#team", $(this)).val();
 		const season = $("#gameSeason", $(this)).val();
-		const date = $("#gameDate", $(this)).val();
+		let date = $("#gameDate", $(this)).val();
+		if (date == '') {
+			date = 'any';
+		}
 		const tag = $("#gameTag", $(this)).val();
 		url = "/filter/" + type + "/" + gameOrg + "/" + team + "/" + season + "/" + date + "/" + tag + "/";
 		$(this).attr('action', url);
