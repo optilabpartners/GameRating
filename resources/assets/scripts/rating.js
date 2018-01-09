@@ -92,6 +92,7 @@ import OnScreen from 'onscreen';
        const selected = $(this).find('option:selected');
        const startDate = selected.data('startDate'); 
        const endDate = selected.data('endDate');
+       // $('#gameDate').attr('type', 'date');
        $('#gameDate').attr('min', startDate);
        $('#gameDate').attr('max', endDate);
     });
