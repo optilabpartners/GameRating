@@ -135,3 +135,9 @@ article.game, .game-result-wrap {
 		margin: 5px 0;
 	}
 }
+
+input[type="date"] {
+	-webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
