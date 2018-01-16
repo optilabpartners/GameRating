@@ -290,7 +290,7 @@ add_shortcode( 'filter_game', function($atts) {
 
                 $content .= '<div class="col-lg-4 col-sm-6">';
                 $gd = (get_query_var('game_date'))? get_query_var('game_date'): 'Choose Date' ;
-				$content .= "<input type=\"date\"  name=\"game_date\" id=\"gameDate\" placeholder=\"Choose Date\" value=\"{$gd}\" class=\"form-control w-100 mt-1\">";
+				$content .= "<input type=\"date\"  name=\"game_date\" id=\"gameDate\" data-placeholder=\"Choose Date\" placeholder=\"Choose Date\" value=\"{$gd}\" class=\"form-control w-100 mt-1\">";
 
                 $content .= '</div>';
                 $content .= '<div class="col-lg-4 col-sm-6">';
