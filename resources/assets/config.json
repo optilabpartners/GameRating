@@ -15,7 +15,8 @@
       "./scripts/rating.js"
     ],
     "bootstrap": [
-      "bootstrap"
+      "bootstrap",
+      "date-input-polyfill"
     ]
   },
   "publicPath": "/wp-content/plugins/games-rating",
