@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone'; 
 import OnScreen from 'onscreen';
+import 'bootstrap-datepicker';
 
 (function($) {
 	var AggregateRating = Backbone.Model.extend({
@@ -87,14 +88,17 @@ import OnScreen from 'onscreen';
 		});
 		$(element).toggleClass('rating-loaded');
 	});
+    
+    $('.datepicker').datepicker();
 	
 	$('select#gameSeason').on("select change", function(){
-       const selected = $(this).find('option:selected');
-       const startDate = selected.data('startDate'); 
-       const endDate = selected.data('endDate');
-       // $('#gameDate').attr('type', 'date');
-       $('#gameDate').attr('min', startDate);
-       $('#gameDate').attr('max', endDate);
+		const selected = $(this).find('option:selected');
+		const startDate = selected.data('startDate'); 
+		const endDate = selected.data('endDate');
+		$('#gameDate').datepicker({
+			minDate: startDate,
+			maxDate: endDate,
+		});
     });
 
     $('select#gameSeason').select();

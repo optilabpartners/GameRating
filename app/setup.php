@@ -10,6 +10,7 @@ add_action('wp_enqueue_scripts', function () {
 	wp_enqueue_style('games-rating/main.css', asset_path('styles/games.css'), false, null);
 	wp_enqueue_script('games-rating/main.js', asset_path('scripts/rating.js'), ['jquery'], null, true);
 	wp_enqueue_script('games-rating/bootstrap.js', asset_path('scripts/bootstrap.js'), ['jquery'], null, true);
+	wp_enqueue_script('games-rating/bootstrap-datepicker.js', asset_path('scripts/bootstrap-datepicker.js'), ['games-rating/bootstrap.js'], null, true);
 }, 100);
 
 
