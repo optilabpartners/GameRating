@@ -101,6 +101,13 @@ import 'bootstrap-datepicker';
 		});
     });
 
+    $('#gameDate').focusin( function() {
+    	$(this).attr('readonly', "true");
+    });
+    $('#gameDate').focusout( function() {
+    	$(this).removeAttr("readonly");
+    });
+
     $('select#gameSeason').select();
 
 
