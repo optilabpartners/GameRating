@@ -89,7 +89,7 @@ import 'bootstrap-datepicker';
 		$(element).toggleClass('rating-loaded');
 	});
     
-    $('.datepicker').datepicker();
+    $('.datepicker').datepicker({ autoclose: true });
 	
 	$('select#gameSeason').on("select change", function(){
 		const selected = $(this).find('option:selected');
