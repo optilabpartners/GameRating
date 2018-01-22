@@ -95,10 +95,8 @@ import 'bootstrap-datepicker';
 		const selected = $(this).find('option:selected');
 		const startDate = selected.data('startDate'); 
 		const endDate = selected.data('endDate');
-		$('#gameDate').datepicker({
-			minDate: startDate,
-			maxDate: endDate,
-		});
+		$('#gameDate').datepicker('setStartDate', startDate);
+		$('#gameDate').datepicker('setEndDate', endDate);
     });
 
     $('#gameDate').focusin( function() {
