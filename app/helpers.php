@@ -205,10 +205,11 @@ HTML;
 		if ($tags) {
 			$content .= "<ul class=\"nav flex-column flex-sm-row justify-content-center nav-game-tag\">";
 			foreach ($tags as $tag) {
-				$content .= "<li class=\"flex-sm-fill text-center nav-link h6\" >{$tag->name}</li>";
+				$content .= "<li class=\"flex-sm-fill text-center nav-link h6\">{$tag->name}</li>";
 			}
 			$content .= "</ul>";
 		}
+                $content .= "<br />";
 		$content .= <<<HTML
 HTML;
 	}
