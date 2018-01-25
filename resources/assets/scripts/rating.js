@@ -117,7 +117,7 @@ import 'bootstrap-datepicker';
 		const team = $("#team", $(this)).val();
 		const season = $("#gameSeason", $(this)).val();
 		let date = $("#gameDate", $(this)).val();
-		if (date == '') {
+		if (date == '' || date == 'dd/mm/yyyy') {
 			date = 'any';
 		}
 		const tag = $("#gameTag", $(this)).val();
