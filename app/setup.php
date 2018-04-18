@@ -1,6 +1,7 @@
 <?php
 namespace Optilab;
 use Optilab\Ratings;
+use Optilab\Importers;
 use Illuminate\Contracts\Container\Container as ContainerContract;
 use Optilab\Assets\JsonManifest;
 use Optilab\Config;
@@ -268,3 +269,14 @@ add_action( 'wp_insert_post', function($post_id, $post, $update) {
     )));
 
 }, 10, 3);
+
+
+if ( ! wp_next_scheduled( 'team_insert' ) ) {
+  wp_schedule_event( time(), 'hourly', 'team_insert' );
+}
+
+add_action( 'team_insert', __NAMESPACE__ . '\\team_insert' ); 
+function team_insert() {
+	$importer = new Importers\TeamImporter('http://data.nba.com/data/10s/prod/v1/2017/teams.json');
+	$importer->insertTeams();
+}

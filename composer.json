@@ -5,7 +5,8 @@
 	"autoload": {
 		"psr-4": {
 			"Optilab\\": "app/lib/Optilab/",
-			"Optilab\\Ratings\\": "app/lib/Optilab/Ratings"
+			"Optilab\\Ratings\\": "app/lib/Optilab/Ratings",
+			"Optilab\\Importers\\": "app/lib/Optilab/Importers"
 		},
 		"files": [
 			"app/post_types/game-post-type.php",
@@ -24,7 +25,8 @@
 		"silverorange/mdb2": "~2.7.0",
 		"brandonwamboldt/wp-orm": "~1.0.0",
 		"webdevstudios/taxonomy-single-term": "0.2.2",
-		"daggerhart/taxonomy-term-image": "2.0.3"
+		"daggerhart/taxonomy-term-image": "2.0.3",
+		"guzzlehttp/guzzle": "~6.3.2"
 	},
 	"repositories": [
 		{
