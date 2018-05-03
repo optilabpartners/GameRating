@@ -14,6 +14,12 @@
       "backbone",
       "./scripts/rating.js"
     ],
+    "admin": [
+      "jquery",
+      "datatables.net",
+      "./scripts/admin.js",
+      "./styles/admin.scss"
+    ],
     "bootstrap": [
       "bootstrap"
     ],

@@ -1,6 +1,7 @@
 <?php
 namespace Optilab;
 use Optilab\Ratings;
+use Optilab\Games;
 use Optilab\Importers;
 use Illuminate\Contracts\Container\Container as ContainerContract;
 use Optilab\Assets\JsonManifest;
@@ -107,6 +108,10 @@ add_filter('excerpt_more', __NAMESPACE__ . '\\new_excerpt_more');
 \add_action( 'wp_ajax_nopriv_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::rating(); } );
 \add_action( 'wp_ajax_aggregate_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
 \add_action( 'wp_ajax_nopriv_aggregate_optirating', function() { Ratings\RequestHandlers\RatingsRequestHandler::aggregate_rating(); } );
+\add_action( 'wp_ajax_games', function() { Games\RequestHandlers\GamesRequestHandler::games(); } );
+\add_action( 'wp_ajax_nopriv_games', function() { Games\RequestHandlers\GamesRequestHandler::games(); } );
+\add_action( 'wp_ajax_game', function() { Games\RequestHandlers\GamesRequestHandler::game(); } );
+\add_action( 'wp_ajax_nopriv_game', function() { Games\RequestHandlers\GamesRequestHandler::game(); } );
 
 add_action( 'pre_get_posts', function ( $query ) {
 	if ( ( is_tax('game_season') || is_tax('game_org') ) && !is_post_type_archive('game') ) {
@@ -271,7 +276,7 @@ add_action( 'wp_insert_post', function($post_id, $post, $update) {
 }, 10, 3);
 
 
-if ( ! wp_next_scheduled( 'team_insert' ) ) {
+if ( !wp_next_scheduled( 'team_insert' ) ) {
   wp_schedule_event( time(), 'hourly', 'team_insert' );
 }
 
@@ -280,3 +285,36 @@ function team_insert() {
 	$importer = new Importers\TeamImporter('http://data.nba.com/data/10s/prod/v1/2017/teams.json');
 	$importer->insertTeams();
 }
+
+if ( !wp_next_scheduled( 'game_insert' ) ) {
+  wp_schedule_event( time(), 'hourly', 'game_insert' );
+}
+
+add_action( 'game_insert', __NAMESPACE__ . '\\game_insert' ); 
+function game_insert() {
+	Games\Controllers\GamesController::bootstrap();
+	$importer = new Importers\GameImporter('http://data.nba.com/data/10s/prod/v1/2017/schedule.json');
+	$importer->insertGames(2017);
+}
+
+\add_action( 'admin_menu', function() {
+	add_menu_page(
+		'Import Games',
+		'Import Games',
+		'publish_posts',
+		'import-games',
+		 function() {
+			require_once plugin_dir_path(__FILE__) . '../resources/templates/games.template.php';
+		},
+		'dashicons-chart-pie',
+		25
+	);
+});
+
+\add_action( 'admin_enqueue_scripts', function($hook) {
+	if ( 'toplevel_page_import-games' != $hook ) {
+		return;
+	}
+	wp_enqueue_script('games/admin', config('assets.uri')  . '/scripts/admin.js', null, null, true);
+	wp_enqueue_style('games/admin', config('assets.uri')  . '/styles/admin.css');
+} );

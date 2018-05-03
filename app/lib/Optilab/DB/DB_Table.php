@@ -56,7 +56,7 @@ class DB_Table
 		return $sql;
 	}
 
-	public function getRows($criteria, $isCondition_AND = true, $group_by = false ) {
+	public function getRows($criteria, $isCondition_AND = true, $group_by = false, $offset = false, $limit = false ) {
 		$condition = 'OR';
 		if ($isCondition_AND == true) {
 			$condition = 'AND';
@@ -77,11 +77,19 @@ class DB_Table
 				$sql = rtrim($sql, " {$condition} " );
 			}
 		}
-		$sql .= " ORDER BY id asc";
+		$sql .= " ORDER BY id asc ";
 		if ($group_by != false) {
 			$sql .= "GROUP BY {$group_by}";
 		}
 
+		if ($limit != false || $offset != false ) {
+			$sql .= "LIMIT {$offset},{$limit} ";
+		}
+		
+		// if ($offset != false) {
+		// 	$sql .= "OFFSET {$offset}";
+		// }
+		// var_dump($sql);
 		return $sql;
 	}
 
@@ -101,7 +109,9 @@ class DB_Table
 
 		$sql = "UPDATE {$this->_wpdb->prefix}{$this->_tableName} SET ";
 		foreach ($properties as $key => $value) {
-			$sql .= "{$key} = '{$value}', ";
+			if ($value != null) {
+				$sql .= "{$key} = '{$value}', ";
+			}
 		}
 		$sql = rtrim($sql, ', ');
 		$sql .= " WHERE id = {$row->id}";
