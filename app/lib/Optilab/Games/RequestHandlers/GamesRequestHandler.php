@@ -46,18 +46,29 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 				$away_team = get_term($away_team_id);
 
 
+				if ($home_team->errors || $away_team->errors) {
+					echo json_encode(['result' => 0, 'message' => 'One or more teams doesn\'t exist']);
+					wp_die();
+				}
+				$game_tag = array();
+
+				if ($gameDetail->buzzer_beater != 0) {
+					$term = get_term_by('slug', 'buzzer-beater', 'game_tag');
+					$game_tag[] = $term->name;
+				}
+
+				if ($gameDetail->overtime != 0) {
+					$term = get_term_by('slug', 'overtime', 'game_tag');
+					$game_tag[] = $term->name;
+				}
+				// var_dump($gameDetail, $game_tag, date('Y-m-d', strtotime($gameDetail->game_date))); exit;
+
 				$my_post = array(
 					'post_title'    => wp_strip_all_tags($home_team->name . " vs " . $away_team->name),
 					'post_content'  => " ",
 					'post_status'   => 'publish',
+					'post_type'		=> 'game',
 					'post_author'   => 1,
-					'tax_input'    => array(
-						'non_hierarchical_tax'  => array($home_team_id, $away_team_id),
-					),
-					'meta_input'   => array(
-						'game_id' => $game->game_id,
-						'game_date' => date('Y-m-d', strtotime($game->game_date)),
-					),
 				);
  
 				// Insert the post into the database
@@ -69,11 +80,14 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 					]
 				));
 
+				wp_set_object_terms( $new_game, array($home_team->name, $away_team->name), 'team' );
+				wp_set_object_terms( $new_game, $game_tag, 'game_tag' );
+				wp_set_object_terms( $new_game, array('NBA'), 'game_org' );
+				update_post_meta($new_game, 'game_id', $gameDetail->game_id);
+				update_post_meta($new_game, 'game_date', date('Y-m-d', strtotime($gameDetail->game_date)));
+
 			}
-			
-			if ($game instanceof Games\Models\gameModel) {
-				echo ['result' => 1];
-			}
+			echo json_encode(['result' => 1]);
 			wp_die();
 			break;
 		}

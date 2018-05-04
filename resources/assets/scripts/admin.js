@@ -50,8 +50,13 @@ $(document).ready(function() {
 			url: ajaxurl+'?action=game',
 			type: 'PUT',
 			data: JSON.stringify(selected),
-			success: function(result) {
-			    table.rows('.selected').remove().draw();
+			success: function(response) {
+				response = JSON.parse(response);
+				if (response.result == 0) {
+					alert(response.message);
+				} else {
+			    	table.rows('.selected').remove().draw();
+				}
 			}
 		});
 

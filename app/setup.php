@@ -286,6 +286,8 @@ function team_insert() {
 	$importer->insertTeams();
 }
 
+// team_insert();
+
 if ( !wp_next_scheduled( 'game_insert' ) ) {
   wp_schedule_event( time(), 'hourly', 'game_insert' );
 }
