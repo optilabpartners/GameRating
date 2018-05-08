@@ -56,6 +56,9 @@ $(document).ready(function() {
 					alert(response.message);
 				} else {
 			    	table.rows('.selected').remove().draw();
+					if (response.message != undefined) {
+						alert(response.message);
+					}
 				}
 			}
 		});

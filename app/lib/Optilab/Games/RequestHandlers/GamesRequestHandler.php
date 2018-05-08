@@ -36,6 +36,7 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 		// var_dump($games); exit;
 		switch ($method) {
 			case 'PUT':
+			$message = null;
 			foreach ($games as $gameId) {
 				global $wpdb;
 				$gameDetail = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}games WHERE id = $gameId");
@@ -70,6 +71,11 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 					'post_type'		=> 'game',
 					'post_author'   => 1,
 				);
+
+				$termid = $wpdb->get_var("SELECT {$wpdb->termmeta}.term_id FROM {$wpdb->termmeta} LEFT JOIN {$wpdb->term_taxonomy} ON {$wpdb->termmeta}.term_id = {$wpdb->term_taxonomy}.`term_id` WHERE {$wpdb->term_taxonomy}.parent != 0 AND meta_value = (SELECT MIN(meta_value) FROM {$wpdb->termmeta} WHERE date(meta_value) 
+					<= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) . "') AND meta_key = 'start_date') AND meta_key = 'start_date' LIMIT 1;");
+
+				$termid1 = $wpdb->get_var("SELECT {$wpdb->termmeta}.term_id FROM {$wpdb->termmeta} LEFT JOIN {$wpdb->term_taxonomy} ON {$wpdb->termmeta}.term_id = {$wpdb->term_taxonomy}.`term_id` WHERE {$wpdb->term_taxonomy}.parent != 0 AND meta_value = (SELECT MIN(meta_value) FROM {$wpdb->termmeta} WHERE date(meta_value) >= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) ."') AND meta_key = 'end_date') AND meta_key = 'end_date' LIMIT 1;");
  
 				// Insert the post into the database
 				$new_game = wp_insert_post( $my_post );
@@ -80,14 +86,22 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 					]
 				));
 
+				if ($termid == $termid1) {
+					$term = get_term($termid);
+					wp_set_object_terms( $new_game, [$term->name], 'game_season' );
+				} else {
+					$message .= "Unable to set game week for Game: " . $new_game . "\n";
+				}
+	
 				wp_set_object_terms( $new_game, array($home_team->name, $away_team->name), 'team' );
 				wp_set_object_terms( $new_game, $game_tag, 'game_tag' );
 				wp_set_object_terms( $new_game, array('NBA'), 'game_org' );
 				update_post_meta($new_game, 'game_id', $gameDetail->game_id);
 				update_post_meta($new_game, 'game_date', date('Y-m-d', strtotime($gameDetail->game_date)));
 
+
 			}
-			echo json_encode(['result' => 1]);
+			echo json_encode(['result' => 1, 'message' => $message]);
 			wp_die();
 			break;
 		}
