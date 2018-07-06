@@ -7,6 +7,9 @@ namespace Optilab\Importers;
 class TeamImporter extends AImporter
 {
 	private function insertTeam($team) {
+		if ( !$team->isNBAFranchise ) {
+			return false;
+		}
 		$nba = term_exists('NBA', 'game_org');
 		if (!term_exists($team->fullName, 'team')) {
 			// create term

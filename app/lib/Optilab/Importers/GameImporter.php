@@ -16,7 +16,6 @@ class GameImporter extends AImporter
 		}
 		$overtime = 0;
 		if (strpos( $game->nugget->text, 'overtime' )) {
-			var_dump('test');
 			$overtime = 1;
 		}
 		$game = Games\Controllers\GamesController::create(
