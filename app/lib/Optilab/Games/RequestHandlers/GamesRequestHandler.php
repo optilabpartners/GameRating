@@ -72,10 +72,10 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 					'post_author'   => 1,
 				);
 
-				$termid = $wpdb->get_var("SELECT {$wpdb->termmeta}.term_id FROM {$wpdb->termmeta} LEFT JOIN {$wpdb->term_taxonomy} ON {$wpdb->termmeta}.term_id = {$wpdb->term_taxonomy}.`term_id` WHERE {$wpdb->term_taxonomy}.parent != 0 AND meta_value = (SELECT MIN(meta_value) FROM {$wpdb->termmeta} WHERE date(meta_value) 
-					<= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) . "') AND meta_key = 'start_date') AND meta_key = 'start_date' LIMIT 1;");
+				$termid = $wpdb->get_var("SELECT {$wpdb->termmeta}.term_id FROM {$wpdb->termmeta} LEFT JOIN {$wpdb->term_taxonomy} ON {$wpdb->termmeta}.term_id = {$wpdb->term_taxonomy}.`term_id` WHERE {$wpdb->term_taxonomy}.parent != 0 AND meta_value = (SELECT MAX(meta_value) FROM {$wpdb->termmeta} WHERE date(meta_value) <= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) . "') AND meta_key = 'start_date') AND meta_key = 'start_date' LIMIT 1;");
 
 				$termid1 = $wpdb->get_var("SELECT {$wpdb->termmeta}.term_id FROM {$wpdb->termmeta} LEFT JOIN {$wpdb->term_taxonomy} ON {$wpdb->termmeta}.term_id = {$wpdb->term_taxonomy}.`term_id` WHERE {$wpdb->term_taxonomy}.parent != 0 AND meta_value = (SELECT MIN(meta_value) FROM {$wpdb->termmeta} WHERE date(meta_value) >= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) ."') AND meta_key = 'end_date') AND meta_key = 'end_date' LIMIT 1;");
+
  
 				// Insert the post into the database
 				$new_game = wp_insert_post( $my_post );
