@@ -9,11 +9,16 @@ class GameImporter extends AImporter
 	private function insertGame($game, $season) {
 		global $wpdb;
 		$post_id = $wpdb->get_var($wpdb->prepare( 
-			"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'game_id' AND meta_value = '%s'"
-		, $game->gameId));
+			"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'game_id' AND meta_value = '%s'", $game->gameId));
 		if ($post_id) {
 			return false;
 		}
+		$count = $wpdb->get_var($wpdb->prepare( 
+			"SELECT COUNT(*) FROM $wpdb->postmeta WHERE meta_key = 'team_id' AND ( meta_value = '%s' OR meta_value = '%s')", $game->hTeam->teamId, $game->vTeam->teamId));
+		
+		if (!$count || $count < 2)
+			return false;
+
 		$overtime = 0;
 		if (strpos( $game->nugget->text, 'overtime' )) {
 			$overtime = 1;
