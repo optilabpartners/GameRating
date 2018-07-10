@@ -13,9 +13,10 @@ class GameImporter extends AImporter
 		if ($post_id) {
 			return false;
 		}
+
 		$count = $wpdb->get_var($wpdb->prepare( 
-			"SELECT COUNT(*) FROM $wpdb->postmeta WHERE meta_key = 'team_id' AND ( meta_value = '%s' OR meta_value = '%s')", $game->hTeam->teamId, $game->vTeam->teamId));
-		
+			"SELECT COUNT(*) FROM $wpdb->termmeta WHERE meta_key = 'team_id' AND ( meta_value = '%s' OR meta_value = '%s')", $game->hTeam->teamId, $game->vTeam->teamId));
+
 		if (!$count || $count < 2)
 			return false;
 
