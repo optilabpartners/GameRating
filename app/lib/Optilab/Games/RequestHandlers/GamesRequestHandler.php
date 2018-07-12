@@ -21,7 +21,7 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 			echo json_encode(array(
 				'draw'=> $query['draw'],
 				'recordsTotal' => Games\Controllers\GamesController::count(),
-				'recordsFiltered' => Games\Controllers\GamesController::count(),
+				'recordsFiltered' => Games\Controllers\GamesController::countNotImported(),
 				'data' => $games
 			));
 			wp_die();

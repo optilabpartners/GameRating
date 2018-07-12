@@ -63,6 +63,12 @@ class GamesController
 		return $val;
 	}
 
+	public static function countNotImported() {
+		global $wpdb;
+		$val = $wpdb->get_var('SELECT COUNT(*) FROM ' . $wpdb->prefix . 'games' . ' WHERE imported = 0');
+		return $val;
+	}
+
 	public static function updateOne(Models\GameModel $game) {
 		global $wpdb;
 		$table = new DB\DB_Table('games');

@@ -20,6 +20,10 @@ class GameImporter extends AImporter
 		if (!$count || $count < 2)
 			return false;
 
+		if ( (int)$game->seasonStageId < 2 ) {
+			return false;
+		}
+		
 		$overtime = 0;
 		if (strpos( $game->nugget->text, 'overtime' )) {
 			$overtime = 1;
