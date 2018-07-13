@@ -299,6 +299,8 @@ function game_insert() {
 	$importer->insertGames(2017);
 }
 
+game_insert();
+
 \add_action( 'admin_menu', function() {
 	add_menu_page(
 		'Import Games',

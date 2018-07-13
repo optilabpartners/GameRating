@@ -15,7 +15,7 @@ class GamesController
 		DB\DB_Manager::execute(call_user_func(function() use ($wpdb) {
 	        $rows = array(
 	            new DB\DB_Table_Column('id', 'int', null, false, false, true, true ),
-	            new DB\DB_Table_Column('game_id', 'varchar(20)', null ),
+	            new DB\DB_Table_Column('game_id', 'varchar(20)', null, false, true ),
 	            new DB\DB_Table_Column('game_url_code', 'varchar(20)', null, true ),
 	            new DB\DB_Table_Column('game_date', 'datetime', null, true ),
 	            new DB\DB_Table_Column('season', 'int', null, true ),
