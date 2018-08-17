@@ -33,7 +33,6 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 	public static function game() {
 		$games = json_decode( file_get_contents( "php://input" ) );
 		$method = static::method_identifier();
-		// var_dump($games); exit;
 		switch ($method) {
 			case 'PUT':
 			$message = null;
@@ -72,9 +71,10 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 					'post_author'   => 1,
 				);
 
-				$termid = $wpdb->get_var("SELECT {$wpdb->termmeta}.term_id FROM {$wpdb->termmeta} LEFT JOIN {$wpdb->term_taxonomy} ON {$wpdb->termmeta}.term_id = {$wpdb->term_taxonomy}.`term_id` WHERE {$wpdb->term_taxonomy}.parent != 0 AND meta_value = (SELECT MAX(meta_value) FROM {$wpdb->termmeta} WHERE date(meta_value) <= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) . "') AND meta_key = 'start_date') AND meta_key = 'start_date' LIMIT 1;");
+				$parent = $wpdb->get_var("SELECT {$wpdb->termmeta}.term_id FROM {$wpdb->termmeta} LEFT JOIN {$wpdb->term_taxonomy} ON {$wpdb->termmeta}.term_id = {$wpdb->term_taxonomy}.`term_id` WHERE ({$wpdb->term_taxonomy}.parent = 0 AND {$wpdb->termmeta}.meta_value = '3' AND {$wpdb->termmeta}.meta_key = 'game_org') OR ( {$wpdb->term_taxonomy}.parent = 0 AND date(meta_value) <= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) . "') AND meta_key = 'start_date') OR ( {$wpdb->term_taxonomy}.parent = 0 AND date(meta_value) >= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) . "') AND meta_key = 'end_date') GROUP By term_id HAVING count(*) = 3;");
 
-				$termid1 = $wpdb->get_var("SELECT {$wpdb->termmeta}.term_id FROM {$wpdb->termmeta} LEFT JOIN {$wpdb->term_taxonomy} ON {$wpdb->termmeta}.term_id = {$wpdb->term_taxonomy}.`term_id` WHERE {$wpdb->term_taxonomy}.parent != 0 AND meta_value = (SELECT MIN(meta_value) FROM {$wpdb->termmeta} WHERE date(meta_value) >= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) ."') AND meta_key = 'end_date') AND meta_key = 'end_date' LIMIT 1;");
+				$termid = $wpdb->get_var("SELECT {$wpdb->termmeta}.term_id FROM {$wpdb->termmeta} LEFT JOIN {$wpdb->term_taxonomy} ON {$wpdb->termmeta}.term_id = {$wpdb->term_taxonomy}.`term_id` WHERE {$wpdb->term_taxonomy}.parent = 96 AND  ( ( date(meta_value) <= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) . "') AND meta_key = 'start_date') OR ( date(meta_value) >= date('" . date('Y-m-d', strtotime($gameDetail->game_date)) . "') AND meta_key = 'end_date') ) GROUP BY term_id HAVING COUNT(*) = 2;");
+
 
 				// Insert the post into the database
 				$new_game = wp_insert_post( $my_post );
@@ -85,7 +85,8 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 					]
 				));
 
-				if ($termid == $termid1) {
+
+				if ($termid != null && $parent != null) {
 					$term = get_term($termid);
 					wp_set_object_terms( $new_game, [$term->name], 'game_season' );
 				} else {
