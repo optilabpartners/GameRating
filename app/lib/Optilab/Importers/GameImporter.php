@@ -83,6 +83,26 @@ class GameImporter extends AImporter
 			]
 		), ['game_id']);
 
+		$post_id = $wpdb->get_var("SELECT post_id FROM {$wpdb->prefix}games WHERE game_id = '{$game->gameId}' LIMIT 1");
+
+		if ( (bool)$post_id ) {
+
+			$game_tag = array();
+
+			if ($game->isBuzzerBeater) {
+				$term = get_term_by('slug', 'buzzer-beater', 'game_tag');
+				$game_tag[] = $term->name;
+			}
+
+			if ($overtime) {
+				$term = get_term_by('slug', 'overtime', 'game_tag');
+				$game_tag[] = $term->name;
+			}
+
+			wp_set_object_terms( $post_id, $game_tag, 'game_tag' );
+		}
+		
+
 	}
 
 	/**
