@@ -103,8 +103,34 @@ class DB_Table
 		return $sql;
 	}
 
-	public function updateRow(DB_Table_Row $row) {
-		if (empty($row->id)) return;
+	// public function updateRow(DB_Table_Row $row, $selector = false) {
+	// 	if (empty($row->id)) return;
+	// 	$properties = $row->getPublicProperties();
+
+	// 	$sql = "UPDATE {$this->_wpdb->prefix}{$this->_tableName} SET ";
+	// 	foreach ($properties as $key => $value) {
+	// 		if ($value != null) {
+	// 			$sql .= "{$key} = '{$value}', ";
+	// 		}
+	// 	}
+	// 	$sql = rtrim($sql, ', ');
+	// 	$sql .= " WHERE id = {$row->id}";
+	// 	return $sql;
+	// }
+
+	public function updateRow(DB_Table_Row $row, $selector = false) {
+
+		$where = null;
+		if (!$selector) {
+			if (empty($row->id)) return;
+			$where .= " WHERE id = {$row->id}";
+		} else {
+			$where .= " WHERE ";
+			foreach ($selector as $item) {
+				$where .= "{$item} = '" . $row->{$item} . "' AND";
+			}
+			$where = rtrim($where, ' AND');
+		}
 		$properties = $row->getPublicProperties();
 
 		$sql = "UPDATE {$this->_wpdb->prefix}{$this->_tableName} SET ";
@@ -114,7 +140,8 @@ class DB_Table
 			}
 		}
 		$sql = rtrim($sql, ', ');
-		$sql .= " WHERE id = {$row->id}";
+		$sql .= $where;
+
 		return $sql;
 	}
 

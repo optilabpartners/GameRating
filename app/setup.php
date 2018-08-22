@@ -289,7 +289,7 @@ function team_insert() {
 // team_insert();
 
 if ( !wp_next_scheduled( 'game_insert' ) ) {
-  wp_schedule_event( time(), 'hourly', 'game_insert' );
+  wp_schedule_event( time(), 'daily', 'game_insert' );
 }
 
 add_action( 'game_insert', __NAMESPACE__ . '\\game_insert' ); 
@@ -297,6 +297,16 @@ function game_insert() {
 	Games\Controllers\GamesController::bootstrap();
 	$importer = new Importers\GameImporter('http://data.nba.com/data/10s/prod/v1/2017/schedule.json');
 	$importer->insertGames(2017);
+}
+
+if ( !wp_next_scheduled( 'game_update' ) ) {
+  wp_schedule_event( time(), 'daily', 'game_update' );
+}
+
+add_action( 'game_update', __NAMESPACE__ . '\\game_update' ); 
+function game_update() {
+	$importer = new Importers\GameImporter('http://data.nba.com/data/10s/prod/v1/2017/schedule.json');
+	$importer->updateGames(2017);
 }
 
 game_insert();

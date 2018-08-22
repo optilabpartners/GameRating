@@ -24,6 +24,7 @@ class GamesController
 	            new DB\DB_Table_Column('buzzer_beater', 'int', 0 ),
 	            new DB\DB_Table_Column('overtime', 'int', 0 ),
 	            new DB\DB_Table_Column('imported', 'int', 0 ),
+	            new DB\DB_Table_Column('post_id', 'int', null, false, true ),
 	        );
 	        $table = new DB\DB_Table('games', $rows, $wpdb);
 	        return $table->create();
@@ -69,11 +70,11 @@ class GamesController
 		return $val;
 	}
 
-	public static function updateOne(Models\GameModel $game) {
+	public static function updateOne(Models\GameModel $game, $selector = false) {
 		global $wpdb;
 		$table = new DB\DB_Table('games');
-		$row = DB\DB_Manager::update(call_user_func(function() use ($table, $game) {
-			return $table->updateRow($game);
+		$row = DB\DB_Manager::update(call_user_func(function() use ($table, $game, $selector) {
+			return $table->updateRow($game, $selector);
 		}));
 	}
 

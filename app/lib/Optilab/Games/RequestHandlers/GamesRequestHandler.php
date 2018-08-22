@@ -84,6 +84,7 @@ class GamesRequestHandler extends RequestHandlers\RequestHandler
 					new Games\Models\GameModel([ 
 						'imported' => 1,
 						'id' => $gameId,
+						'post_id' => $new_game,
 					]
 				));
 

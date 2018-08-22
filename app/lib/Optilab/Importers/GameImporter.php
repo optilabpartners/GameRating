@@ -54,4 +54,51 @@ class GameImporter extends AImporter
 		}
 	}
 
+	private function updateGame($game, $season) {
+		global $wpdb;
+
+		$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}games WHERE game_id = '%s'", $game->gameId));
+
+		if (!$count) {
+			return false;
+		}
+
+		$overtime = 0;
+		if (strpos( $game->nugget->text, 'overtime' )) {
+			$overtime = 1;
+		}
+		
+		// var_dump($game->gameId, $game->nugget->text);
+
+		$game = Games\Controllers\GamesController::updateOne(
+			new Games\Models\GameModel([ 
+				'game_id' => $game->gameId,
+				'game_url_code' => $game->gameUrlCode,
+				'game_date' => $game->startDateEastern,
+				'season' => $season,
+				'hteam' => $game->hTeam->teamId,
+				'vteam' => $game->vTeam->teamId,
+				'buzzer_beater' => ($game->isBuzzerBeater)?1:0,
+				'overtime' => $overtime
+			]
+		), ['game_id']);
+
+	}
+
+	/**
+	 * Update Games
+	 **/
+	public function updateGames($season) {
+		$body = json_decode($this->_response->getBody());
+		$games = $body->league->standard;
+
+		if (count($games) > 0) {
+			foreach ($games as $game) {
+				$this->updateGame($game, $season);
+			}
+		}
+
+		exit();
+	}
+
 }

@@ -16,6 +16,8 @@ class GameModel extends DB\DB_Table_Row
 	public $buzzer_beater;
 	public $overtime;
 	public $imported;
+	public $post_id;
+
 	function __construct($data = null)
 	{
 		if (is_numeric($data)) {
@@ -30,12 +32,16 @@ class GameModel extends DB\DB_Table_Row
 		return $this->id;
 	}
 
-	function getTeamID() {
+	function getGameID() {
 		return $this->game_id;
 	}
 
-	function setTeamID($game_id) {
+	function setGameID($game_id) {
 		$this->game_id = $game_id;
+	}
+
+	function setPostID($post_id) {
+		$this->post_id = $post_id;
 	}
 
 }
