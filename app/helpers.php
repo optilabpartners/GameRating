@@ -125,7 +125,7 @@ function game_rating_add_to_content( $content = null ) {
 		return $content;
 	}
 	if( $post->post_type == 'game' ) {
-		$content .= '<div class="row" itemscope itemtype="http://schema.org/SportsEvent">
+		$content .= '<div class="row" itemscope">
 		<meta itemprop="startDate" content="' . date_format(date_create(get_post_meta( $post->ID, 'game_date', true )), \DateTime::ISO8601 ) . '" />
 		<meta itemprop="name" content=" ' .$teams[0]->name. ' vs ' . $teams[1]->name . '" />
 		<div class="col-md-5 text-center" itemprop="homeTeam" itemscope itemtype="http://schema.org/SportsTeam"><meta itemprop="name" content="' . $teams[0]->name .'" />';
