@@ -274,17 +274,51 @@ add_shortcode( 'filter_game', function($atts) {
 				$content .= "<select name=\"game_season\" id=\"gameSeason\" class=\"form-control\">";
 				$content .= "<option value=\"any\">Choose Week</option>";
 				foreach ($game_seasons as $game_season) {
-					if ($game_season->parent !== 0) {
-						$start_date = get_term_meta( $game_season->term_id, 'start_date', true );
-						$end_date = get_term_meta( $game_season->term_id, 'end_date', true );
-						$selected = '';
+					if ($game_season->term_taxonomy_id === 96) {
 						$parent = get_term( $game_season->parent, 'game_season' );
-						if ($game_season->slug == get_query_var('game_season')) {
-							$selected = "selected=\"true\"";
+						$content .= "<optgroup label=\"{$game_season->name}\">";
+						
+						$game_seasons2 = get_terms( 'game_season', $args );
+						
+						foreach ($game_seasons2 as $game_season2) {
+							if ($game_season2->parent == 96) {
+								$start_date = get_term_meta( $game_season2->term_id, 'start_date', true );
+								$end_date = get_term_meta( $game_season2->term_id, 'end_date', true );
+								$selected = '';
+								
+								if ($game_season2->slug == get_query_var('game_season')) {
+									$selected = "selected=\"true\"";
+								}
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">{$game_season2->name}</option>";
+							}
 						}
-						$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">[{$parent->name}] {$game_season->name}</option>";
+						$content .= "</optgroup>";
 					}
 				}
+				foreach ($game_seasons as $game_season) {
+					if ($game_season->term_taxonomy_id === 160) {
+						$parent = get_term( $game_season->parent, 'game_season' );
+						$content .= "<optgroup label=\"{$game_season->name}\">";
+						
+						$game_seasons2 = get_terms( 'game_season', $args );
+						
+						foreach ($game_seasons2 as $game_season2) {
+							if ($game_season2->parent == 160) {
+								$start_date = get_term_meta( $game_season2->term_id, 'start_date', true );
+								$end_date = get_term_meta( $game_season2->term_id, 'end_date', true );
+								$selected = '';
+								
+								if ($game_season2->slug == get_query_var('game_season')) {
+									$selected = "selected=\"true\"";
+								}
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">{$game_season2->name}</option>";
+							}
+						}
+						$content .= "</optgroup>";
+					}
+				}
+				
+				
 				$content .= "</select>";
 
                 $content .= '</div>';
