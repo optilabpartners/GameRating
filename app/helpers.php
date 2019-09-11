@@ -125,7 +125,7 @@ function game_rating_add_to_content( $content = null ) {
 		return $content;
 	}
 	if( $post->post_type == 'game' ) {
-		$content .= '<div class="row" itemscope itemtype="http://schema.org/SportsEvent">
+		$content .= '<div class="row" itemscope>
 		<meta itemprop="startDate" content="' . date_format(date_create(get_post_meta( $post->ID, 'game_date', true )), \DateTime::ISO8601 ) . '" />
 		<meta itemprop="name" content=" ' .$teams[0]->name. ' vs ' . $teams[1]->name . '" />
 		<div class="col-md-5 text-center" itemprop="homeTeam" itemscope itemtype="http://schema.org/SportsTeam"><meta itemprop="name" content="' . $teams[0]->name .'" />';
@@ -274,17 +274,71 @@ add_shortcode( 'filter_game', function($atts) {
 				$content .= "<select name=\"game_season\" id=\"gameSeason\" class=\"form-control\">";
 				$content .= "<option value=\"any\">Choose Week</option>";
 				foreach ($game_seasons as $game_season) {
-					if ($game_season->parent !== 0) {
-						$start_date = get_term_meta( $game_season->term_id, 'start_date', true );
-						$end_date = get_term_meta( $game_season->term_id, 'end_date', true );
-						$selected = '';
+					if ($game_season->term_taxonomy_id === 96) {
 						$parent = get_term( $game_season->parent, 'game_season' );
-						if ($game_season->slug == get_query_var('game_season')) {
-							$selected = "selected=\"true\"";
+						$content .= "<optgroup label=\"{$game_season->name}\">";
+						
+						$game_seasons2 = get_terms( 'game_season', $args );
+						
+						foreach ($game_seasons2 as $game_season2) {
+							if ($game_season2->parent == 96) {
+								$start_date = get_term_meta( $game_season2->term_id, 'start_date', true );
+								$end_date = get_term_meta( $game_season2->term_id, 'end_date', true );
+								$selected = '';
+								
+								if ($game_season2->slug == get_query_var('game_season')) {
+									$selected = "selected=\"true\"";
+								}
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">{$game_season2->name}</option>";
+							}
 						}
-						$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">[{$parent->name}] {$game_season->name}</option>";
+						$content .= "</optgroup>";
+					}
+					if ($game_season->term_taxonomy_id === 240) {
+						$parent = get_term( $game_season->parent, 'game_season' );
+						$content .= "<optgroup label=\"{$game_season->name}\">";
+						
+						$game_seasons2 = get_terms( 'game_season', $args );
+						
+						foreach ($game_seasons2 as $game_season2) {
+							if ($game_season2->parent == 240) {
+								$start_date = get_term_meta( $game_season2->term_id, 'start_date', true );
+								$end_date = get_term_meta( $game_season2->term_id, 'end_date', true );
+								$selected = '';
+								
+								if ($game_season2->slug == get_query_var('game_season')) {
+									$selected = "selected=\"true\"";
+								}
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">{$game_season2->name}</option>";
+							}
+						}
+						$content .= "</optgroup>";
 					}
 				}
+				foreach ($game_seasons as $game_season) {
+					if ($game_season->term_taxonomy_id === 160) {
+						$parent = get_term( $game_season->parent, 'game_season' );
+						$content .= "<optgroup label=\"{$game_season->name}\">";
+						
+						$game_seasons2 = get_terms( 'game_season', $args );
+						
+						foreach ($game_seasons2 as $game_season2) {
+							if ($game_season2->parent == 160) {
+								$start_date = get_term_meta( $game_season2->term_id, 'start_date', true );
+								$end_date = get_term_meta( $game_season2->term_id, 'end_date', true );
+								$selected = '';
+								
+								if ($game_season2->slug == get_query_var('game_season')) {
+									$selected = "selected=\"true\"";
+								}
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">{$game_season2->name}</option>";
+							}
+						}
+						$content .= "</optgroup>";
+					}
+				}
+				
+				
 				$content .= "</select>";
 
                 $content .= '</div>';
@@ -321,12 +375,21 @@ add_shortcode( 'filter_game', function($atts) {
 add_shortcode( 'todays_game', function($atts) {
 	$a = shortcode_atts( array(
         'days' 	=> 3,
+		'game_org' => 3,
     ), $atts );
+	$game_org = $a['game_org'];
 	$today = new \DateTime();
 	$start_date = new \DateTime();
 	$start_date = $start_date->sub(new \DateInterval('P' . $a['days'] . 'D'));
 	$args = array(
 		'post_type'		=> 'game',
+		'tax_query' => array(
+		    array(
+		        'taxonomy' => 'game_org',
+		        'field'    => 'term_id',
+		        'terms'    => (int)$game_org,
+		    ),
+		),
 		'orderby'		=> array(
 			'date_range' => 'DESC'
 		),
@@ -336,8 +399,8 @@ add_shortcode( 'todays_game', function($atts) {
 				'key'     => 'game_date',
 				'value'   => array( $start_date->format('Y-m-d'), $today->format('Y-m-d') ),
 				'compare' => 'BETWEEN',
-		),
-		'game_date' => array(
+		    ),
+		    'game_date' => array(
 				'key'=>'game_date',
 				'value'=> ((new \DateTime('today'))->format('Y-m-d')),
 				'compare'=>'<',
@@ -346,6 +409,7 @@ add_shortcode( 'todays_game', function($atts) {
 		'posts_per_page' => -1,
 		'nopaging'		=> true
 	);
+	//var_dump($args);
 	$query = new \WP_Query( $args );
 	$content = null;
 	if ( $query->have_posts() ) {
@@ -362,7 +426,7 @@ add_shortcode( 'todays_game', function($atts) {
 		/* Restore original Post Data */
 		wp_reset_postdata();
 	} else {
-		$content .= '<div class="alert alert-info>No game match in the past 7 days</div>';
+		$content .= '<div class="alert alert-info">No game match in the past 7 days</div>';
 	}
 	return $content;
 } );
@@ -396,3 +460,4 @@ function weeks($atts) {
 	$content .= '</div>';
 	return $content;
 }
+
