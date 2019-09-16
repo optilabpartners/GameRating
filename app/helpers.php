@@ -289,7 +289,7 @@ add_shortcode( 'filter_game', function($atts) {
 								if ($game_season2->slug == get_query_var('game_season')) {
 									$selected = "selected=\"true\"";
 								}
-								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">{$game_season2->name}</option>";
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season2->slug}\">{$game_season2->name}</option>";
 							}
 						}
 						$content .= "</optgroup>";
@@ -309,7 +309,7 @@ add_shortcode( 'filter_game', function($atts) {
 								if ($game_season2->slug == get_query_var('game_season')) {
 									$selected = "selected=\"true\"";
 								}
-								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">{$game_season2->name}</option>";
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season2->slug}\">{$game_season2->name}</option>";
 							}
 						}
 						$content .= "</optgroup>";
@@ -331,7 +331,7 @@ add_shortcode( 'filter_game', function($atts) {
 								if ($game_season2->slug == get_query_var('game_season')) {
 									$selected = "selected=\"true\"";
 								}
-								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season->slug}\">{$game_season2->name}</option>";
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season2->slug}\">{$game_season2->name}</option>";
 							}
 						}
 						$content .= "</optgroup>";
