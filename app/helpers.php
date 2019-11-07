@@ -112,25 +112,16 @@ function game_rating_add_to_content( $content = null ) {
 	$game_url = get_post_permalink( $post->ID );
 	
 	$url_game_date = date_format(date_create(get_post_meta( $post->ID, 'game_date', true )),"Ymd");
-    	$teamA = get_the_terms( $post, 'team' )[0]->term_id;
-    	$teamB = get_the_terms( $post, 'team' )[1]->term_id;
+    $teamA = get_the_terms( $post, 'team' )[0]->term_id;
+    $teamB = get_the_terms( $post, 'team' )[1]->term_id;
 
-<<<<<<< HEAD
     $teamAName = get_term_meta( $teamA, 'short_name', true );
     $teamBName = get_term_meta( $teamB, 'short_name', true );
 
 	if($org->term_id == 3) {
 		$watch_url .= "$url_game_date/$teamAName$teamBName/";
 	}
-=======
-    	$teamAName = get_term_meta( $teamA, 'short_name', true );
-    	$teamBName = get_term_meta( $teamB, 'short_name', true );
->>>>>>> 755734857a20040ac717c22b60672cd93a54483f
 
-	if($org->term_id == 3) {
-		$watch_url .= "$url_game_date/$teamAName$teamBName/";
-	}
-	
 	$teams = get_the_terms($post, 'team');
 	if ($teams == false) {
 		return $content;
