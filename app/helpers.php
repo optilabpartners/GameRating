@@ -118,7 +118,9 @@ function game_rating_add_to_content( $content = null ) {
     $teamAName = get_term_meta( $teamA, 'short_name', true );
     $teamBName = get_term_meta( $teamB, 'short_name', true );
 
-    $watch_url .= "$url_game_date/$teamAName$teamBName/";
+	if($org->term_id == 3) {
+		$watch_url .= "$url_game_date/$teamAName$teamBName/";
+	}
 
 	$teams = get_the_terms($post, 'team');
 	if ($teams == false) {
@@ -274,6 +276,26 @@ add_shortcode( 'filter_game', function($atts) {
 				$content .= "<select name=\"game_season\" id=\"gameSeason\" class=\"form-control\">";
 				$content .= "<option value=\"any\">Choose Week</option>";
 				foreach ($game_seasons as $game_season) {
+					if ($game_season->term_taxonomy_id === 213) {
+						$parent = get_term( $game_season->parent, 'game_season' );
+						$content .= "<optgroup label=\"{$game_season->name}\">";
+						
+						$game_seasons4 = get_terms( 'game_season', $args );
+						
+						foreach ($game_seasons4 as $game_season4) {
+							if ($game_season4->parent == 213) {
+								$start_date = get_term_meta( $game_season4->term_id, 'start_date', true );
+								$end_date = get_term_meta( $game_season4->term_id, 'end_date', true );
+								$selected = '';
+								
+								if ($game_season4->slug == get_query_var('game_season')) {
+									$selected = "selected=\"true\"";
+								}
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season4->slug}\">{$game_season4->name}</option>";
+							}
+						}
+						$content .= "</optgroup>";
+					}
 					if ($game_season->term_taxonomy_id === 96) {
 						$parent = get_term( $game_season->parent, 'game_season' );
 						$content .= "<optgroup label=\"{$game_season->name}\">";
@@ -298,22 +320,23 @@ add_shortcode( 'filter_game', function($atts) {
 						$parent = get_term( $game_season->parent, 'game_season' );
 						$content .= "<optgroup label=\"{$game_season->name}\">";
 						
-						$game_seasons2 = get_terms( 'game_season', $args );
+						$game_seasons3 = get_terms( 'game_season', $args );
 						
-						foreach ($game_seasons2 as $game_season2) {
-							if ($game_season2->parent == 240) {
-								$start_date = get_term_meta( $game_season2->term_id, 'start_date', true );
-								$end_date = get_term_meta( $game_season2->term_id, 'end_date', true );
+						foreach ($game_seasons3 as $game_season3) {
+							if ($game_season3->parent == 240) {
+								$start_date = get_term_meta( $game_season3->term_id, 'start_date', true );
+								$end_date = get_term_meta( $game_season3->term_id, 'end_date', true );
 								$selected = '';
 								
-								if ($game_season2->slug == get_query_var('game_season')) {
+								if ($game_season3->slug == get_query_var('game_season')) {
 									$selected = "selected=\"true\"";
 								}
-								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season2->slug}\">{$game_season2->name}</option>";
+								$content .= "<option {$selected} data-start-date={$start_date} data-end-date={$end_date} value=\"{$game_season3->slug}\">{$game_season3->name}</option>";
 							}
 						}
 						$content .= "</optgroup>";
 					}
+					
 				}
 				foreach ($game_seasons as $game_season) {
 					if ($game_season->term_taxonomy_id === 160) {
@@ -460,4 +483,3 @@ function weeks($atts) {
 	$content .= '</div>';
 	return $content;
 }
-
