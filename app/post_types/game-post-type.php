@@ -47,7 +47,7 @@ function game() {
 		'has_archive'           => true,		
 		'exclude_from_search'   => false,
 		'publicly_queryable'    => true,
-		'rewrite'				=> array('slug' => 'game/game_org/season/week', 'with_front' => false, 'pages' => false),
+		'rewrite'								=> array('slug' => 'game/game_org/season/week', 'with_front' => false, 'pages' => false),
 		'capability_type'       => 'post',
 	);
 	register_post_type( 'game', $args );

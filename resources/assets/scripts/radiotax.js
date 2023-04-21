@@ -2,13 +2,13 @@
 
         var taxonomy = radio_tax.slug; //Or set manually.
 
-        $('#' + taxonomy + 'checklist li :radio, #' + taxonomy + 'checklist-pop :radio').live( 'click', function(){  
+        $('#' + taxonomy + 'checklist li :radio, #' + taxonomy + 'checklist-pop :radio').on( 'click', 'radio', function(){  
             var t = $(this), c = t.is(':checked'), id = t.val();  
             $('#' + taxonomy + 'checklist li :radio, #' + taxonomy + 'checklist-pop :radio').prop('checked',false);  
             $('#in-' + taxonomy + '-' + id + ', #in-popular-' + taxonomy + '-' + id).prop( 'checked', c );  
         });  
 
-        $('#' + taxonomy +'-add .radio-tax-add').live( 'click', function(){  
+        $('#' + taxonomy +'-add .radio-tax-add').on( 'click', 'radio', function(){  
 		term = $('#' + taxonomy+'-add #new'+taxonomy).val();
 		nonce =$('#' + taxonomy+'-add #_wpnonce_radio-add-tag').val();
 		$.post(ajaxurl, {

@@ -88,5 +88,10 @@
 		"test": [
 		  "phpcs"
 		]
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true
+		}
 	}
 }

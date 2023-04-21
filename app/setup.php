@@ -277,6 +277,12 @@ if ( ! wp_next_scheduled( 'team_insert' ) ) {
 
 add_action( 'team_insert', __NAMESPACE__ . '\\team_insert' ); 
 function team_insert() {
-	$importer = new Importers\TeamImporter('http://data.nba.com/data/10s/prod/v1/2017/teams.json');
+	$importer = new Importers\TeamImporter('https://www.balldontlie.io/api/v1/teams');
 	$importer->insertTeams();
+}
+
+add_action( 'game_insert', __NAMESPACE__ . '\\game_insert' ); 
+function game_insert() {
+	$importer = new Importers\GameImporter('https://www.balldontlie.io/api/v1/games?seasons[]=2022');
+	$importer->insertGames();
 }
