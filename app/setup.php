@@ -190,7 +190,7 @@ add_filter( 'teams_to_edit', function ( $terms_to_edit, $taxonomy ) {
     }
     // Ignore passed in term names and use cache just added by terms_to_edit().
     if ( $terms = get_object_term_cache( $post->ID, $taxonomy ) ) {
-        $terms = Optilab\get_the_teams( $terms, $post->ID, $taxonomy );
+        $terms = \Optilab\get_the_teams( $terms, $post->ID, $taxonomy );
         $term_names = array();
         foreach ( $terms as $term ) {
             $term_names[] = $term->name;
@@ -283,6 +283,35 @@ function team_insert() {
 
 add_action( 'game_insert', __NAMESPACE__ . '\\game_insert' ); 
 function game_insert() {
-	$importer = new Importers\GameImporter('https://www.balldontlie.io/api/v1/games?seasons[]=2022');
-	$importer->insertGames();
+
+	//Get number of pages for normal season
+	$importer = new Importers\GameImporter('https://www.balldontlie.io/api/v1/games?seasons[]=2022&postseason=false');
+	$numberOfPages = $importer->returnNumberOfPages();
+	if($numberOfPages > 0) {
+		for($i = 0; $i <= $numberOfPages; $i++) {
+			$apiUrl = 'https://www.balldontlie.io/api/v1/games?seasons[]=2022&postseason=false&page=' . $i;
+			
+			$importer = new Importers\GameImporter($apiUrl);
+			$importer->insertGames();
+		}
+	}
+}
+
+add_action( 'game_insert_post_season', __NAMESPACE__ . '\\game_insert_post_season' ); 
+function game_insert_post_season() {
+	//Get number of pages for post season
+	$importer = new Importers\GameImporter('https://www.balldontlie.io/api/v1/games?seasons[]=2022&postseason=true');
+	$numberOfPages = $importer->returnNumberOfPages();
+	if($numberOfPages > 0) {
+		for($i = 0; $i <= $numberOfPages; $i++) {
+			$apiUrl = 'https://www.balldontlie.io/api/v1/games?seasons[]=2022&postseason=true&page=' . $i;
+			
+			$importer = new Importers\GameImporter($apiUrl);
+			$importer->insertGames();
+		}
+	}
+}
+
+if ( ! wp_next_scheduled( 'game_insert_post_season' ) ) {
+  wp_schedule_event( time(), 'daily', 'game_insert_post_season' );
 }

@@ -64,7 +64,7 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
 			'orderby'            => 'ID',
 			'order'              => 'ASC',
 			'show_count'         => 0,
-			'hide_empty'         => 1,
+			'hide_empty'         => 0,
 			'child_of'           => 0,
 			'exclude'            => '',
 			'include'            => '',
@@ -72,17 +72,18 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
 			'selected'           => '',
 			'hierarchical'       => 0,
 			'name'               => 'game_org',
-			'id'                 => 'gameOrg',
+			'id'                 => 'game_org',
 			'class'              => 'form-control',
 			'depth'              => 0,
 			'tab_index'          => 0,
 			'taxonomy'           => 'game_org',
 			'hide_if_empty'      => false,
-			'value_field'	     => 'term_id',
+			'value_field'	     	 => 'term_id',
+			'required'           => true,	
 	);
 	echo wp_dropdown_categories( $args );
 	?>
-	<p class="description"><?php _e( 'Game Org','optilab ' ); ?></p>
+	<p class="description"><?php _e( 'Game Organisation','optilab' ); ?></p>
   </div>
 <?php
 });
@@ -117,7 +118,7 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
 				'orderby'            => 'ID',
 				'order'              => 'ASC',
 				'show_count'         => 0,
-				'hide_empty'         => 1,
+				'hide_empty'         => 0,
 				'child_of'           => 0,
 				'exclude'            => '',
 				'include'            => '',
@@ -135,7 +136,7 @@ add_action( 'init', __NAMESPACE__ . '\\taxonomy_game_season', 0 );
 		);
 		echo wp_dropdown_categories( $args );
 		?>
-		<p class="description"><?php _e( 'Game Org','optilab ' ); ?></p>
+		<p class="description"><?php _e( 'Game Organisation','optilab ' ); ?></p>
 	</td>
   </tr>
 <?php

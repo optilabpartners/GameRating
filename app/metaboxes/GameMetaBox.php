@@ -11,33 +11,50 @@ class GameMetaBox extends WPMetaBox\CodeBox
 	function __construct()
 	{
 		add_action( 'add_meta_boxes_game',  array( $this, 'register' ) );
-   		add_action( 'save_post',  array( $this, 'save' ) );
+   	add_action( 'save_post',  array( $this, 'save' ) );
 	}
 
 	/**
    * Inintite TemplateMetaBox class and setup the metaboxes to be shown in the admin page
    **/
-	public function register($post)
-	{
-	$setup = new WPMetaBox\TemplateMetaBox($post);
-	// top section
-	$setup->add_meta_box(
-	  'game_date',
-	  'Game Date',
-	  function($post) {
-	    // Add a nonce field so we can check for it later.
-	    wp_nonce_field( 'game_date', 'games_rating_new_nonce' );
-	    
-	    $game_date = get_post_meta($post->ID, 'game_date', true);
-	    ?>
-	    <div class="form-field">
-	      <input type="date" id="publishedDate" name="game_date" aria-required="true" required="true" value="<?php echo $game_date; ?>" > Date
-	    </div>
-	  <?php
-	  },
-	  $post->post_type , 'normal', 'core'
-	);
-	$setup->init(function() { return true; });
+	public function register($post) {
+		$setup = new WPMetaBox\TemplateMetaBox($post);
+		// top section
+		$setup->add_meta_box(
+			'game_date',
+			'Game Date',
+			function($post) {
+				// Add a nonce field so we can check for it later.
+				wp_nonce_field( 'game_date', 'games_rating_new_nonce' );
+				
+				$game_date = get_post_meta($post->ID, 'game_date', true);
+				?>
+				<div class="form-field">
+					<input type="date" id="publishedDate" name="game_date" aria-required="true" required="true" value="<?php echo $game_date; ?>" > Date
+				</div>
+			<?php
+			},
+			$post->post_type , 'normal', 'core'
+		);
+
+		$setup->add_meta_box(
+			'api_id',
+			'API ID',
+			function($post) {
+				// Add a nonce field so we can check for it later.
+				wp_nonce_field( 'api_id', 'games_rating_new_nonce' );
+				
+				$api_id = get_post_meta($post->ID, 'api_id', true);
+				?>
+				<div class="form-field">
+					<input type="number" id="apiID" name="api_id" aria-required="true" required="true" value="<?php echo $api_id; ?>" />
+				</div>
+			<?php
+			},
+			$post->post_type , 'normal', 'core'
+		);
+
+		$setup->init(function() { return true; });
 	}
 
 	/** 
@@ -50,6 +67,11 @@ class GameMetaBox extends WPMetaBox\CodeBox
 			return;
 		}
 		update_post_meta($post_id, 'game_date', $_POST['game_date']);
+
+		if (  ! isset( $_POST['api_id'] ) ) {
+			return;
+		}
+		update_post_meta($post_id, 'api_id', $_POST['api_id']);
 	}
 }
 
